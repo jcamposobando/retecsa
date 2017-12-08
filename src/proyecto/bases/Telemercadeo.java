@@ -5,6 +5,8 @@
  */
 package proyecto.bases;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author b22539
@@ -34,9 +36,9 @@ public class Telemercadeo extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox<>();
         jComboBox3 = new javax.swing.JComboBox<>();
         jComboBox4 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        Agragar = new javax.swing.JButton();
+        Actualizar = new javax.swing.JButton();
+        Eliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,14 +63,19 @@ public class Telemercadeo extends javax.swing.JFrame {
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton1.setText("Agregar");
+        Agragar.setText("Agregar");
+        Agragar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AgragarMouseClicked(evt);
+            }
+        });
 
-        jButton3.setText("Actualizar");
+        Actualizar.setText("Actualizar");
 
-        jButton4.setText("Eliminar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        Eliminar.setText("Eliminar");
+        Eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                EliminarActionPerformed(evt);
             }
         });
 
@@ -90,11 +97,11 @@ public class Telemercadeo extends javax.swing.JFrame {
                         .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton3)
+                        .addComponent(Actualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)
+                        .addComponent(Eliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(Agragar)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -110,9 +117,9 @@ public class Telemercadeo extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(Agragar)
+                    .addComponent(Actualizar)
+                    .addComponent(Eliminar))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -134,9 +141,14 @@ public class Telemercadeo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+        int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro?");
+    }//GEN-LAST:event_EliminarActionPerformed
+
+    private void AgragarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AgragarMouseClicked
+        ModificarCliente nuevoCliente= new ModificarCliente();
+        nuevoCliente.setVisible(true);
+    }//GEN-LAST:event_AgragarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -174,9 +186,9 @@ public class Telemercadeo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton Actualizar;
+    private javax.swing.JButton Agragar;
+    private javax.swing.JButton Eliminar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
