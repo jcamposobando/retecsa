@@ -12,25 +12,26 @@ import java.sql.*;
  * @author b32973
  */
 public class AdminVendedor {
-    private final String conexion;
+    private final Connection con;
     
-    public AdminVendedor(String conectado){
-        conexion = conectado;
+    public AdminVendedor(Connection con){
+        this.con = con;
     }
     
-    public boolean incertarVendedor(String identificacion, String nombre){
+    public boolean insertarVendedor(String identificacion, String nombre){
         boolean exito = true;
-        Connection con = null;
-        Statement stmt = null;
+        Integer id = Integer.valueOf(identificacion);
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            con = DriverManager.getConnection(conexion); 
-            String SQL = "SELECT NOMBREPRODUCTO,MARCAPRODUCTO,CODIGODEFABRICA,EXISTENCIA,PRECIODEVENTA FROM dbo.PRODUCTO";
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL);
+            stmt = con.prepareStatement("INSERT INTO VENDEDOR VALUES(?,?)");
+            stmt.setInt(1, id);
+            stmt.setString(2,nombre);
+            rs = stmt.executeQuery();
 
-        }catch(Exception e){
+        }catch(SQLException e){
+            System.out.println("Error al insertar");
+            e.printStackTrace();
         }
         return exito;
     }
