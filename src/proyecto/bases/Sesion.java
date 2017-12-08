@@ -108,21 +108,9 @@ public class Sesion extends javax.swing.JFrame {
         String contrasena = String.valueOf(password);
         conexion = "jdbc:sqlserver://172.16.202.39:1433;"
                 + "databaseName=Inventario;user=" + user + ";password=" + contrasena;
-        try{
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        Connection con = DriverManager.getConnection(conexion);
-        Vendedor v = new Vendedor(con);
+        Vendedor v = new Vendedor(conexion);
         this.setVisible(false);
         v.setVisible(true);
-        }
-        catch(ClassNotFoundException  e){
-            System.out.println("No se encontro el driver jdbc");
-            e.printStackTrace();
-        }
-        catch(SQLException  e){
-            System.out.println("Error al conectarse con la base de datos");
-            e.printStackTrace();
-        }
         //this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_jButton1ActionPerformed
 
