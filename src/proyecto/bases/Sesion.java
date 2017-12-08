@@ -5,7 +5,6 @@
  */
 package proyecto.bases;
 
-import java.sql.*;
 /**
  *
  * @author b32973
