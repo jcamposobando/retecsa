@@ -12,10 +12,10 @@ import java.sql.*;
  * @author b32973
  */
 public class AdminVendedor {
-    private final Connection con;
+    private final String conexion;
     
-    public AdminVendedor(Connection con){
-        this.con = con;
+    public AdminVendedor(String conexion){
+        this.conexion = conexion;
     }
     
     public boolean insertarVendedor(String identificacion, String nombre){
@@ -24,11 +24,16 @@ public class AdminVendedor {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection con = DriverManager.getConnection(conexion);
             stmt = con.prepareStatement("INSERT INTO VENDEDOR VALUES(?,?)");
             stmt.setInt(1, id);
             stmt.setString(2,nombre);
             rs = stmt.executeQuery();
 
+        }catch(ClassNotFoundException  e){
+            System.out.println("No se encontro el driver jdbc");
+            e.printStackTrace();
         }catch(SQLException e){
             System.out.println("Error al insertar");
             e.printStackTrace();
