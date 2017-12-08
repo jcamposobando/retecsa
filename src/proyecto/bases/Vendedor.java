@@ -13,15 +13,15 @@ import java.sql.*;
  */
 public class Vendedor extends javax.swing.JFrame {
     
-    private Connection con;
+    private String conexion;
     
     
     /**
      * Creates new form VendedorVenta
-     * @param sesion
+     * @param conexion
      */
-    public Vendedor(Connection con){
-        this.con = con;
+    public Vendedor(String conexion){
+        this.conexion = conexion;
         initComponents();
         getProductList();
     }
@@ -393,8 +393,11 @@ public class Vendedor extends javax.swing.JFrame {
         // Declare the JDBC objects.  
         Statement stmt = null;
         ResultSet rs = null;
+        Connection con = null;
 
         try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            con = DriverManager.getConnection(conexion);
             String SQL = "SELECT * from dbo.vendedor";
             stmt = con.createStatement();
             rs = stmt.executeQuery(SQL);
