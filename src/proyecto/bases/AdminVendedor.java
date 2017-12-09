@@ -18,8 +18,7 @@ public class AdminVendedor {
         this.conexion = conexion;
     }
     
-    public boolean insertarVendedor(String identificacion, String nombre){
-        boolean exito = true;
+    public void insertarVendedor(String identificacion, String nombre){
         Integer id = Integer.valueOf(identificacion);
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -38,6 +37,26 @@ public class AdminVendedor {
             System.out.println("Error al insertar");
             e.printStackTrace();
         }
-        return exito;
+    }
+    
+    public void actualizarVendedor(String identificacion, String nombre){
+        Integer id = Integer.valueOf(identificacion);
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection con = DriverManager.getConnection(conexion);
+            stmt = con.prepareStatement("UPDATE VENDEDOR SET NOMBREVENDEDOR = ? WHERE IDVENDEDOR = ?");
+            stmt.setString(1, nombre);
+            stmt.setInt(2,id);
+            rs = stmt.executeQuery();
+
+        }catch(ClassNotFoundException  e){
+            System.out.println("No se encontro el driver jdbc");
+            e.printStackTrace();
+        }catch(SQLException e){
+            System.out.println("Error al actualizar");
+            e.printStackTrace();
+        }
     }
 }
