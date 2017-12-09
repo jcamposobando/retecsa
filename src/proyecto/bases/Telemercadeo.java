@@ -38,17 +38,16 @@ public class Telemercadeo extends javax.swing.JFrame {
 
     private void deleteClientsFromDatabase() {
         if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar a estos usuarios?") == 0) {
+            int[] selectedClients = tablaClientes.getSelectedRows();
+            String query = "DELETE FROM DBO.CLIENTE WHERE "
+                        + String.join(" OR ", Collections.nCopies(selectedClients.length, " CLIENTE.IDCLIENTE = ?"));
             try {
-                int[] selectedClients = tablaClientes.getSelectedRows();
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                 Connection con = DriverManager.getConnection(this.con);
-                String query = "DELETE FROM DBO.CLIENTE WHERE "
-                        + String.join(" OR ", Collections.nCopies(selectedClients.length, " CLIENTE.IDCLIENTE = ?"));
+                
                 PreparedStatement stmt = con.prepareStatement(query);
-                System.err.println(query);
                 for (int i = 0; i < selectedClients.length; i++) {
                     String str = tablaClientes.getValueAt(selectedClients[i], 0).toString().trim();
-                    System.err.println(str);
                     stmt.setString(i+1, str);
                 };
                 int deletedClients = stmt.executeUpdate();
@@ -71,9 +70,10 @@ public class Telemercadeo extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection(this.con);
             PreparedStatement stmt = con.prepareStatement("SELECT * FROM DBO.CLIENTE");
             ResultSet rs = stmt.executeQuery();
-            tablaClientes.setModel(buildTableModel(rs));
+            tablaClientes.setModel(TablaDatos.buildTableModel(rs));
             stmt.close();
             rs.close();
+            con.close();
         } catch (ClassNotFoundException e) {
             System.err.println("No se encontro el driver jdbc");
             e.printStackTrace();
@@ -81,30 +81,11 @@ public class Telemercadeo extends javax.swing.JFrame {
             System.err.println("Error al insertar");
             e.printStackTrace();
         }
-        actualizar.setEnabled(tablaClientes.getSelectedRowCount() != 0);
+        actualizar.setEnabled(tablaClientes.getSelectedRowCount() == 0);
         eliminar.setEnabled(tablaClientes.getSelectedRowCount() != 0);
     }
 
-    public static DefaultTableModel buildTableModel(ResultSet rs)
-            throws SQLException {
-        ResultSetMetaData metaData = rs.getMetaData();
-        // names of columns
-        Vector<String> columnNames = new Vector<String>();
-        int columnCount = metaData.getColumnCount();
-        for (int column = 1; column <= columnCount; column++) {
-            columnNames.add(metaData.getColumnName(column));
-        }
-        // data of the table
-        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-        while (rs.next()) {
-            Vector<Object> vector = new Vector<Object>();
-            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-                vector.add(rs.getObject(columnIndex));
-            }
-            data.add(vector);
-        }
-        return new DefaultTableModel(data, columnNames);
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -250,7 +231,10 @@ public class Telemercadeo extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarMouseClicked
 
     private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
-        ModificarCliente nuevoCliente = new ModificarCliente();
+        String[] clientData = {tablaClientes.getValueAt(tablaClientes.getSelectedRow(),0).toString(),
+            tablaClientes.getValueAt(tablaClientes.getSelectedRow(),1).toString(),
+            tablaClientes.getValueAt(tablaClientes.getSelectedRow(),2).toString()};
+        ModificarCliente nuevoCliente = new ModificarCliente(clientData);
         nuevoCliente.setVisible(true);
     }//GEN-LAST:event_actualizarActionPerformed
 
