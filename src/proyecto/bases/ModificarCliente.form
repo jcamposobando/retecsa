@@ -33,35 +33,33 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="Regresar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="verContacto" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="modificar" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="labelIdentificacion" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelPrioridad" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="labe1" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="fieldNombre1" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="labelIdentificacion" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="labelPrioridad" alignment="1" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="fieldIdentificacion" alignment="0" pref="202" max="32767" attributes="0"/>
-                                  <Component id="fieldPrioridad" alignment="0" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="fieldIdentificacion" min="-2" pref="202" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="Regresar" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="verContacto" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="27" max="32767" attributes="0"/>
-                              <Component id="modificar" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="fieldPrioridad" min="-2" pref="202" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="labe1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="fieldNombre1" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -81,7 +79,7 @@
                   <Component id="labelPrioridad" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="fieldPrioridad" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="fieldNombre1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="labe1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -92,7 +90,7 @@
                   <Component id="Regresar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="verContacto" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="14" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

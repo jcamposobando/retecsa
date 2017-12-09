@@ -6,6 +6,8 @@
 package proyecto.bases;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
 
 /**
  *
@@ -14,32 +16,48 @@ import java.util.Collections;
 public class ModificarCliente extends javax.swing.JFrame {
 
     final Runnable functionOnClose;
+    final boolean type;
+    final String con;
+    final String originalKey; 
 
     /**
      * Creates new form ModificarCliente
      */
-    public ModificarCliente(String[] TextFieldValues, Runnable functionOnClose) {
+    public ModificarCliente(String[] TextFieldValues, Runnable functionOnClose, boolean type, String con) {
         this.functionOnClose = functionOnClose;
+        this.type = type;
+        this.con = con;
+        this.originalKey = TextFieldValues[0];
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        fieldNombre.setText(TextFieldValues[2]);
-        fieldIdentificacion.setText(TextFieldValues[0]);
-        fieldPrioridad.setText(TextFieldValues[1]);
+        if (type) {
+            modificar.setText("Agregar");
+        } else {
+            modificar.setText("Modificar");
+            fieldNombre1.setText(TextFieldValues[2]);
+            fieldIdentificacion.setText(TextFieldValues[0]);
+            fieldPrioridad.setText(TextFieldValues[1]);
+        }
     }
 
-    public ModificarCliente(String[] TextFieldValues) {
-        this(TextFieldValues, null);
+    public ModificarCliente(Runnable functionOnClose, boolean type, String con) {
+        this(Collections.nCopies(3, "").toArray(new String[3]), functionOnClose, type, con);
     }
 
-    public ModificarCliente() {
-        this(Collections.nCopies(7, "").toArray(new String[7]), null);
+    public ModificarCliente(String[] TextFieldValues, boolean type, String con) {
+        this(TextFieldValues, null, type, con);
+    }
+
+    public ModificarCliente(boolean type, String con) {
+        this(Collections.nCopies(3, "").toArray(new String[7]), null, type, con);
     }
 
     private void returnToParent() {
         try {
             functionOnClose.run();
-        } catch (Exception ex) {
+        } catch (Exception e) {
             System.err.print("Error al retornar al padre");
+            e.printStackTrace();
         }
         this.dispose();
     }
@@ -102,29 +120,28 @@ public class ModificarCliente extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(Regresar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(verContacto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(modificar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelIdentificacion, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(labelPrioridad, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(fieldIdentificacion, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
-                                    .addComponent(fieldPrioridad)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(Regresar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(verContacto)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                                .addComponent(modificar))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(labe1)
+                            .addComponent(labelIdentificacion, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelPrioridad, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labe1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fieldNombre1)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fieldNombre1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(fieldIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(fieldPrioridad, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -138,7 +155,7 @@ public class ModificarCliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelPrioridad)
                     .addComponent(fieldPrioridad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fieldNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labe1))
@@ -147,13 +164,26 @@ public class ModificarCliente extends javax.swing.JFrame {
                     .addComponent(modificar)
                     .addComponent(Regresar)
                     .addComponent(verContacto))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+        
+        if (type) {
+            Object[] parameters = {fieldIdentificacion.getText().trim(),
+            Integer.parseInt(fieldPrioridad.getText().trim()),
+            fieldNombre1.getText().trim()};
+            TablaDatos.executeUpdate(con, "Insert into dbo.cliente values (?,?,?)", parameters);
+        } else {
+            Object[] parameters = {fieldIdentificacion.getText().trim(),
+            Integer.parseInt(fieldPrioridad.getText().trim()),
+            fieldNombre1.getText().trim(),
+            originalKey};
+            TablaDatos.executeUpdate(con, "Update DBO.Cliente set IDCLIENTE = ?, PRIORIDADCLIENTE = ?, NOMBRECLIENTE = ? WHERE IDCLIENTE = ?", parameters);
+        }
         returnToParent();
     }//GEN-LAST:event_modificarActionPerformed
 
