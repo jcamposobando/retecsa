@@ -12,8 +12,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Vector;
+import java.util.concurrent.Callable;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -38,54 +40,24 @@ public class Telemercadeo extends javax.swing.JFrame {
 
     private void deleteClientsFromDatabase() {
         if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar a estos usuarios?") == 0) {
-            int[] selectedClients = tablaClientes.getSelectedRows();
+            Integer[] selectedClients = Arrays.stream(tablaClientes.getSelectedRows()).boxed().toArray(Integer[]::new);
             String query = "DELETE FROM DBO.CLIENTE WHERE "
-                        + String.join(" OR ", Collections.nCopies(selectedClients.length, " CLIENTE.IDCLIENTE = ?"));
-            try {
-                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                Connection con = DriverManager.getConnection(this.con);
-                
-                PreparedStatement stmt = con.prepareStatement(query);
-                for (int i = 0; i < selectedClients.length; i++) {
-                    String str = tablaClientes.getValueAt(selectedClients[i], 0).toString().trim();
-                    stmt.setString(i+1, str);
-                };
-                int deletedClients = stmt.executeUpdate();
-
-                JOptionPane.showMessageDialog(null, "Se eliminaron exitosamente " + deletedClients + " clientes.");
-                loadClientList();
-            } catch (ClassNotFoundException e) {
-                System.err.println("No se encontro el driver jdbc");
-                e.printStackTrace();
-            } catch (SQLException e) {
-                System.err.println("Error al insertar");
-                e.printStackTrace();
-            }
+                    + String.join(" OR ", Collections.nCopies(selectedClients.length, " CLIENTE.IDCLIENTE = ?"));
+            Object[] parameters = (Arrays.asList(selectedClients)).stream().map(e -> tablaClientes.getValueAt(e, 0)).toArray();
+            int n = TablaDatos.executeUpdate(con, query, parameters);
+            JOptionPane.showMessageDialog(null, "Se eliminaron exitosamente " + n + " clientes.");
+            loadClientList();
         }
     }
 
     private void loadClientList() {
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection con = DriverManager.getConnection(this.con);
-            PreparedStatement stmt = con.prepareStatement("SELECT * FROM DBO.CLIENTE");
-            ResultSet rs = stmt.executeQuery();
-            tablaClientes.setModel(TablaDatos.buildTableModel(rs));
-            stmt.close();
-            rs.close();
-            con.close();
-        } catch (ClassNotFoundException e) {
-            System.err.println("No se encontro el driver jdbc");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.err.println("Error al insertar");
-            e.printStackTrace();
-        }
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.CLIENTE", new Object[0]);
+        try{
+        tablaClientes.setModel(TablaDatos.buildTableModel(rs));
+        }catch(Exception e){};
         actualizar.setEnabled(tablaClientes.getSelectedRowCount() == 0);
         eliminar.setEnabled(tablaClientes.getSelectedRowCount() != 0);
     }
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -231,13 +203,14 @@ public class Telemercadeo extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarMouseClicked
 
     private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
-        String[] clientData = {tablaClientes.getValueAt(tablaClientes.getSelectedRow(),0).toString(),
-            tablaClientes.getValueAt(tablaClientes.getSelectedRow(),1).toString(),
-            tablaClientes.getValueAt(tablaClientes.getSelectedRow(),2).toString()};
-        ModificarCliente nuevoCliente = new ModificarCliente(clientData);
+        String[] clientData = {tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString(),
+            tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 1).toString(),
+            tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2).toString()};
+        ModificarCliente nuevoCliente = new ModificarCliente(clientData, ()->{loadClientList();});
         nuevoCliente.setVisible(true);
     }//GEN-LAST:event_actualizarActionPerformed
 
+    
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
         actualizar.setEnabled(tablaClientes.getSelectedRowCount() != 0);
         eliminar.setEnabled(tablaClientes.getSelectedRowCount() != 0);
