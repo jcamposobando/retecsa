@@ -6,22 +6,27 @@
 package proyecto.bases;
 
 import java.sql.*;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.*;
 /**
  *
  * @author b22539
  */
 public class Vendedor extends javax.swing.JFrame {
     
-    private String conexion;
-    
-    
+    final String con;
+   
+    private String idCliente;
+    private String idVend;
+    private ArrayList<String> listaProductos;
     /**
      * Creates new form VendedorVenta
      * @param conexion
      */
-    public Vendedor(String conexion){
-        this.conexion = conexion;
+    public Vendedor(String con){
+        this.con = con;
         initComponents();
         getProductList();
     }
@@ -388,55 +393,175 @@ public class Vendedor extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField14ActionPerformed
 
-    private void getProductList(){
-        // Create a variable for the connection string.  
-        // Declare the JDBC objects.  
-        Statement stmt = null;
+        public boolean cotizacion(String producto, String marca, String cantidad){
+        boolean exito = true;
+        Integer cant = Integer.valueOf(cantidad);
+        PreparedStatement stmt = null;
         ResultSet rs = null;
-        Connection con = null;
-
-        try {
+        try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            con = DriverManager.getConnection(conexion);
-            String SQL = "SELECT * from dbo.vendedor";
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
-            while (rs.next()) {
-            for (int i = 1; i <= columnsNumber; i++) {
-                if (i > 1) System.out.print(",  ");
-                String columnValue = rs.getString(i);
-                System.out.print(columnValue + " " + rsmd.getColumnName(i));
-            }
-            System.out.println("");
-            }
-        } // Handle any errors that may have occurred.
-        
-        
-        
-        catch (Exception e) {
+            Connection con = DriverManager.getConnection(this.con);
+            stmt = con.prepareStatement("SELECT NOMBREPRODUCTO,MARCAPRODUCTO FROM DBO.PRODCUTO WHERE NOMBREPRODUCTO LIKE ? AND MARCAPRODUCTO LIKE ?");
+            stmt.setString(1,producto);
+            stmt.setString(2,marca);
+            rs = stmt.executeQuery();
+ 
+            listaProductos.add(producto + "," + marca + "," + cantidad);
+        } catch (ClassNotFoundException e) {
+                System.err.println("No se encontro el driver jdbc");
+                e.printStackTrace();
+        }catch(SQLException e){
+            System.err.println("Error al buscar");
             e.printStackTrace();
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
+        }
+        return exito;
+    }
+    
+    public boolean ingresarCliente(String tipo, String nombre, String identificacion, String correo, String telefono, String empleado, String funcion){
+        boolean exito = true;
+        idCliente = identificacion;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection con = DriverManager.getConnection(this.con);
+            stmt = con.prepareStatement("SELECT IDCLIENDTE FROM DBO.CLIENTE WHERE IDCLIENTE LIKE ?");
+            stmt.setString(1,identificacion);
+            rs = stmt.executeQuery();
+        } catch (ClassNotFoundException e) {
+                System.err.println("No se encontro el driver jdbc");
+                e.printStackTrace();
+        }catch(SQLException e){
+            stmt = null;
+            rs = null;
+            try{
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                Connection con = DriverManager.getConnection(this.con);
+                stmt = con.prepareStatement("INSERT INTO DBO.CLIENTE VALUES(?,?,?)");
+                stmt.setString(1,tipo);
+                stmt.setInt(2,3);
+                stmt.setString(3,nombre);
+                rs = stmt.executeQuery();
+            } catch (ClassNotFoundException er) {
+                System.err.println("No se encontro el driver jdbc");
+                er.printStackTrace();
+            }catch(SQLException er){
+                System.err.println("Error al insertar");
+                er.printStackTrace();
+            }
+            if(tipo.toUpperCase().equals("empleado".toUpperCase())){
+                try{
+                    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                    Connection con = DriverManager.getConnection(this.con);
+                    stmt = con.prepareStatement("INSERT INTO DBO.EMPLEADO VALUES(?,?,?,?,?)");
+                    stmt.setString(1,identificacion);
+                    stmt.setString(2,correo);
+                    stmt.setString(3,empleado);
+                    stmt.setString(4,funcion);
+                    stmt.setString(5,telefono);
+                    rs = stmt.executeQuery();
+                } catch (ClassNotFoundException er) {
+                    System.err.println("No se encontro el driver jdbc");
+                    er.printStackTrace();
+                }catch(SQLException error){
+                    System.err.println("Error al insertar");
+                    error.printStackTrace();
                 }
             }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (Exception e) {
-                }
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
+            else if(tipo.toUpperCase().equals("particular".toUpperCase())){
+                try{
+                    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                    Connection con = DriverManager.getConnection(this.con);
+                    stmt = con.prepareStatement("INSERT INTO DBO.PARTICULR VALUES(?,?,?,?,?,?,?)");
+                    stmt.setString(1,identificacion);
+                    stmt.setString(2,correo);
+                    stmt.setString(3,telefono);
+                    rs = stmt.executeQuery();
+                } catch (ClassNotFoundException er) {
+                    System.err.println("No se encontro el driver jdbc");
+                    er.printStackTrace();
+                }catch(SQLException error){
+                    System.err.println("Error al insertar");
+                    error.printStackTrace();
                 }
             }
         }
+        return exito;
+    }
+    
+    public boolean venta(String fecha, String monto, String formaPago) throws ParseException{
+        boolean exito = true;
+        //Integer cant = Integer.valueOf(cantidad);
+        
+        SimpleDateFormat formato=new SimpleDateFormat("yyyy/MM/dd");
+        Date jFecha=formato.parse(fecha); 
+        java.sql.Date sqlFecha = new java.sql.Date(jFecha.getTime());
+        
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection con = DriverManager.getConnection(this.con);
+            stmt = con.prepareStatement("INSERT INTO DBO.VENTA VALUES(?,?,?,?,?,?,?)");
+            stmt.setString(1,idVend);
+            stmt.setInt(2,444444444);                           //Cambiar por numero de venta
+            stmt.setString(3,idCliente);
+            stmt.setString(4,formaPago);
+            stmt.setDate(5,sqlFecha);
+            stmt.setInt(6,0);
+            stmt.setInt(7,0);
+            rs = stmt.executeQuery();
+       } catch (ClassNotFoundException e) {
+                    System.err.println("No se encontro el driver jdbc");
+                    e.printStackTrace();
+        }catch(SQLException e){
+            System.err.println("Error al insertar");
+            e.printStackTrace();
+        }
+        
+        stmt = null;
+        rs = null;
+        String datos;
+        Integer cant = 0;
+        String producto = "";
+        String marca = "";
+        for(int i = 0; i<listaProductos.size();i++){
+            
+        }
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection con = DriverManager.getConnection(this.con);
+            String query = "INSERT INTO DBO.SEVENDE VALUES "
+            + String.join(",", Collections.nCopies(listaProductos.size(), "(?,?,?,?,?)"));
+            stmt = con.prepareStatement(query);
+            System.err.println(query);
+            for (int i = 0; i < listaProductos.size(); i++) {
+                datos = listaProductos.get(i);
+                String[] dat = datos.split("\\s*,\\s*");
+                producto = dat[0];
+                marca = dat[1];
+                cant = Integer.valueOf(dat[2]);
+                    
+                stmt.setString(i+1,producto);
+                stmt.setString(i+2,marca);
+                stmt.setInt(i+3,444444444);                       //Cambiar por numero de venta
+                stmt.setString(i+4,idVend);
+                stmt.setInt(i+5,cant);
+             }
+             rs = stmt.executeQuery();
+        } catch (ClassNotFoundException e) {
+            System.err.println("No se encontro el driver jdbc");
+            e.printStackTrace();
+        }catch(SQLException e){
+            System.out.println("Error al insertar");
+            e.printStackTrace();
+        }
+        return exito;
+    }
+    
+    private ArrayList<String> getProductList(){
+        return listaProductos;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
