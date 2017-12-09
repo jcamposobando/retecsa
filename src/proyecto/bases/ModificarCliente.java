@@ -13,19 +13,35 @@ import java.util.Collections;
  */
 public class ModificarCliente extends javax.swing.JFrame {
 
+    final Runnable functionOnClose;
+
     /**
      * Creates new form ModificarCliente
      */
-    public ModificarCliente(String[] TextFieldValues) {
+    public ModificarCliente(String[] TextFieldValues, Runnable functionOnClose) {
+        this.functionOnClose = functionOnClose;
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         fieldNombre.setText(TextFieldValues[2]);
         fieldIdentificacion.setText(TextFieldValues[0]);
         fieldPrioridad.setText(TextFieldValues[1]);
     }
-    
+
+    public ModificarCliente(String[] TextFieldValues) {
+        this(TextFieldValues, null);
+    }
+
     public ModificarCliente() {
-        this(Collections.nCopies(7,"").toArray(new String[7]));
+        this(Collections.nCopies(7, "").toArray(new String[7]), null);
+    }
+
+    private void returnToParent() {
+        try {
+            functionOnClose.run();
+        } catch (Exception ex) {
+            System.err.print("Error al retornar al padre");
+        }
+        this.dispose();
     }
 
     /**
@@ -45,7 +61,7 @@ public class ModificarCliente extends javax.swing.JFrame {
         labelIdentificacion = new javax.swing.JLabel();
         labelPrioridad = new javax.swing.JLabel();
         Regresar = new javax.swing.JButton();
-        Regresar1 = new javax.swing.JButton();
+        verContacto = new javax.swing.JButton();
         labe1 = new javax.swing.JLabel();
         fieldNombre1 = new javax.swing.JTextField();
 
@@ -71,11 +87,11 @@ public class ModificarCliente extends javax.swing.JFrame {
             }
         });
 
-        Regresar1.setText("Ver contacto");
-        Regresar1.setActionCommand("verContacto");
-        Regresar1.addActionListener(new java.awt.event.ActionListener() {
+        verContacto.setText("Ver contacto");
+        verContacto.setActionCommand("verContacto");
+        verContacto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Regresar1ActionPerformed(evt);
+                verContactoActionPerformed(evt);
             }
         });
 
@@ -101,7 +117,7 @@ public class ModificarCliente extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(Regresar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Regresar1)
+                                .addComponent(verContacto)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                                 .addComponent(modificar))))
                     .addGroup(layout.createSequentialGroup()
@@ -130,7 +146,7 @@ public class ModificarCliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(modificar)
                     .addComponent(Regresar)
-                    .addComponent(Regresar1))
+                    .addComponent(verContacto))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -138,21 +154,19 @@ public class ModificarCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
-        // TODO add your handling code here:
+        returnToParent();
     }//GEN-LAST:event_modificarActionPerformed
 
     private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed
-        this.dispose();
+        returnToParent();
     }//GEN-LAST:event_RegresarActionPerformed
 
-    private void Regresar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Regresar1ActionPerformed
-        
-    }//GEN-LAST:event_Regresar1ActionPerformed
+    private void verContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verContactoActionPerformed
+    }//GEN-LAST:event_verContactoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Regresar;
-    private javax.swing.JButton Regresar1;
     private javax.swing.JTextField fieldIdentificacion;
     private javax.swing.JTextField fieldNombre;
     private javax.swing.JTextField fieldNombre1;
@@ -162,5 +176,6 @@ public class ModificarCliente extends javax.swing.JFrame {
     private javax.swing.JLabel labelIdentificacion;
     private javax.swing.JLabel labelPrioridad;
     private javax.swing.JButton modificar;
+    private javax.swing.JButton verContacto;
     // End of variables declaration//GEN-END:variables
 }
