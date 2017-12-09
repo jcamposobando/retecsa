@@ -55,7 +55,7 @@ public class AdminVendedor {
             System.out.println("No se encontro el driver jdbc");
             e.printStackTrace();
         }catch(SQLException e){
-            System.out.println("Error al insertar");
+            System.out.println("Error al actualizar");
             e.printStackTrace();
         }
     }
