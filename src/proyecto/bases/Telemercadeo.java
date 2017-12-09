@@ -45,9 +45,9 @@ public class Telemercadeo extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox<>();
         jComboBox3 = new javax.swing.JComboBox<>();
         jComboBox4 = new javax.swing.JComboBox<>();
-        Agragar = new javax.swing.JButton();
-        Actualizar = new javax.swing.JButton();
-        Eliminar = new javax.swing.JButton();
+        agregar = new javax.swing.JButton();
+        actualizar = new javax.swing.JButton();
+        eliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,6 +62,11 @@ public class Telemercadeo extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaClientes);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -72,19 +77,26 @@ public class Telemercadeo extends javax.swing.JFrame {
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        Agragar.setText("Agregar");
-        Agragar.addMouseListener(new java.awt.event.MouseAdapter() {
+        agregar.setText("Agregar");
+        agregar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AgragarMouseClicked(evt);
+                agregarMouseClicked(evt);
             }
         });
 
-        Actualizar.setText("Actualizar");
-
-        Eliminar.setText("Eliminar");
-        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+        actualizar.setText("Actualizar");
+        actualizar.setEnabled(false);
+        actualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EliminarActionPerformed(evt);
+                actualizarActionPerformed(evt);
+            }
+        });
+
+        eliminar.setText("Eliminar");
+        eliminar.setEnabled(false);
+        eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarActionPerformed(evt);
             }
         });
 
@@ -106,11 +118,11 @@ public class Telemercadeo extends javax.swing.JFrame {
                         .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(Actualizar)
+                        .addComponent(actualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Eliminar)
+                        .addComponent(eliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Agragar)))
+                        .addComponent(agregar)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -126,9 +138,9 @@ public class Telemercadeo extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Agragar)
-                    .addComponent(Actualizar)
-                    .addComponent(Eliminar))
+                    .addComponent(agregar)
+                    .addComponent(actualizar)
+                    .addComponent(eliminar))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -150,10 +162,9 @@ public class Telemercadeo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
         deleteClientsFromDatabase();
-    }//GEN-LAST:event_EliminarActionPerformed
-    
+    }//GEN-LAST:event_eliminarActionPerformed
     
     private void deleteClientsFromDatabase(){
         if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar a estos usuarios?") == 1) {
@@ -167,7 +178,7 @@ public class Telemercadeo extends javax.swing.JFrame {
                     stmt.setString(i, (String) tablaClientes.getValueAt(selectedClients[i], 0));
                 };
                 int deletedClients = stmt.executeUpdate();
-                JOptionPane.showMessageDialog(this, "Se eliminaron exitosamente " + deletedClients+" clientes.");
+                JOptionPane.showMessageDialog(this, "Se eliminaron exitosamente " + deletedClients + " clientes.");
             } catch (ClassNotFoundException e) {
                 System.out.println("No se encontro el driver jdbc");
                 e.printStackTrace();
@@ -177,10 +188,21 @@ public class Telemercadeo extends javax.swing.JFrame {
             }
         }
     }
-    private void AgragarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AgragarMouseClicked
+    
+    private void agregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregarMouseClicked
         ModificarCliente nuevoCliente= new ModificarCliente();
         nuevoCliente.setVisible(true);
-    }//GEN-LAST:event_AgragarMouseClicked
+    }//GEN-LAST:event_agregarMouseClicked
+
+    private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
+        ModificarCliente nuevoCliente= new ModificarCliente();
+        nuevoCliente.setVisible(true);
+    }//GEN-LAST:event_actualizarActionPerformed
+
+    private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
+        actualizar.setEnabled(tablaClientes.getSelectedRowCount()!=0);
+        eliminar.setEnabled(tablaClientes.getSelectedRowCount()!=0);
+    }//GEN-LAST:event_tablaClientesMouseClicked
 
     /**
      * @param args the command line arguments
@@ -219,9 +241,9 @@ public class Telemercadeo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Actualizar;
-    private javax.swing.JButton Agragar;
-    private javax.swing.JButton Eliminar;
+    private javax.swing.JButton actualizar;
+    private javax.swing.JButton agregar;
+    private javax.swing.JButton eliminar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
