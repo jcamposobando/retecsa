@@ -5,6 +5,13 @@
  */
 package proyecto.bases;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Collections;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,11 +19,13 @@ import javax.swing.JOptionPane;
  * @author b22539
  */
 public class Telemercadeo extends javax.swing.JFrame {
+    final String con;
 
     /**
      * Creates new form Telemercadeo
      */
-    public Telemercadeo() {
+    public Telemercadeo(String con) {
+        this.con = con;
         initComponents();
     }
 
@@ -31,7 +40,7 @@ public class Telemercadeo extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaClientes = new javax.swing.JTable();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
         jComboBox3 = new javax.swing.JComboBox<>();
@@ -42,7 +51,7 @@ public class Telemercadeo extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -53,7 +62,7 @@ public class Telemercadeo extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaClientes);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -142,9 +151,32 @@ public class Telemercadeo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
-        int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro?");
+        deleteClientsFromDatabase();
     }//GEN-LAST:event_EliminarActionPerformed
-
+    
+    
+    private void deleteClientsFromDatabase(){
+        if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar a estos usuarios?") == 1) {
+            try {
+                int[] selectedClients = tablaClientes.getSelectedRows();
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                Connection con = DriverManager.getConnection(this.con);
+                PreparedStatement stmt = con.prepareStatement("DELETE FROM DBO.CLIENTE WHERE CLIENTE.IDCLIENTE IN "
+                        +String.join("", Collections.nCopies(selectedClients.length, "?")));
+                for(int i = 0; i < selectedClients.length; i++){
+                    stmt.setString(i, (String) tablaClientes.getValueAt(selectedClients[i], 0));
+                };
+                int deletedClients = stmt.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Se eliminaron exitosamente " + deletedClients+" clientes.");
+            } catch (ClassNotFoundException e) {
+                System.out.println("No se encontro el driver jdbc");
+                e.printStackTrace();
+            } catch (SQLException e) {
+                System.out.println("Error al insertar");
+                e.printStackTrace();
+            }
+        }
+    }
     private void AgragarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AgragarMouseClicked
         ModificarCliente nuevoCliente= new ModificarCliente();
         nuevoCliente.setVisible(true);
@@ -180,7 +212,8 @@ public class Telemercadeo extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Telemercadeo().setVisible(true);
+                new Telemercadeo("jdbc:sqlserver://172.16.202.39:1433;"
+                + "databaseName=Inventario;user=admin;password=123456").setVisible(true);
             }
         });
     }
@@ -195,6 +228,6 @@ public class Telemercadeo extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaClientes;
     // End of variables declaration//GEN-END:variables
 }
