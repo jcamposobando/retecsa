@@ -5,17 +5,33 @@
  */
 package proyecto.bases;
 
+import java.sql.*;
+import javax.swing.*;
+
 /**
  *
  * @author b22539
  */
 public class Administrador extends javax.swing.JFrame {
+    private Object[][] tuplaCliente = new Object[0][0];
+    private Object[][] tuplaProducto = new Object[0][0];
+    private Object[][] tuplaVendedor = new Object[0][0];
+    private Object[][] tuplaVenta = new Object[0][0];
+    private Object[][] tuplaProveedor = new Object[0][0];
+    private String conexion;
+    private int filasCliente;
+    private int filasProducto;
+    private int filasVendedor;
+    private int filasVenta;
+    private int filasProveedor;
 
     /**
      * Creates new form NewJFrame
      */
-    public Administrador() {
+    public Administrador(String conexion) {
+        this.conexion = conexion;
         initComponents();
+        cargar(tablaProveedor, "PROVEEDOR");
     }
 
     /**
@@ -41,48 +57,47 @@ public class Administrador extends javax.swing.JFrame {
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton21 = new javax.swing.JButton();
-        jTextField8 = new javax.swing.JTextField();
+        tablaCliente = new javax.swing.JTable();
+        agregarCliente = new javax.swing.JButton();
+        actualizarCliente = new javax.swing.JButton();
+        eliminarCliente = new javax.swing.JButton();
+        buscarCliente = new javax.swing.JButton();
+        consultaCliente = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton22 = new javax.swing.JButton();
-        jTextField9 = new javax.swing.JTextField();
+        tablaProducto = new javax.swing.JTable();
+        agregarProducto = new javax.swing.JButton();
+        actualizarProducto = new javax.swing.JButton();
+        eliminarProducto = new javax.swing.JButton();
+        buscarProducto = new javax.swing.JButton();
+        consultaProducto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
-        jButton23 = new javax.swing.JButton();
-        jTextField10 = new javax.swing.JTextField();
+        tablaVendedor = new javax.swing.JTable();
+        agregarVendedor = new javax.swing.JButton();
+        actualizarVendedor = new javax.swing.JButton();
+        buscarVendedor = new javax.swing.JButton();
+        consultaVendedor = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
-        jButton14 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
-        jButton24 = new javax.swing.JButton();
-        jTextField11 = new javax.swing.JTextField();
+        tablaVenta = new javax.swing.JTable();
+        agregarVenta = new javax.swing.JButton();
+        actualizarVenta = new javax.swing.JButton();
+        eliminarVenta = new javax.swing.JButton();
+        buscarVenta = new javax.swing.JButton();
+        consultaVenta = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable6 = new javax.swing.JTable();
-        jButton17 = new javax.swing.JButton();
-        jButton18 = new javax.swing.JButton();
-        jButton19 = new javax.swing.JButton();
-        jButton20 = new javax.swing.JButton();
-        jTextField7 = new javax.swing.JTextField();
+        tablaProveedor = new javax.swing.JTable();
+        agregarProveedor = new javax.swing.JButton();
+        actualizarProveedor = new javax.swing.JButton();
+        eliminarProveedor = new javax.swing.JButton();
+        buscarProveedor = new javax.swing.JButton();
+        consultaProveedor = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
@@ -163,7 +178,7 @@ public class Administrador extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -174,24 +189,29 @@ public class Administrador extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tablaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaClienteMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaCliente);
 
-        jButton1.setText("Agregar");
+        agregarCliente.setText("Agregar");
 
-        jButton3.setText("Actualizar");
+        actualizarCliente.setText("Actualizar");
 
-        jButton4.setText("Eliminar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        eliminarCliente.setText("Eliminar");
+        eliminarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                eliminarClienteActionPerformed(evt);
             }
         });
 
-        jButton21.setText("Buscar");
+        buscarCliente.setText("Buscar");
 
-        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+        consultaCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField8ActionPerformed(evt);
+                consultaClienteActionPerformed(evt);
             }
         });
 
@@ -207,39 +227,39 @@ public class Administrador extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jButton3)
+                            .addComponent(actualizarCliente)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton4)
+                            .addComponent(eliminarCliente)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1)))
+                            .addComponent(agregarCliente)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(consultaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton21)))
+                        .addComponent(buscarCliente)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(consultaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jButton21))
+                    .addComponent(buscarCliente))
                 .addGap(14, 14, 14)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(agregarCliente)
+                    .addComponent(actualizarCliente)
+                    .addComponent(eliminarCliente))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Clientes", jPanel3);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProducto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -250,24 +270,29 @@ public class Administrador extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        tablaProducto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaProductoMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaProducto);
 
-        jButton5.setText("Agregar");
+        agregarProducto.setText("Agregar");
 
-        jButton6.setText("Actualizar");
+        actualizarProducto.setText("Actualizar");
 
-        jButton7.setText("Eliminar");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        eliminarProducto.setText("Eliminar");
+        eliminarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                eliminarProductoActionPerformed(evt);
             }
         });
 
-        jButton22.setText("Buscar");
+        buscarProducto.setText("Buscar");
 
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+        consultaProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
+                consultaProductoActionPerformed(evt);
             }
         });
 
@@ -283,39 +308,39 @@ public class Administrador extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jButton6)
+                            .addComponent(actualizarProducto)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton7)
+                            .addComponent(eliminarProducto)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5)))
+                            .addComponent(agregarProducto)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(consultaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton22)))
+                        .addComponent(buscarProducto)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(consultaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jButton22))
+                    .addComponent(buscarProducto))
                 .addGap(14, 14, 14)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7))
+                    .addComponent(agregarProducto)
+                    .addComponent(actualizarProducto)
+                    .addComponent(eliminarProducto))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Productos", jPanel4);
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVendedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -326,24 +351,22 @@ public class Administrador extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane4.setViewportView(jTable4);
-
-        jButton11.setText("Agregar");
-
-        jButton12.setText("Actualizar");
-
-        jButton13.setText("Eliminar");
-        jButton13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton13ActionPerformed(evt);
+        tablaVendedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaVendedorMouseClicked(evt);
             }
         });
+        jScrollPane4.setViewportView(tablaVendedor);
 
-        jButton23.setText("Buscar");
+        agregarVendedor.setText("Agregar");
 
-        jTextField10.addActionListener(new java.awt.event.ActionListener() {
+        actualizarVendedor.setText("Actualizar");
+
+        buscarVendedor.setText("Buscar");
+
+        consultaVendedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField10ActionPerformed(evt);
+                consultaVendedorActionPerformed(evt);
             }
         });
 
@@ -359,39 +382,36 @@ public class Administrador extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(jButton12)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton13)
+                            .addComponent(actualizarVendedor)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton11)))
+                            .addComponent(agregarVendedor)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(consultaVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton23)))
+                        .addComponent(buscarVendedor)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(consultaVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jButton23))
+                    .addComponent(buscarVendedor))
                 .addGap(14, 14, 14)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton11)
-                    .addComponent(jButton12)
-                    .addComponent(jButton13))
+                    .addComponent(agregarVendedor)
+                    .addComponent(actualizarVendedor))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Vendedor", jPanel6);
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVenta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -402,24 +422,29 @@ public class Administrador extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane5.setViewportView(jTable5);
+        tablaVenta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaVentaMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(tablaVenta);
 
-        jButton14.setText("Agregar");
+        agregarVenta.setText("Agregar");
 
-        jButton15.setText("Actualizar");
+        actualizarVenta.setText("Actualizar");
 
-        jButton16.setText("Eliminar");
-        jButton16.addActionListener(new java.awt.event.ActionListener() {
+        eliminarVenta.setText("Eliminar");
+        eliminarVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton16ActionPerformed(evt);
+                eliminarVentaActionPerformed(evt);
             }
         });
 
-        jButton24.setText("Buscar");
+        buscarVenta.setText("Buscar");
 
-        jTextField11.addActionListener(new java.awt.event.ActionListener() {
+        consultaVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField11ActionPerformed(evt);
+                consultaVentaActionPerformed(evt);
             }
         });
 
@@ -435,39 +460,39 @@ public class Administrador extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addComponent(jButton15)
+                            .addComponent(actualizarVenta)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton16)
+                            .addComponent(eliminarVenta)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton14)))
+                            .addComponent(agregarVenta)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(consultaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton24)))
+                        .addComponent(buscarVenta)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(consultaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(jButton24))
+                    .addComponent(buscarVenta))
                 .addGap(14, 14, 14)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton14)
-                    .addComponent(jButton15)
-                    .addComponent(jButton16))
+                    .addComponent(agregarVenta)
+                    .addComponent(actualizarVenta)
+                    .addComponent(eliminarVenta))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Venta", jPanel7);
 
-        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProveedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -478,24 +503,42 @@ public class Administrador extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane6.setViewportView(jTable6);
+        tablaProveedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaProveedorMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaProveedorMouseReleased(evt);
+            }
+        });
+        jScrollPane6.setViewportView(tablaProveedor);
 
-        jButton17.setText("Agregar");
-
-        jButton18.setText("Actualizar");
-
-        jButton19.setText("Eliminar");
-        jButton19.addActionListener(new java.awt.event.ActionListener() {
+        agregarProveedor.setText("Agregar");
+        agregarProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton19ActionPerformed(evt);
+                agregarProveedorActionPerformed(evt);
             }
         });
 
-        jButton20.setText("Buscar");
-
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+        actualizarProveedor.setText("Actualizar");
+        actualizarProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
+                actualizarProveedorActionPerformed(evt);
+            }
+        });
+
+        eliminarProveedor.setText("Eliminar");
+        eliminarProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarProveedorActionPerformed(evt);
+            }
+        });
+
+        buscarProveedor.setText("Buscar");
+
+        consultaProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consultaProveedorActionPerformed(evt);
             }
         });
 
@@ -511,33 +554,33 @@ public class Administrador extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel8Layout.createSequentialGroup()
-                            .addComponent(jButton18)
+                            .addComponent(actualizarProveedor)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton19)
+                            .addComponent(eliminarProveedor)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton17)))
+                            .addComponent(agregarProveedor)))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(consultaProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton20)))
+                        .addComponent(buscarProveedor)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(consultaProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton20))
+                    .addComponent(buscarProveedor))
                 .addGap(14, 14, 14)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton17)
-                    .addComponent(jButton18)
-                    .addComponent(jButton19))
+                    .addComponent(agregarProveedor)
+                    .addComponent(actualizarProveedor)
+                    .addComponent(eliminarProveedor))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -567,68 +610,146 @@ public class Administrador extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton10ActionPerformed
 
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+    private void eliminarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarVentaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton16ActionPerformed
+    }//GEN-LAST:event_eliminarVentaActionPerformed
 
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+    private void eliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarProductoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton13ActionPerformed
+    }//GEN-LAST:event_eliminarProductoActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void eliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_eliminarClienteActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void eliminarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarProveedorActionPerformed
+        for(int i = 0; i < tuplaProveedor.length; i++){
+            String query = "DELETE FROM PROVEEDOR WHERE NOMBREPROVEEDOR = ? AND TELEFONOPROVEEDOR = ? AND CORREOPROVEEDOR = ?";
+            TablaDatos.executeUpdate(conexion, query, tuplaProveedor[i]);
+        }
+        cargar(tablaProveedor, "PROVEEDOR");
+    }//GEN-LAST:event_eliminarProveedorActionPerformed
+
+    private void consultaProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaProveedorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_consultaProveedorActionPerformed
 
-    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+    private void consultaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton19ActionPerformed
+    }//GEN-LAST:event_consultaClienteActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+    private void consultaProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaProductoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+    }//GEN-LAST:event_consultaProductoActionPerformed
 
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+    private void consultaVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaVendedorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
+    }//GEN-LAST:event_consultaVendedorActionPerformed
 
-    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+    private void consultaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaVentaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9ActionPerformed
+    }//GEN-LAST:event_consultaVentaActionPerformed
 
-    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField10ActionPerformed
+    private void tablaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClienteMouseClicked
+        int row = tablaCliente.getSelectedRow();
+        for(int i = 0; i < 3; i++){
+            //tuplaCliente[i] = tablaCliente.getValueAt(row, i).toString();
+        }        
+    }//GEN-LAST:event_tablaClienteMouseClicked
 
-    private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField11ActionPerformed
+    private void tablaProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductoMouseClicked
+        int[] row = tablaProducto.getSelectedRows();
+        filasProducto = row.length;
+        tuplaProducto = new String[filasProducto][8];
+        for(int i = 0; i < filasProducto; i++){
+            for(int j = 0; j < 8; j++){
+                tuplaProducto[i][j] = tablaProducto.getValueAt(row[i], j);
+            } 
+        }
+    }//GEN-LAST:event_tablaProductoMouseClicked
 
+    private void tablaVendedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVendedorMouseClicked
+        int row = tablaVendedor.getSelectedRow();
+        for(int i = 0; i < 2; i++){
+            //tuplaVendedor[i] = tablaVendedor.getValueAt(row, i).toString();
+        } 
+    }//GEN-LAST:event_tablaVendedorMouseClicked
+
+    private void tablaVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVentaMouseClicked
+        int row = tablaVenta.getSelectedRow();
+        for(int i = 0; i < 7; i++){
+            //tuplaVenta[i] = tablaVenta.getValueAt(row, i).toString();
+        } 
+    }//GEN-LAST:event_tablaVentaMouseClicked
+
+    private void tablaProveedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProveedorMouseClicked
+         int[] row = tablaProveedor.getSelectedRows();
+        filasProveedor = row.length;
+        tuplaProveedor = new String[filasProveedor][3];
+        for(int i = 0; i < filasProveedor; i++){
+            for(int j = 0; j < 3; j++){
+                tuplaProveedor[i][j] = tablaProveedor.getValueAt(row[i], j);
+            } 
+        }
+    }//GEN-LAST:event_tablaProveedorMouseClicked
+
+    private void agregarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarProveedorActionPerformed
+        ModificarProveedor prov = new ModificarProveedor(conexion,true,()->{cargar(tablaProveedor, "PROVEEDOR");}, tuplaProveedor);
+        prov.setVisible(true);
+    }//GEN-LAST:event_agregarProveedorActionPerformed
+
+    private void actualizarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarProveedorActionPerformed
+        ModificarProveedor prov = new ModificarProveedor(conexion,false,()->{cargar(tablaProveedor, "PROVEEDOR");}, tuplaProveedor);
+        prov.setVisible(true);
+    }//GEN-LAST:event_actualizarProveedorActionPerformed
+
+    private void tablaProveedorMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProveedorMouseReleased
+        int[] row = tablaProveedor.getSelectedRows();
+        filasProveedor = row.length;
+        tuplaProveedor = new String[filasProveedor][3];
+        for(int i = 0; i < filasProveedor; i++){
+            for(int j = 0; j < 3; j++){
+                tuplaProveedor[i][j] = tablaProveedor.getValueAt(row[i], j);
+            } 
+        }
+    }//GEN-LAST:event_tablaProveedorMouseReleased
+
+    private void cargar(JTable tipo, String tabla) {
+        String consulta = "SELECT * FROM DBO." + tabla; 
+        ResultSet rs = TablaDatos.executeQuery(conexion, consulta, new Object[0]);
+        try{
+        tipo.setModel(TablaDatos.buildTableModel(rs));
+        }catch(Exception e){};
+        tipo.setEnabled(tipo.getSelectedRowCount() == 0);
+        //boton.setEnabled(tipo.getSelectedRowCount() != 0);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton actualizarCliente;
+    private javax.swing.JButton actualizarProducto;
+    private javax.swing.JButton actualizarProveedor;
+    private javax.swing.JButton actualizarVendedor;
+    private javax.swing.JButton actualizarVenta;
+    private javax.swing.JButton agregarCliente;
+    private javax.swing.JButton agregarProducto;
+    private javax.swing.JButton agregarProveedor;
+    private javax.swing.JButton agregarVendedor;
+    private javax.swing.JButton agregarVenta;
+    private javax.swing.JButton buscarCliente;
+    private javax.swing.JButton buscarProducto;
+    private javax.swing.JButton buscarProveedor;
+    private javax.swing.JButton buscarVendedor;
+    private javax.swing.JButton buscarVenta;
+    private javax.swing.JTextField consultaCliente;
+    private javax.swing.JTextField consultaProducto;
+    private javax.swing.JTextField consultaProveedor;
+    private javax.swing.JTextField consultaVendedor;
+    private javax.swing.JTextField consultaVenta;
+    private javax.swing.JButton eliminarCliente;
+    private javax.swing.JButton eliminarProducto;
+    private javax.swing.JButton eliminarProveedor;
+    private javax.swing.JButton eliminarVenta;
     private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
-    private javax.swing.JButton jButton22;
-    private javax.swing.JButton jButton23;
-    private javax.swing.JButton jButton24;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox10;
@@ -654,16 +775,11 @@ public class Administrador extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTable jTable5;
-    private javax.swing.JTable jTable6;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTable tablaCliente;
+    private javax.swing.JTable tablaProducto;
+    private javax.swing.JTable tablaProveedor;
+    private javax.swing.JTable tablaVendedor;
+    private javax.swing.JTable tablaVenta;
     // End of variables declaration//GEN-END:variables
 }
