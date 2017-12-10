@@ -84,7 +84,6 @@ public class Administrador extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tablaVenta = new javax.swing.JTable();
-        agregarVenta = new javax.swing.JButton();
         actualizarVenta = new javax.swing.JButton();
         eliminarVenta = new javax.swing.JButton();
         buscarVenta = new javax.swing.JButton();
@@ -190,8 +189,8 @@ public class Administrador extends javax.swing.JFrame {
             }
         ));
         tablaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaClienteMouseClicked(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaClienteMouseReleased(evt);
             }
         });
         jScrollPane1.setViewportView(tablaCliente);
@@ -271,8 +270,8 @@ public class Administrador extends javax.swing.JFrame {
             }
         ));
         tablaProducto.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaProductoMouseClicked(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaProductoMouseReleased(evt);
             }
         });
         jScrollPane2.setViewportView(tablaProducto);
@@ -352,15 +351,25 @@ public class Administrador extends javax.swing.JFrame {
             }
         ));
         tablaVendedor.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaVendedorMouseClicked(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaVendedorMouseReleased(evt);
             }
         });
         jScrollPane4.setViewportView(tablaVendedor);
 
         agregarVendedor.setText("Agregar");
+        agregarVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarVendedorActionPerformed(evt);
+            }
+        });
 
         actualizarVendedor.setText("Actualizar");
+        actualizarVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actualizarVendedorActionPerformed(evt);
+            }
+        });
 
         buscarVendedor.setText("Buscar");
 
@@ -423,13 +432,11 @@ public class Administrador extends javax.swing.JFrame {
             }
         ));
         tablaVenta.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaVentaMouseClicked(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaVentaMouseReleased(evt);
             }
         });
         jScrollPane5.setViewportView(tablaVenta);
-
-        agregarVenta.setText("Agregar");
 
         actualizarVenta.setText("Actualizar");
 
@@ -457,14 +464,12 @@ public class Administrador extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
                             .addComponent(actualizarVenta)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(eliminarVenta)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(agregarVenta)))
+                            .addComponent(eliminarVenta)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -484,7 +489,6 @@ public class Administrador extends javax.swing.JFrame {
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(agregarVenta)
                     .addComponent(actualizarVenta)
                     .addComponent(eliminarVenta))
                 .addContainerGap(33, Short.MAX_VALUE))
@@ -504,9 +508,6 @@ public class Administrador extends javax.swing.JFrame {
             }
         ));
         tablaProveedor.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaProveedorMouseClicked(evt);
-            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 tablaProveedorMouseReleased(evt);
             }
@@ -650,49 +651,6 @@ public class Administrador extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_consultaVentaActionPerformed
 
-    private void tablaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClienteMouseClicked
-        int row = tablaCliente.getSelectedRow();
-        for(int i = 0; i < 3; i++){
-            //tuplaCliente[i] = tablaCliente.getValueAt(row, i).toString();
-        }        
-    }//GEN-LAST:event_tablaClienteMouseClicked
-
-    private void tablaProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductoMouseClicked
-        int[] row = tablaProducto.getSelectedRows();
-        filasProducto = row.length;
-        tuplaProducto = new String[filasProducto][8];
-        for(int i = 0; i < filasProducto; i++){
-            for(int j = 0; j < 8; j++){
-                tuplaProducto[i][j] = tablaProducto.getValueAt(row[i], j);
-            } 
-        }
-    }//GEN-LAST:event_tablaProductoMouseClicked
-
-    private void tablaVendedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVendedorMouseClicked
-        int row = tablaVendedor.getSelectedRow();
-        for(int i = 0; i < 2; i++){
-            //tuplaVendedor[i] = tablaVendedor.getValueAt(row, i).toString();
-        } 
-    }//GEN-LAST:event_tablaVendedorMouseClicked
-
-    private void tablaVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVentaMouseClicked
-        int row = tablaVenta.getSelectedRow();
-        for(int i = 0; i < 7; i++){
-            //tuplaVenta[i] = tablaVenta.getValueAt(row, i).toString();
-        } 
-    }//GEN-LAST:event_tablaVentaMouseClicked
-
-    private void tablaProveedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProveedorMouseClicked
-         int[] row = tablaProveedor.getSelectedRows();
-        filasProveedor = row.length;
-        tuplaProveedor = new String[filasProveedor][3];
-        for(int i = 0; i < filasProveedor; i++){
-            for(int j = 0; j < 3; j++){
-                tuplaProveedor[i][j] = tablaProveedor.getValueAt(row[i], j);
-            } 
-        }
-    }//GEN-LAST:event_tablaProveedorMouseClicked
-
     private void agregarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarProveedorActionPerformed
         ModificarProveedor prov = new ModificarProveedor(conexion,true,()->{cargar(tablaProveedor, "PROVEEDOR");}, tuplaProveedor);
         prov.setVisible(true);
@@ -714,12 +672,68 @@ public class Administrador extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tablaProveedorMouseReleased
 
+    private void tablaVentaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVentaMouseReleased
+        int[] row = tablaVenta.getSelectedRows();
+        filasVenta = row.length;
+        tuplaVenta = new String[filasVenta][7];
+        for(int i = 0; i < filasVenta; i++){
+            for(int j = 0; j < 7; j++){
+                tuplaVenta[i][j] = tablaVenta.getValueAt(row[i], j);
+            } 
+        }
+    }//GEN-LAST:event_tablaVentaMouseReleased
+
+    private void tablaVendedorMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVendedorMouseReleased
+        int[] row = tablaVendedor.getSelectedRows();
+        filasVendedor = row.length;
+        tuplaVendedor = new String[filasVendedor][2];
+        for(int i = 0; i < filasVendedor; i++){
+            for(int j = 0; j < 2; j++){
+                tuplaVendedor[i][j] = tablaVendedor.getValueAt(row[i], j);
+            } 
+        }
+    }//GEN-LAST:event_tablaVendedorMouseReleased
+
+    private void tablaProductoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductoMouseReleased
+        int[] row = tablaProducto.getSelectedRows();
+        filasProducto = row.length;
+        tuplaProducto = new String[filasProducto][8];
+        for(int i = 0; i < filasProducto; i++){
+            for(int j = 0; j < 8; j++){
+                tuplaProducto[i][j] = tablaProducto.getValueAt(row[i], j);
+            } 
+        }
+    }//GEN-LAST:event_tablaProductoMouseReleased
+
+    private void tablaClienteMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClienteMouseReleased
+        int[] row = tablaCliente.getSelectedRows();
+        filasCliente = row.length;
+        tuplaCliente = new String[filasCliente][3];
+        for(int i = 0; i < filasCliente; i++){
+            for(int j = 0; j < 3; j++){
+                tuplaCliente[i][j] = tablaCliente.getValueAt(row[i], j);
+            } 
+        }   
+    }//GEN-LAST:event_tablaClienteMouseReleased
+
+    private void agregarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarVendedorActionPerformed
+        ModificarVendedor vende = new ModificarVendedor(conexion,true,()->{cargar(tablaVendedor, "VENDEDOR");}, tuplaProveedor);
+        vende.setVisible(true);
+    }//GEN-LAST:event_agregarVendedorActionPerformed
+
+    private void actualizarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarVendedorActionPerformed
+        ModificarVendedor vende = new ModificarVendedor(conexion,false,()->{cargar(tablaProveedor, "PROVEEDOR");}, tuplaProveedor);
+        vende.setVisible(true);
+    }//GEN-LAST:event_actualizarVendedorActionPerformed
+
     private void cargar(JTable tipo, String tabla) {
         String consulta = "SELECT * FROM DBO." + tabla; 
         ResultSet rs = TablaDatos.executeQuery(conexion, consulta, new Object[0]);
         try{
         tipo.setModel(TablaDatos.buildTableModel(rs));
-        }catch(Exception e){};
+        }catch(Exception e){
+            System.err.println("No se encontro tabla");
+        }
         tipo.setEnabled(tipo.getSelectedRowCount() == 0);
         //boton.setEnabled(tipo.getSelectedRowCount() != 0);
     }
@@ -734,7 +748,6 @@ public class Administrador extends javax.swing.JFrame {
     private javax.swing.JButton agregarProducto;
     private javax.swing.JButton agregarProveedor;
     private javax.swing.JButton agregarVendedor;
-    private javax.swing.JButton agregarVenta;
     private javax.swing.JButton buscarCliente;
     private javax.swing.JButton buscarProducto;
     private javax.swing.JButton buscarProveedor;
