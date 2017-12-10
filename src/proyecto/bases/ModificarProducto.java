@@ -5,17 +5,43 @@
  */
 package proyecto.bases;
 
+import java.sql.*;
+import javax.swing.*;
+import java.util.Collections;
 /**
  *
  * @author b22539
  */
 public class ModificarProducto extends javax.swing.JFrame {
+    private String conexion;
+    private boolean type;
+    final Runnable function;
+    private String llaveProveedor;
+    private String llaveNombre;
+    private String llaveMarca;
 
     /**
      * Creates new form NewJFrame
      */
-    public ModificarProducto() {
+    public ModificarProducto(String conexion, boolean type, Runnable function, Object[][] nuevos) {
+        this.function = function;
+        this.conexion = conexion;
+        this.type = type;
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
+        if(!type){
+            llaveProveedor = nuevos[0][0].toString();
+            llaveNombre = nuevos[0][1].toString();
+            llaveMarca = nuevos[0][2].toString();
+            proveedor.setText(nuevos[0][0].toString());
+            nombre.setText(nuevos[0][1].toString());
+            marca.setText(nuevos[0][2].toString());
+            estante.setText(nuevos[0][3].toString());
+            codigo.setText(nuevos[0][4].toString());
+            existencia.setText(nuevos[0][5].toString());
+            precio.setText(nuevos[0][6].toString());
+            costo.setText(nuevos[0][7].toString());
+        }
     }
 
     /**
@@ -27,8 +53,8 @@ public class ModificarProducto extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        regresar = new javax.swing.JButton();
+        aceptar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -37,25 +63,30 @@ public class ModificarProducto extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
+        proveedor = new javax.swing.JTextField();
+        marca = new javax.swing.JTextField();
+        nombre = new javax.swing.JTextField();
+        estante = new javax.swing.JTextField();
+        codigo = new javax.swing.JTextField();
+        existencia = new javax.swing.JTextField();
+        precio = new javax.swing.JTextField();
+        costo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Regresar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        regresar.setText("Regresar");
+        regresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                regresarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Aceptar");
+        aceptar.setText("Aceptar");
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Proveedor:");
 
@@ -72,12 +103,6 @@ public class ModificarProducto extends javax.swing.JFrame {
         jLabel7.setText("Precio:");
 
         jLabel8.setText("Costo:");
-
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,20 +123,20 @@ public class ModificarProducto extends javax.swing.JFrame {
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField5)
-                            .addComponent(jTextField6)
-                            .addComponent(jTextField7)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(proveedor)
+                            .addComponent(marca)
+                            .addComponent(nombre)
+                            .addComponent(estante)
+                            .addComponent(codigo)
+                            .addComponent(existencia)
+                            .addComponent(precio)
+                            .addComponent(costo, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 5, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(jButton1)
+                        .addComponent(regresar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
+                        .addComponent(aceptar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -120,60 +145,100 @@ public class ModificarProducto extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(proveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(marca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(estante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(existencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(costo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(regresar)
+                    .addComponent(aceptar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    private void regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_regresarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
+        if(type){
+            Object[] atributos = new Object[8];
+            atributos[0] = proveedor.getText();
+            atributos[1] = nombre.getText();
+            atributos[2] = marca.getText();
+            atributos[3] = Integer.parseInt(estante.getText());
+            atributos[4] = codigo.getText();
+            atributos[5] = Integer.parseInt(existencia.getText());
+            atributos[6] = Integer.parseInt(precio.getText());
+            atributos[7] = Integer.parseInt(costo.getText());
+            String query = "INSERT INTO DBO.PRODUCTO VALUES(?,?,?,?,?,?,?,?)";
+            TablaDatos.executeUpdate(conexion, query, atributos);
+        }else{
+            Object[] atributos = new Object[11];
+            atributos[0] = proveedor.getText();
+            atributos[1] = nombre.getText();
+            atributos[2] = marca.getText();
+            atributos[3] = Integer.parseInt(estante.getText());
+            atributos[4] = codigo.getText();
+            atributos[5] = Integer.parseInt(existencia.getText());
+            atributos[6] = Integer.parseInt(precio.getText());
+            atributos[7] = Integer.parseInt(costo.getText());
+            atributos[8] = llaveProveedor;
+            atributos[9] = llaveNombre;
+            atributos[10] = llaveMarca;
+            String query = "UPDATE DBO.PRODUCTO SET NOMBREPROVEEDOR = ?, NOMBREPRODUCTO = ?,"
+                    + " MARCAPRODUCTO = ?, ESTANTE = ?, CODIGODEFABRICA = ?, EXISTENCIA = ?, PRECIOVENTA = ?," 
+                    + "COSTOUNIDAD = ? WHERE NOMBREPROVEEDOR = ? AND NOMBREPRODUCTO = ? AND MARCAPRODUCTO = ?";
+            TablaDatos.executeUpdate(conexion, query, atributos);
+        }
+        actualizar();
+    }//GEN-LAST:event_aceptarActionPerformed
 
-    private void loadProductInfo(int row){
-    };
+    private void actualizar() {
+        try {
+            function.run();
+        } catch (Exception ex) {
+            System.err.print("Error al retornar al padre");
+        }
+        this.dispose();
+    }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton aceptar;
+    private javax.swing.JTextField codigo;
+    private javax.swing.JTextField costo;
+    private javax.swing.JTextField estante;
+    private javax.swing.JTextField existencia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -182,13 +247,10 @@ public class ModificarProducto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField marca;
+    private javax.swing.JTextField nombre;
+    private javax.swing.JTextField precio;
+    private javax.swing.JTextField proveedor;
+    private javax.swing.JButton regresar;
     // End of variables declaration//GEN-END:variables
 }
