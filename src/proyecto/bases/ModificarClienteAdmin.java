@@ -205,6 +205,7 @@ public class ModificarClienteAdmin extends javax.swing.JFrame {
                 query = "UPDATE DBO.PARTICULAR SET IDCLIENTE = ?, CORREOPARTICULAR = ?, TELEFONOPARTICULAR = ? WHERE IDCLIENTE = ?";
                 TablaDatos.executeUpdate(conexion, query, atributos);
             }else if(tipo.getText().equals("empresa")){
+                llaveCorreo = correo.getText();
                 atributos = new Object[7];
                 atributos[0] = id.getText();
                 atributos[1] = correo.getText();
