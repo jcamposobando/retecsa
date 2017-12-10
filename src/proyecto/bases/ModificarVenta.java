@@ -5,17 +5,35 @@
  */
 package proyecto.bases;
 
+import java.sql.*;
+import javax.swing.*;
+import java.util.Collections;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 /**
  *
  * @author b22539
  */
 public class ModificarVenta extends javax.swing.JFrame {
-
+    private String conexion;
+    final Runnable function;
+    private String llaveVendedor;
+    private String llaveNumero;
     /**
      * Creates new form NewJFrame
      */
-    public ModificarVenta() {
+    public ModificarVenta(String conexion, Runnable function, Object[][] nuevos) {
+        this.function = function;
+        this.conexion = conexion;
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
+        llaveVendedor = nuevos[0][0].toString();
+        llaveNumero = nuevos[0][1].toString();
+        vendedor.setText(nuevos[0][0].toString());
+        numero.setText(nuevos[0][1].toString());
+        fecha.setText(nuevos[0][2].toString());
+        forma.setText(nuevos[0][3].toString());
     }
 
     /**
@@ -27,34 +45,34 @@ public class ModificarVenta extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        regresar = new javax.swing.JButton();
+        aceptar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        vendedor = new javax.swing.JTextField();
+        numero = new javax.swing.JTextField();
+        fecha = new javax.swing.JTextField();
+        forma = new javax.swing.JTextField();
+        abonado = new javax.swing.JTextField();
+        pendiente = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Regresar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        regresar.setText("Regresar");
+        regresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                regresarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Aceptar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        aceptar.setText("Aceptar");
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                aceptarActionPerformed(evt);
             }
         });
 
@@ -70,9 +88,9 @@ public class ModificarVenta extends javax.swing.JFrame {
 
         jLabel6.setText("Pendiente:");
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        forma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                formaActionPerformed(evt);
             }
         });
 
@@ -93,17 +111,17 @@ public class ModificarVenta extends javax.swing.JFrame {
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField5)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(vendedor)
+                            .addComponent(numero)
+                            .addComponent(fecha)
+                            .addComponent(forma)
+                            .addComponent(abonado)
+                            .addComponent(pendiente, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addComponent(jButton1)
+                        .addComponent(regresar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
+                        .addComponent(aceptar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -112,66 +130,101 @@ public class ModificarVenta extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(vendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(numero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(forma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(abonado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(regresar)
+                    .addComponent(aceptar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void formaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_formaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_regresarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
+       try{
+        Object[] atributos = new Object[6];
+        atributos[0] = vendedor.getText();
+        atributos[1] = Integer.parseInt(numero.getText());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date parsed = format.parse(fecha.getText());
+        atributos[2] = forma.getText();
+        java.sql.Date sql = new java.sql.Date(parsed.getTime());
+        atributos[3] = sql;
+        atributos[4] = llaveVendedor;
+        atributos[5] = Integer.parseInt(llaveNumero);
+        String query = "UPDATE DBO.VENTA SET IDVENDEDOR = ?, NUMERODEVENTA = ?,"
+                    + " FORMADEPAGO = ?, FECHA = ? WHERE IDVENDEDOR = ? AND NUMERODEVENTA = ?";
+        TablaDatos.executeUpdate(conexion, query, atributos);
+        if(!abonado.getText().equals("") && !pendiente.getText().equals("")){
+        atributos = new Object[7];
+        atributos[0] = vendedor.getText();
+        atributos[1] = Integer.parseInt(numero.getText()); 
+        atributos[2] = sql;
+        atributos[3] = Integer.parseInt(abonado.getText());
+        atributos[4] = Integer.parseInt(pendiente.getText());
+        atributos[5] = llaveVendedor;
+        atributos[6] = Integer.parseInt(llaveNumero);
+        query = "UPDATE DBO.PAGO SET IDVENDEDOR = ?, NUMERODEVENTA = ?,"
+                    + " FECHADEPAGO = ?, MONTOABONADO = ?,MONTOPENDIENTE = ? WHERE IDVENDEDOR = ? AND NUMERODEVENTA = ?";
+        TablaDatos.executeUpdate(conexion, query, atributos);
+        }
+       }catch(ParseException e){
+           System.err.println("Error en fecha");
+       }
+    }//GEN-LAST:event_aceptarActionPerformed
 
-    private void loadProductInfo(int row){
-    };
+     private void actualizar() {
+        try {
+            function.run();
+        } catch (Exception ex) {
+            System.err.print("Error al retornar al padre");
+        }
+        this.dispose();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTextField abonado;
+    private javax.swing.JButton aceptar;
+    private javax.swing.JTextField fecha;
+    private javax.swing.JTextField forma;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField numero;
+    private javax.swing.JTextField pendiente;
+    private javax.swing.JButton regresar;
+    private javax.swing.JTextField vendedor;
     // End of variables declaration//GEN-END:variables
 }
