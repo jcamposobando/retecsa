@@ -21,7 +21,7 @@ public class ModificarVendedor extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     public ModificarVendedor(String conexion, boolean type, Runnable function, Object[][] nuevos) {
-         this.function = function;
+        this.function = function;
         this.conexion = conexion;
         this.type = type;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
