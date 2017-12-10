@@ -65,6 +65,7 @@ public class Administrador extends javax.swing.JFrame {
         buscarCliente = new javax.swing.JButton();
         consultaCliente = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        empleado = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaProducto = new javax.swing.JTable();
@@ -227,6 +228,13 @@ public class Administrador extends javax.swing.JFrame {
 
         jLabel2.setText("Consulta:");
 
+        empleado.setText("Empleados");
+        empleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                empleadoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -241,6 +249,8 @@ public class Administrador extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(eliminarCliente)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(empleado)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(agregarCliente)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -263,7 +273,8 @@ public class Administrador extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregarCliente)
                     .addComponent(actualizarCliente)
-                    .addComponent(eliminarCliente))
+                    .addComponent(eliminarCliente)
+                    .addComponent(empleado))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -460,6 +471,11 @@ public class Administrador extends javax.swing.JFrame {
         jScrollPane5.setViewportView(tablaVenta);
 
         actualizarVenta.setText("Actualizar");
+        actualizarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actualizarVentaActionPerformed(evt);
+            }
+        });
 
         eliminarVenta.setText("Eliminar");
         eliminarVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -633,7 +649,14 @@ public class Administrador extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void eliminarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarVentaActionPerformed
-        // TODO add your handling code here:
+        if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar estas ventas?") == 0) {
+            for(int i = 0; i < tuplaVenta.length; i++){
+                String query = "DELETE FROM VENTA WHERE IDVENDEDOR = ? AND NUMERODEVENTA = ? AND"
+                    + " IDCLIENTE = ? AND FORMADEPAGO = ? AND FECHAVENTA = ? AND COSTOTOTAL = ? AND PAGOTOTAL = ?";
+                TablaDatos.executeUpdate(conexion, query, tuplaVenta[i]);
+            }
+            cargar(tablaVenta, "VENTA");
+        }
     }//GEN-LAST:event_eliminarVentaActionPerformed
 
     private void eliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarProductoActionPerformed
@@ -783,6 +806,16 @@ public class Administrador extends javax.swing.JFrame {
         client.setVisible(true);
     }//GEN-LAST:event_actualizarClienteActionPerformed
 
+    private void actualizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarVentaActionPerformed
+        ModificarVenta venta = new ModificarVenta(conexion,()->{cargar(tablaVenta, "VENTA");}, tuplaVenta);
+        venta.setVisible(true);
+    }//GEN-LAST:event_actualizarVentaActionPerformed
+
+    private void empleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empleadoActionPerformed
+        BorrarEmpleados empleados = new BorrarEmpleados(conexion,tuplaCliente);
+        empleados.setVisible(true);
+    }//GEN-LAST:event_empleadoActionPerformed
+
     private void cargar(JTable tipo, String tabla) {
         String consulta = "SELECT * FROM DBO." + tabla; 
         ResultSet rs = TablaDatos.executeQuery(conexion, consulta, new Object[0]);
@@ -819,6 +852,7 @@ public class Administrador extends javax.swing.JFrame {
     private javax.swing.JButton eliminarProducto;
     private javax.swing.JButton eliminarProveedor;
     private javax.swing.JButton eliminarVenta;
+    private javax.swing.JButton empleado;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;

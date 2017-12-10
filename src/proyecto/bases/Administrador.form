@@ -229,6 +229,8 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="eliminarCliente" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="empleado" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Component id="agregarCliente" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -259,6 +261,7 @@
                           <Component id="agregarCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="actualizarCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="eliminarCliente" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="empleado" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="33" max="32767" attributes="0"/>
                   </Group>
@@ -328,6 +331,14 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Consulta:"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="empleado">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Empleados"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="empleadoActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -652,6 +663,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Actualizar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="actualizarVentaActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="eliminarVenta">
               <Properties>
