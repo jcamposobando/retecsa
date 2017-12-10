@@ -17,7 +17,7 @@ public class ModificarProveedor extends javax.swing.JFrame {
     private String conexion;
     private boolean type;
     final Runnable function;
-    String llave;
+    private String llave;
     /**
      * Creates new form NewJFrame
      */
