@@ -7,6 +7,7 @@ package proyecto.bases;
 
 import java.sql.*;
 import javax.swing.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -196,8 +197,18 @@ public class Administrador extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tablaCliente);
 
         agregarCliente.setText("Agregar");
+        agregarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarClienteActionPerformed(evt);
+            }
+        });
 
         actualizarCliente.setText("Actualizar");
+        actualizarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actualizarClienteActionPerformed(evt);
+            }
+        });
 
         eliminarCliente.setText("Eliminar");
         eliminarCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -277,8 +288,18 @@ public class Administrador extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tablaProducto);
 
         agregarProducto.setText("Agregar");
+        agregarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarProductoActionPerformed(evt);
+            }
+        });
 
         actualizarProducto.setText("Actualizar");
+        actualizarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actualizarProductoActionPerformed(evt);
+            }
+        });
 
         eliminarProducto.setText("Eliminar");
         eliminarProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -616,19 +637,35 @@ public class Administrador extends javax.swing.JFrame {
     }//GEN-LAST:event_eliminarVentaActionPerformed
 
     private void eliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarProductoActionPerformed
-        // TODO add your handling code here:
+        if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar a estos productos?") == 0) {
+            for(int i = 0; i < tuplaProducto.length; i++){
+                String query = "DELETE FROM PRODUCTO WHERE NOMBREPROVEEDOR = ? AND NOMBREPRODUCTO = ? AND"
+                    + " MARCAPRODUCTO = ? AND ESTANTE = ? AND CODIGODEFABRICA = ? AND EXISTENCIA = ? AND PRECIOVENTA = ? AND" 
+                    + "COSTOUNIDAD = ?";
+                TablaDatos.executeUpdate(conexion, query, tuplaProducto[i]);
+            }
+            cargar(tablaProducto, "PRODUCTO");
+        }
     }//GEN-LAST:event_eliminarProductoActionPerformed
 
     private void eliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarClienteActionPerformed
-        // TODO add your handling code here:
+        if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar a estos clientes?") == 0) {
+            for(int i = 0; i < tuplaCliente.length; i++){
+                String query = "DELETE FROM CLIENTE WHERE IDCLIENTE = ? AND PRIORIDADCLIENTE = ? AND NOMBRECLIENTE = ?";
+                TablaDatos.executeUpdate(conexion, query, tuplaCliente[i]);
+            }
+            cargar(tablaCliente, "Cliente");
+        }
     }//GEN-LAST:event_eliminarClienteActionPerformed
 
     private void eliminarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarProveedorActionPerformed
-        for(int i = 0; i < tuplaProveedor.length; i++){
-            String query = "DELETE FROM PROVEEDOR WHERE NOMBREPROVEEDOR = ? AND TELEFONOPROVEEDOR = ? AND CORREOPROVEEDOR = ?";
-            TablaDatos.executeUpdate(conexion, query, tuplaProveedor[i]);
+        if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar a estos proveedores?") == 0) {
+            for(int i = 0; i < tuplaProveedor.length; i++){
+                String query = "DELETE FROM PROVEEDOR WHERE NOMBREPROVEEDOR = ? AND TELEFONOPROVEEDOR = ? AND CORREOPROVEEDOR = ?";
+                TablaDatos.executeUpdate(conexion, query, tuplaProveedor[i]);
+            }
+            cargar(tablaProveedor, "PROVEEDOR");
         }
-        cargar(tablaProveedor, "PROVEEDOR");
     }//GEN-LAST:event_eliminarProveedorActionPerformed
 
     private void consultaProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaProveedorActionPerformed
@@ -725,6 +762,26 @@ public class Administrador extends javax.swing.JFrame {
         ModificarVendedor vende = new ModificarVendedor(conexion,false,()->{cargar(tablaProveedor, "PROVEEDOR");}, tuplaProveedor);
         vende.setVisible(true);
     }//GEN-LAST:event_actualizarVendedorActionPerformed
+
+    private void agregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarProductoActionPerformed
+        ModificarProducto prod = new ModificarProducto(conexion,true,()->{cargar(tablaProducto, "PRODUCTO");}, tuplaProducto);
+        prod.setVisible(true);
+    }//GEN-LAST:event_agregarProductoActionPerformed
+
+    private void agregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarClienteActionPerformed
+        ModificarClienteAdmin client = new ModificarClienteAdmin(conexion,true,()->{cargar(tablaCliente, "ClIENTE");}, tuplaProducto);
+        client.setVisible(true);
+    }//GEN-LAST:event_agregarClienteActionPerformed
+
+    private void actualizarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarProductoActionPerformed
+        ModificarProducto prod = new ModificarProducto(conexion,false,()->{cargar(tablaProducto, "PRODUCTO");}, tuplaProducto);
+        prod.setVisible(true);
+    }//GEN-LAST:event_actualizarProductoActionPerformed
+
+    private void actualizarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarClienteActionPerformed
+        ModificarClienteAdmin client = new ModificarClienteAdmin(conexion,false,()->{cargar(tablaCliente, "ClIENTE");}, tuplaProducto);
+        client.setVisible(true);
+    }//GEN-LAST:event_actualizarClienteActionPerformed
 
     private void cargar(JTable tipo, String tabla) {
         String consulta = "SELECT * FROM DBO." + tabla; 
