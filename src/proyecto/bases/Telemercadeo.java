@@ -44,7 +44,7 @@ public class Telemercadeo extends javax.swing.JFrame {
     }
 
     private void loadClientList() {
-        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.CLIENTE", new Object[0]);
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT cliente.idcliente, prioridad, nombrecliente, sum(pagatotal) as MontoCompras, count(pagatotal) as CantidaddeCompras FROM DBO.CLIENTE, dbo.venta where cliente.idCliente = venta.idcliente group by cliente.idcliente", new Object[0]);
         try {
             DefaultTableModel tb = TablaDatos.buildTableModel(rs);
             tablaClientes.setModel(tb);
