@@ -30,7 +30,7 @@ public class VerDetalleVenta extends javax.swing.JFrame {
     }
 
     private void loadTablaVentas() {
-        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.Venta, DBO.Cliente, DBO.Vendedor where venta.idcliente=cliente.idcliente and venta.idvendedor = vendedor.idvendedor", new Object[0]);
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.Sevende where idvendedor = ? and numerodeventa =?", new Object[0]);
         try {
             DefaultTableModel tb = TablaDatos.buildTableModel(rs);
             tablaDetalle.setModel(tb);
