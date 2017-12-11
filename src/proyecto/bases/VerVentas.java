@@ -88,7 +88,6 @@ public class VerVentas extends javax.swing.JFrame {
             }
         });
 
-        fieldBuscar.setText("jTextField1");
         fieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 fieldBuscarKeyTyped(evt);
