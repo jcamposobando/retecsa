@@ -26,6 +26,7 @@ public class VerDetalleVenta extends javax.swing.JFrame {
         this.con = con;
         initComponents();
         loadTablaVentas();
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void loadTablaVentas() {
