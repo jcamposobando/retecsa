@@ -60,7 +60,7 @@ public class Telemercadeo extends javax.swing.JFrame {
         updateFilter();
         updateButtons();
     }
-    
+
     private void updateButtons() {
         actualizar.setEnabled(tablaClientes.getSelectedRowCount() == 1);
         verVentas.setEnabled(tablaClientes.getSelectedRowCount() == 1);
@@ -246,8 +246,7 @@ public class Telemercadeo extends javax.swing.JFrame {
 
 
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
-        actualizar.setEnabled(tablaClientes.getSelectedRowCount() == 1);
-        eliminar.setEnabled(tablaClientes.getSelectedRowCount() != 0);
+        updateButtons();
     }//GEN-LAST:event_tablaClientesMouseClicked
 
     private void verVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verVentasActionPerformed
@@ -264,7 +263,7 @@ public class Telemercadeo extends javax.swing.JFrame {
     }//GEN-LAST:event_fieldBuscarKeyTyped
 
     private void verContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verContactoActionPerformed
-        VerContacto verContacto = new VerContacto(con,tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
+        VerContacto verContacto = new VerContacto(con, tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
         verContacto.setVisible(true);
     }//GEN-LAST:event_verContactoActionPerformed
 

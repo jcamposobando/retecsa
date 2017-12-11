@@ -18,19 +18,24 @@ import javax.swing.table.TableRowSorter;
 public class VerDetalleVenta extends javax.swing.JFrame {
 
     final String con;
+    private final String idVendedor;
+    private final Integer numeroDeVenta;
 
     /**
      * Creates new form VerDetalleVenta
      */
     public VerDetalleVenta(String con, String idVendedor, Integer numeroDeVenta) {
         this.con = con;
+        this.idVendedor = idVendedor;
+        this.numeroDeVenta = numeroDeVenta;
         initComponents();
         loadTablaVentas();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void loadTablaVentas() {
-        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.Sevende where idvendedor = ? and numerodeventa =?", new Object[0]);
+        Object[] parameters = {idVendedor, numeroDeVenta};
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.Sevende where idvendedor = ? and numerodeventa =?", parameters);
         try {
             DefaultTableModel tb = TablaDatos.buildTableModel(rs);
             tablaDetalle.setModel(tb);
