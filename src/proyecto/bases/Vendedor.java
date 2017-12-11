@@ -12,6 +12,9 @@ import java.util.Date;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 /**
  *
  * @author b22539
@@ -68,7 +71,6 @@ public class Vendedor extends javax.swing.JFrame {
         bCotizacion = new javax.swing.JButton();
         jTextField7 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        bBuscar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -161,8 +163,6 @@ public class Vendedor extends javax.swing.JFrame {
 
         jLabel1.setText("Consulta:");
 
-        bBuscar.setText("Buscar");
-
         jLabel6.setText("Producto:");
 
         jLabel7.setText("Marca:");
@@ -178,8 +178,6 @@ public class Vendedor extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(bBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
@@ -212,9 +210,8 @@ public class Vendedor extends javax.swing.JFrame {
                         .addComponent(fProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)
-                        .addComponent(bBuscar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel1)))
+                .addGap(13, 13, 13)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -229,7 +226,7 @@ public class Vendedor extends javax.swing.JFrame {
                         .addGap(99, 99, 99)
                         .addComponent(bCancelarVenta))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addContainerGap(238, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Productos", jPanel3);
@@ -448,7 +445,7 @@ public class Vendedor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
+        filtrar(jTextField7.getText());
     }//GEN-LAST:event_jTextField7ActionPerformed
 
     private void fEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fEmpleadoActionPerformed
@@ -491,7 +488,7 @@ public class Vendedor extends javax.swing.JFrame {
     }//GEN-LAST:event_fFormaDePagoActionPerformed
 
     private void bVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVenderActionPerformed
-        venta(fFecha.getText(), fMonto.getText(), fFormaDePago.getText());
+        venta(fMonto.getText(), fFormaDePago.getText());
         fFecha.setText("");
         fMonto.setText("");
         fFormaDePago.setText("");
@@ -506,18 +503,24 @@ public class Vendedor extends javax.swing.JFrame {
         //Integer cant = Integer.valueOf(cantidad);
         //PreparedStatement stmt = null;
         ResultSet rs = null;
-        
+        int iCantidad = Integer.parseInt(cantidad);
         Object[] precioCosto = {producto, marca};
-        rs = TablaDatos.executeQuery(con, "SELECT PRECIODEVENTA, COSTOUNIDAD FROM DBO.PRODUCTO WHERE NOMBREPRODUCTO = ? AND MARCAPRODUCTO = ? AND EXISTENCIA > 0;", precioCosto);
+        rs = TablaDatos.executeQuery(con, "SELECT PRECIODEVENTA, COSTOUNIDAD FROM DBO.PRODUCTO WHERE NOMBREPRODUCTO = ? AND MARCAPRODUCTO = ? AND EXISTENCIA > 0", precioCosto);
+        int pProducto = 0;
         try {
-            pTotal += rs.getInt(0);
-            cTotal += rs.getInt(1);
+            while(rs.next()){
+            pProducto = rs.getInt(1);
+            cTotal += rs.getInt(2);
+            }
+            int totalProducto =  pProducto * iCantidad;
+            pTotal += totalProducto;
+            AProductos.append("Producto: " + producto + "   Marca: " + marca + "   Cantidad: " + cantidad + "   Precio: "  + totalProducto + "\n");
+            //listaProductos.add(producto/* + "," + marca + "," + cantidad*/);  
+            totalPagar.setText(String.valueOf(pTotal));
         } catch (SQLException ex) {
             Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        AProductos.append("Producto: " + producto + "   Marca: " + marca + "   Cantidad: " + cantidad + "   Precio: "  + "\n");
-        listaProductos.add(producto + "," + marca + "," + cantidad);  
-        totalPagar.setText(String.valueOf(pTotal));
+       }
+        
     }
         
     public void cancelarVenta(){
@@ -601,10 +604,10 @@ public class Vendedor extends javax.swing.JFrame {
         //return exito;
     }
     
-    public void venta(String fecha, String monto, String formaPago){
+    public void venta(String monto, String formaPago){
         //boolean exito = true;
         
-        SimpleDateFormat formato=new SimpleDateFormat("yyyy/MM/dd");
+        /*SimpleDateFormat formato=new SimpleDateFormat("yyyy/MM/dd");
         Date jFecha = null; 
         try {
             jFecha = formato.parse(fecha);
@@ -619,7 +622,7 @@ public class Vendedor extends javax.swing.JFrame {
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection con = DriverManager.getConnection(this.con);
-            stmt = con.prepareStatement("INSERT INTO DBO.VENTA VALUES(?,?,?,?,?,?,?);");
+            stmt = con.prepareStatement("INSERT INTO DBO.VENTA VALUES(?,?,?,?,?,?,?)");
             stmt.setString(1,idVend);
             stmt.setInt(2,444444444);                           //Cambiar por numero de venta
             stmt.setString(3,idCliente);
@@ -635,6 +638,33 @@ public class Vendedor extends javax.swing.JFrame {
             System.err.println("Error al insertar");
             e.printStackTrace();
         }
+        */
+        int m = Integer.parseInt(monto);
+        //CallableStatement cstmt = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try{
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection con = DriverManager.getConnection(this.con);
+            stmt = con.prepareStatement("exec CREARVENTA ?,?,?,?,?,?");
+            stmt.setEscapeProcessing(true);
+            stmt.setQueryTimeout(20);
+            stmt.setString(1, "33445566");
+            stmt.setString(2, idCliente);
+            stmt.setString(3, formaPago);
+            stmt.setFloat(4, pTotal);
+            stmt.setFloat(5,cTotal);
+            stmt.setFloat(6, m);
+            rs = stmt.executeQuery();
+        } catch (ClassNotFoundException e) {
+            System.err.println("No se encontro el driver jdbc");
+            e.printStackTrace();
+        }catch(SQLException e){
+            System.out.println("Error al insertar");
+            e.printStackTrace();
+        }
+        
+        
         
         stmt = null;
         rs = null;
@@ -676,6 +706,18 @@ public class Vendedor extends javax.swing.JFrame {
         //return exito;
     }
     
+    public void filtrar(String texto){
+        final TableRowSorter<TableModel> sorter = new TableRowSorter<>(tablaProductos.getModel());
+        tablaProductos.setRowSorter(sorter);
+         if (texto.length() != 0) {
+                sorter.setRowFilter(RowFilter.regexFilter(texto));
+
+         } else {
+                sorter.setRowFilter(null);
+
+         }
+    }
+    
     private ArrayList<String> getProductList(){
         return listaProductos;
     }
@@ -683,7 +725,6 @@ public class Vendedor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AProductos;
     private javax.swing.JButton bAgregarCliente;
-    private javax.swing.JButton bBuscar;
     private javax.swing.JButton bCancelarVenta;
     private javax.swing.JButton bCotizacion;
     private javax.swing.JToggleButton bRegresar;
