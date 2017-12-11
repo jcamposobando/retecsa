@@ -9,6 +9,10 @@ import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -42,9 +46,12 @@ public class Telemercadeo extends javax.swing.JFrame {
     private void loadClientList() {
         ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.CLIENTE", new Object[0]);
         try {
-            tablaClientes.setModel(TablaDatos.buildTableModel(rs));
+            DefaultTableModel tb = TablaDatos.buildTableModel(rs);
+            tablaClientes.setModel(tb);
+            tablaClientes.setRowSorter(new TableRowSorter<DefaultTableModel>(tb));
         } catch (Exception e) {
         };
+        updateFilter();
         actualizar.setEnabled(tablaClientes.getSelectedRowCount() == 1);
         eliminar.setEnabled(tablaClientes.getSelectedRowCount() != 0);
     }
@@ -66,6 +73,8 @@ public class Telemercadeo extends javax.swing.JFrame {
         eliminar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        fieldBuscar = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,14 +128,22 @@ public class Telemercadeo extends javax.swing.JFrame {
 
         jButton2.setText("Ver Contacto");
 
+        fieldBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldBuscarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Buscar:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
@@ -135,14 +152,25 @@ public class Telemercadeo extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(eliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(agregar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(agregar)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fieldBuscar)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(14, 14, 14)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -201,9 +229,18 @@ public class Telemercadeo extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaClientesMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        VerVentas verVentas = new VerVentas(con,tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString() );
+        VerVentas verVentas = new VerVentas(con, tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
         verVentas.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void fieldBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldBuscarActionPerformed
+        updateFilter();
+    }//GEN-LAST:event_fieldBuscarActionPerformed
+
+    private void updateFilter() {
+        TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaClientes.getRowSorter();
+        sorter.setRowFilter(RowFilter.regexFilter(fieldBuscar.getText()));
+    }
 
     /**
      * @param args the command line arguments
@@ -245,8 +282,10 @@ public class Telemercadeo extends javax.swing.JFrame {
     private javax.swing.JButton actualizar;
     private javax.swing.JButton agregar;
     private javax.swing.JButton eliminar;
+    private javax.swing.JTextField fieldBuscar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaClientes;
