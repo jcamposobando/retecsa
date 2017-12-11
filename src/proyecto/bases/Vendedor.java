@@ -646,7 +646,7 @@ public class Vendedor extends javax.swing.JFrame {
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection con = DriverManager.getConnection(this.con);
-            stmt = con.prepareStatement("exec CREARVENTA ?,?,?,?,?,?");
+            stmt = con.prepareStatement("exec DBO.CREARVENTA ?,?,?,?,?,?");
             stmt.setEscapeProcessing(true);
             stmt.setQueryTimeout(20);
             stmt.setString(1, "33445566");
