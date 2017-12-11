@@ -133,6 +133,11 @@ public class Telemercadeo extends javax.swing.JFrame {
                 fieldBuscarActionPerformed(evt);
             }
         });
+        fieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                fieldBuscarKeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("Buscar:");
 
@@ -237,9 +242,14 @@ public class Telemercadeo extends javax.swing.JFrame {
         updateFilter();
     }//GEN-LAST:event_fieldBuscarActionPerformed
 
+    private void fieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldBuscarKeyTyped
+        updateFilter();
+    }//GEN-LAST:event_fieldBuscarKeyTyped
+
     private void updateFilter() {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaClientes.getRowSorter();
-        sorter.setRowFilter(RowFilter.regexFilter(fieldBuscar.getText()));
+        String text = fieldBuscar.getText();
+        sorter.setRowFilter(RowFilter.regexFilter(text.equals("") ? null : "(?i)" + text));
     }
 
     /**

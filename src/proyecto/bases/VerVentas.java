@@ -31,10 +31,10 @@ public class VerVentas extends javax.swing.JFrame {
     }
 
     private void loadTablaVentas() {
-        Object [] parameters = {idCliente};
-        ResultSet rs = TablaDatos.executeQuery(con
-                , "SELECT nombreVendedor,venta.idvendedor,numerodeventa,fechadeventa,pagatotal FROM DBO.Venta, DBO.Vendedor where venta.idcliente=? and venta.idvendedor = vendedor.idvendedor"
-                , parameters);
+        Object[] parameters = {idCliente};
+        ResultSet rs = TablaDatos.executeQuery(con,
+                 "SELECT nombreVendedor,venta.idvendedor,numerodeventa,fechaventa,pagatotal FROM DBO.Venta, DBO.Vendedor where venta.idcliente=? and venta.idvendedor = vendedor.idvendedor",
+                 parameters);
         try {
             DefaultTableModel tb = TablaDatos.buildTableModel(rs);
             tablaVentas.setModel(tb);
@@ -47,7 +47,8 @@ public class VerVentas extends javax.swing.JFrame {
 
     private void updateFilter() {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaVentas.getRowSorter();
-        sorter.setRowFilter(RowFilter.regexFilter(fieldBuscar.getText()));
+        String text = fieldBuscar.getText();
+        sorter.setRowFilter(RowFilter.regexFilter(text.equals("") ? null : "(?i)" + text));
     }
 
     /**
@@ -88,6 +89,11 @@ public class VerVentas extends javax.swing.JFrame {
         });
 
         fieldBuscar.setText("jTextField1");
+        fieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                fieldBuscarKeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("Buscar: ");
 
@@ -135,6 +141,10 @@ public class VerVentas extends javax.swing.JFrame {
                 + "de "
                 + tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 1).toString());
     }//GEN-LAST:event_verDetalleActionPerformed
+
+    private void fieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldBuscarKeyTyped
+        updateFilter();
+    }//GEN-LAST:event_fieldBuscarKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField fieldBuscar;

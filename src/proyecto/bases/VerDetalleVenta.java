@@ -42,7 +42,8 @@ public class VerDetalleVenta extends javax.swing.JFrame {
 
     private void updateFilter() {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaDetalle.getRowSorter();
-        sorter.setRowFilter(RowFilter.regexFilter(fieldBuscar.getText()));
+        String text = fieldBuscar.getText();
+        sorter.setRowFilter(RowFilter.regexFilter(text.equals("") ? null : "(?i)" + text));
     }
 
     /**
@@ -89,6 +90,11 @@ public class VerDetalleVenta extends javax.swing.JFrame {
                 fieldBuscarActionPerformed(evt);
             }
         });
+        fieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                fieldBuscarKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,6 +137,10 @@ public class VerDetalleVenta extends javax.swing.JFrame {
     private void regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarActionPerformed
         this.dispose();
     }//GEN-LAST:event_regresarActionPerformed
+
+    private void fieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldBuscarKeyTyped
+        updateFilter();
+    }//GEN-LAST:event_fieldBuscarKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
