@@ -172,14 +172,14 @@ public class ModificarClienteAdmin extends javax.swing.JFrame {
             atributos[1] = nombre.getText();
             String query = "INSERT INTO DBO.CLIENTE VALUES(?,?)";
             TablaDatos.executeUpdate(conexion, query, atributos);
-            if(tipo.getText().equals("particular")){
+            if(tipo.getText().toUpperCase().equals("PARTICULAR")){
                 atributos = new Object[3];
                 atributos[0] = id.getText();
                 atributos[1] = correo.getText();
                 atributos[2] = telefono.getText();
                 query = "INSERT INTO DBO.PARTICULAR VALUES(?,?,?)";
                 TablaDatos.executeUpdate(conexion, query, atributos);
-            }else if(tipo.getText().equals("empresa")){
+            }else if(tipo.getText().toUpperCase().equals("EMPRESA")){
                 atributos = new Object[5];
                 atributos[0] = id.getText();
                 atributos[1] = correo.getText();
