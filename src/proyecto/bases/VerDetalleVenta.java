@@ -36,7 +36,9 @@ public class VerDetalleVenta extends javax.swing.JFrame {
             tablaDetalle.setModel(tb);
             tablaDetalle.setRowSorter(new TableRowSorter<DefaultTableModel>(tb));
         } catch (SQLException e) {
-        };
+            System.err.println("Error al leer el resultado de un query");
+            e.printStackTrace();
+        }
         updateFilter();
     }
 

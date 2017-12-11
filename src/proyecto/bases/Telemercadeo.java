@@ -6,12 +6,12 @@
 package proyecto.bases;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -48,9 +48,11 @@ public class Telemercadeo extends javax.swing.JFrame {
         try {
             DefaultTableModel tb = TablaDatos.buildTableModel(rs);
             tablaClientes.setModel(tb);
-            tablaClientes.setRowSorter(new TableRowSorter<DefaultTableModel>(tb));
-        } catch (Exception e) {
-        };
+            tablaClientes.setRowSorter(new TableRowSorter<>(tb));
+        } catch (SQLException e) {
+            System.err.println("Error al leer el resultado de un query");
+            e.printStackTrace();
+        }
         updateFilter();
         actualizar.setEnabled(tablaClientes.getSelectedRowCount() == 1);
         eliminar.setEnabled(tablaClientes.getSelectedRowCount() != 0);
