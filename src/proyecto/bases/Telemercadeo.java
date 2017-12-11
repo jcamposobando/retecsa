@@ -58,7 +58,13 @@ public class Telemercadeo extends javax.swing.JFrame {
             e.printStackTrace();
         }
         updateFilter();
+        updateButtons();
+    }
+    
+    private void updateButtons() {
         actualizar.setEnabled(tablaClientes.getSelectedRowCount() == 1);
+        verVentas.setEnabled(tablaClientes.getSelectedRowCount() == 1);
+        verContacto.setEnabled(tablaClientes.getSelectedRowCount() == 1);
         eliminar.setEnabled(tablaClientes.getSelectedRowCount() != 0);
     }
 
@@ -266,6 +272,7 @@ public class Telemercadeo extends javax.swing.JFrame {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaClientes.getRowSorter();
         String text = fieldBuscar.getText();
         sorter.setRowFilter(RowFilter.regexFilter(text.equals("") ? ".*" : "(?i)" + text));
+        updateButtons();
     }
 
     /**
