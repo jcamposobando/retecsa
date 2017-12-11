@@ -33,8 +33,8 @@ public class VerVentas extends javax.swing.JFrame {
     private void loadTablaVentas() {
         Object[] parameters = {idCliente};
         ResultSet rs = TablaDatos.executeQuery(con,
-                 "SELECT nombreVendedor,venta.idvendedor,numerodeventa,fechaventa,pagatotal FROM DBO.Venta, DBO.Vendedor where venta.idcliente=? and venta.idvendedor = vendedor.idvendedor",
-                 parameters);
+                "SELECT nombreVendedor,venta.idvendedor,numerodeventa,fechaventa,pagatotal FROM DBO.Venta, DBO.Vendedor where venta.idcliente=? and venta.idvendedor = vendedor.idvendedor",
+                parameters);
         try {
             DefaultTableModel tb = TablaDatos.buildTableModel(rs);
             tablaVentas.setModel(tb);
@@ -49,6 +49,7 @@ public class VerVentas extends javax.swing.JFrame {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaVentas.getRowSorter();
         String text = fieldBuscar.getText();
         sorter.setRowFilter(RowFilter.regexFilter(text.equals("") ? ".*" : "(?i)" + text));
+        verDetalle.setEnabled(tablaVentas.getSelectedRowCount() == 1);
     }
 
     /**
@@ -79,9 +80,15 @@ public class VerVentas extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaVentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaVentasMouseClicked(evt);
+            }
+        });
         scrollPane.setViewportView(tablaVentas);
 
         verDetalle.setText("Ver Detalle");
+        verDetalle.setEnabled(false);
         verDetalle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 verDetalleActionPerformed(evt);
@@ -144,6 +151,10 @@ public class VerVentas extends javax.swing.JFrame {
     private void fieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldBuscarKeyTyped
         updateFilter();
     }//GEN-LAST:event_fieldBuscarKeyTyped
+
+    private void tablaVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVentasMouseClicked
+        verDetalle.setEnabled(tablaVentas.getSelectedRowCount() == 1);
+    }//GEN-LAST:event_tablaVentasMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField fieldBuscar;
