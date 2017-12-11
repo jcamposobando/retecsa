@@ -6,50 +6,51 @@
 package proyecto.bases;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 /**
  *
- * @author b45818
+ * @author Juan
  */
-public class VerVentas extends javax.swing.JFrame {
+public class VerDetalleVenta extends javax.swing.JFrame {
 
-    String con;
-    String idCliente;
+    final String con;
+    private final String idVendedor;
+    private final Integer numeroDeVenta;
 
     /**
-     * Creates new form VerVentas
+     * Creates new form VerDetalleVenta
      */
-    public VerVentas(String con, String idCliente) {
+    public VerDetalleVenta(String con, String idVendedor, Integer numeroDeVenta) {
         this.con = con;
-        this.idCliente = idCliente;
+        this.idVendedor = idVendedor;
+        this.numeroDeVenta = numeroDeVenta;
         initComponents();
         loadTablaVentas();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void loadTablaVentas() {
-        Object[] parameters = {idCliente};
-        ResultSet rs = TablaDatos.executeQuery(con,
-                "SELECT nombreVendedor,venta.idvendedor,numerodeventa,fechaventa,pagatotal FROM DBO.Venta, DBO.Vendedor where venta.idcliente=? and venta.idvendedor = vendedor.idvendedor",
-                parameters);
+        Object[] parameters = {idVendedor, numeroDeVenta};
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.Sevende where idvendedor = ? and numerodeventa =?", parameters);
         try {
             DefaultTableModel tb = TablaDatos.buildTableModel(rs);
-            tablaVentas.setModel(tb);
-            tablaVentas.setRowSorter(new TableRowSorter<DefaultTableModel>(tb));
-        } catch (Exception e) {
-        };
+            tablaDetalle.setModel(tb);
+            tablaDetalle.setRowSorter(new TableRowSorter<DefaultTableModel>(tb));
+        } catch (SQLException e) {
+            System.err.println("Error al leer el resultado de un query");
+            e.printStackTrace();
+        }
         updateFilter();
-        verDetalle.setEnabled(tablaVentas.getSelectedRowCount() == 1);
     }
 
     private void updateFilter() {
-        TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaVentas.getRowSorter();
+        TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaDetalle.getRowSorter();
         String text = fieldBuscar.getText();
         sorter.setRowFilter(RowFilter.regexFilter(text.equals("") ? ".*" : "(?i)" + text));
-        verDetalle.setEnabled(tablaVentas.getSelectedRowCount() == 1);
     }
 
     /**
@@ -61,15 +62,15 @@ public class VerVentas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        scrollPane = new javax.swing.JScrollPane();
-        tablaVentas = new javax.swing.JTable();
-        verDetalle = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaDetalle = new javax.swing.JTable();
+        regresar = new javax.swing.JButton();
+        labelBuscar = new javax.swing.JLabel();
         fieldBuscar = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tablaVentas.setModel(new javax.swing.table.DefaultTableModel(
+        tablaDetalle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -80,28 +81,27 @@ public class VerVentas extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tablaVentas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaVentasMouseClicked(evt);
-            }
-        });
-        scrollPane.setViewportView(tablaVentas);
+        jScrollPane1.setViewportView(tablaDetalle);
 
-        verDetalle.setText("Ver Detalle");
-        verDetalle.setEnabled(false);
-        verDetalle.addActionListener(new java.awt.event.ActionListener() {
+        regresar.setText("Regresar");
+        regresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verDetalleActionPerformed(evt);
+                regresarActionPerformed(evt);
             }
         });
 
+        labelBuscar.setText("Buscar:");
+
+        fieldBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldBuscarActionPerformed(evt);
+            }
+        });
         fieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 fieldBuscarKeyTyped(evt);
             }
         });
-
-        jLabel1.setText("Buscar: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,12 +110,12 @@ public class VerVentas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(verDetalle)
+                        .addComponent(regresar)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(labelBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fieldBuscar)))
                 .addContainerGap())
@@ -125,42 +125,36 @@ public class VerVentas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(labelBuscar)
+                    .addComponent(fieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(verDetalle)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(regresar)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void verDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verDetalleActionPerformed
-        VerDetalleVenta verDetalleVenta = new VerDetalleVenta(con,
-                tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 0).toString(),
-                (Integer) tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 2));
-        verDetalleVenta.setVisible(true);
-        verDetalleVenta.setTitle("Venta "
-                + tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 2).toString()
-                + "de "
-                + tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 1).toString());
-    }//GEN-LAST:event_verDetalleActionPerformed
+    private void fieldBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldBuscarActionPerformed
+
+    }//GEN-LAST:event_fieldBuscarActionPerformed
+
+    private void regresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_regresarActionPerformed
 
     private void fieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldBuscarKeyTyped
         updateFilter();
     }//GEN-LAST:event_fieldBuscarKeyTyped
 
-    private void tablaVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVentasMouseClicked
-        verDetalle.setEnabled(tablaVentas.getSelectedRowCount() == 1);
-    }//GEN-LAST:event_tablaVentasMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField fieldBuscar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane scrollPane;
-    private javax.swing.JTable tablaVentas;
-    private javax.swing.JButton verDetalle;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelBuscar;
+    private javax.swing.JButton regresar;
+    private javax.swing.JTable tablaDetalle;
     // End of variables declaration//GEN-END:variables
 }

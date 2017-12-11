@@ -79,7 +79,6 @@ public class ModificarCliente extends javax.swing.JFrame {
         labelIdentificacion = new javax.swing.JLabel();
         labelPrioridad = new javax.swing.JLabel();
         Regresar = new javax.swing.JButton();
-        verContacto = new javax.swing.JButton();
         labe1 = new javax.swing.JLabel();
         fieldNombre1 = new javax.swing.JTextField();
 
@@ -105,14 +104,6 @@ public class ModificarCliente extends javax.swing.JFrame {
             }
         });
 
-        verContacto.setText("Ver contacto");
-        verContacto.setActionCommand("verContacto");
-        verContacto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verContactoActionPerformed(evt);
-            }
-        });
-
         labe1.setText("Nombre:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -124,8 +115,6 @@ public class ModificarCliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Regresar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(verContacto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(modificar))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -162,8 +151,7 @@ public class ModificarCliente extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(modificar)
-                    .addComponent(Regresar)
-                    .addComponent(verContacto))
+                    .addComponent(Regresar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -191,9 +179,6 @@ public class ModificarCliente extends javax.swing.JFrame {
         returnToParent();
     }//GEN-LAST:event_RegresarActionPerformed
 
-    private void verContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verContactoActionPerformed
-    }//GEN-LAST:event_verContactoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Regresar;
@@ -206,6 +191,5 @@ public class ModificarCliente extends javax.swing.JFrame {
     private javax.swing.JLabel labelIdentificacion;
     private javax.swing.JLabel labelPrioridad;
     private javax.swing.JButton modificar;
-    private javax.swing.JButton verContacto;
     // End of variables declaration//GEN-END:variables
 }
