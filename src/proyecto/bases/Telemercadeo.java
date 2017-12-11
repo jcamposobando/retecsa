@@ -249,7 +249,7 @@ public class Telemercadeo extends javax.swing.JFrame {
     private void updateFilter() {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaClientes.getRowSorter();
         String text = fieldBuscar.getText();
-        sorter.setRowFilter(RowFilter.regexFilter(text.equals("") ? null : "(?i)" + text));
+        sorter.setRowFilter(RowFilter.regexFilter(text.equals("") ? ".*" : "(?i)" + text));
     }
 
     /**
