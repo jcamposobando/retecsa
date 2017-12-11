@@ -33,7 +33,7 @@ public class VerContacto extends javax.swing.JFrame {
     private void loadTablaContactos() {
         Object[] parameters = {idCliente};
         ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.Particular, DBO.Cliente, DBO.empleado "
-                + "where cliente.idcliente = ? and cliente.idcliente=particular.idcliente and cliente.idcliente = empleado.idcliente",
+                + "where cliente.idcliente=particular.idcliente and cliente.idecliente = empleado.idcliente",
                 parameters);
         try {
             DefaultTableModel tb = TablaDatos.buildTableModel(rs);
