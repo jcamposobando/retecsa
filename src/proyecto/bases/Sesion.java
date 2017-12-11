@@ -107,8 +107,10 @@ public class Sesion extends javax.swing.JFrame {
         String contra = String.valueOf(password);
         conexion = "jdbc:sqlserver://172.16.202.39:1433;"
                 + "databaseName=Inventario;user=" + user + ";password=" + contra;
-        Administrador v = new Administrador(conexion);
+        Administrador a = new Administrador(conexion);
+        Vendedor v = new Vendedor(conexion, user);
         this.setVisible(false);
+        //a.setVisible(true);
         v.setVisible(true);
         //this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_iniciarActionPerformed
