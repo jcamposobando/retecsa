@@ -5,6 +5,11 @@
  */
 package proyecto.bases;
 
+import java.sql.ResultSet;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author b45818
@@ -21,6 +26,24 @@ public class VerVentas extends javax.swing.JFrame {
         this.con = con;
         this.idCliente = idCliente;
         initComponents();
+        loadTablaVentas();
+    }
+
+    private void loadTablaVentas() {
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.Venta, DBO.Cliente, DBO.Vendedor where venta.idcliente=cliente.idcliente and venta.idvendedor = vendedor.idvendedor", new Object[0]);
+        try {
+            DefaultTableModel tb = TablaDatos.buildTableModel(rs);
+            tablaVentas.setModel(tb);
+            tablaVentas.setRowSorter(new TableRowSorter<DefaultTableModel>(tb));
+        } catch (Exception e) {
+        };
+        updateFilter();
+        verDetalle.setEnabled(tablaVentas.getSelectedRowCount() == 1);
+    }
+
+    private void updateFilter() {
+        TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaVentas.getRowSorter();
+        sorter.setRowFilter(RowFilter.regexFilter(fieldBuscar.getText()));
     }
 
     /**
@@ -32,13 +55,15 @@ public class VerVentas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        scrollPane = new javax.swing.JScrollPane();
+        tablaVentas = new javax.swing.JTable();
         verDetalle = new javax.swing.JButton();
+        fieldBuscar = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -49,9 +74,18 @@ public class VerVentas extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        scrollPane.setViewportView(tablaVentas);
 
         verDetalle.setText("Ver Detalle");
+        verDetalle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verDetalleActionPerformed(evt);
+            }
+        });
+
+        fieldBuscar.setText("jTextField1");
+
+        jLabel1.setText("Buscar: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -60,17 +94,25 @@ public class VerVentas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(verDetalle)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fieldBuscar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(verDetalle)
                 .addContainerGap())
@@ -79,9 +121,15 @@ public class VerVentas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void verDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verDetalleActionPerformed
+        VerDetalleVenta verDetalleVenta = new VerDetalleVenta(con, "Vendedor", 8);
+    }//GEN-LAST:event_verDetalleActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField fieldBuscar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane scrollPane;
+    private javax.swing.JTable tablaVentas;
     private javax.swing.JButton verDetalle;
     // End of variables declaration//GEN-END:variables
 }
