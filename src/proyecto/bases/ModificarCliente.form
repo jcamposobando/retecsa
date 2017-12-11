@@ -37,8 +37,6 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="Regresar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="verContacto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="modificar" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -88,7 +86,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="modificar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="Regresar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="verContacto" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -124,15 +121,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RegresarActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="verContacto">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Ver contacto"/>
-        <Property name="actionCommand" type="java.lang.String" value="verContacto"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verContactoActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="labe1">
