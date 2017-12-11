@@ -27,7 +27,11 @@ public class Administrador extends javax.swing.JFrame {
     private int filasVendedor;
     private int filasVenta;
     private int filasProveedor;
-    private TableRowSorter<TableModel> sorter;
+    private TableRowSorter<TableModel> sorterProveedor;
+    private TableRowSorter<TableModel> sorterProducto;
+    private TableRowSorter<TableModel> sorterVenta;
+    private TableRowSorter<TableModel> sorterVendedor;
+    private TableRowSorter<TableModel> sorterCliente;
 
     /**
      * Creates new form NewJFrame
@@ -35,7 +39,11 @@ public class Administrador extends javax.swing.JFrame {
     public Administrador(String conexion) {
         this.conexion = conexion;
         initComponents();
-        cargar(tablaProveedor, "PROVEEDOR");
+        cargar(tablaProveedor, "PROVEEDOR",sorterProveedor);
+        cargar(tablaProducto, "PRODUCTO",sorterProducto);
+        cargar(tablaVendedor, "VENDEDOR",sorterVendedor);
+        cargar(tablaVenta, "VENTA",sorterVenta);
+        cargar(tablaCliente,"CLIENTE",sorterCliente);
     }
 
     /**
@@ -628,7 +636,7 @@ public class Administrador extends javax.swing.JFrame {
                     + " IDCLIENTE = ? AND FORMADEPAGO = ? AND FECHAVENTA = ? AND COSTOTOTAL = ? AND PAGOTOTAL = ?";
                 TablaDatos.executeUpdate(conexion, query, tuplaVenta[i]);
             }
-            cargar(tablaVenta, "VENTA");
+            cargar(tablaVenta, "VENTA",sorterVenta);
         }
     }//GEN-LAST:event_eliminarVentaActionPerformed
 
@@ -640,7 +648,7 @@ public class Administrador extends javax.swing.JFrame {
                     + "COSTOUNIDAD = ?";
                 TablaDatos.executeUpdate(conexion, query, tuplaProducto[i]);
             }
-            cargar(tablaProducto, "PRODUCTO");
+            cargar(tablaProducto, "PRODUCTO",sorterProducto);
         }
     }//GEN-LAST:event_eliminarProductoActionPerformed
 
@@ -650,7 +658,7 @@ public class Administrador extends javax.swing.JFrame {
                 String query = "DELETE FROM CLIENTE WHERE IDCLIENTE = ? AND PRIORIDADCLIENTE = ? AND NOMBRECLIENTE = ?";
                 TablaDatos.executeUpdate(conexion, query, tuplaCliente[i]);
             }
-            cargar(tablaCliente, "Cliente");
+           cargar(tablaCliente,"CLIENTE",sorterCliente);
         }
     }//GEN-LAST:event_eliminarClienteActionPerformed
 
@@ -660,37 +668,37 @@ public class Administrador extends javax.swing.JFrame {
                 String query = "DELETE FROM PROVEEDOR WHERE NOMBREPROVEEDOR = ? AND TELEFONOPROVEEDOR = ? AND CORREOPROVEEDOR = ?";
                 TablaDatos.executeUpdate(conexion, query, tuplaProveedor[i]);
             }
-            cargar(tablaProveedor, "PROVEEDOR");
+            cargar(tablaProveedor, "PROVEEDOR",sorterProveedor);
         }
     }//GEN-LAST:event_eliminarProveedorActionPerformed
 
     private void consultaProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaProveedorActionPerformed
-        filtrar(consultaProveedor);
+        filtrar(consultaProveedor, sorterProveedor);
     }//GEN-LAST:event_consultaProveedorActionPerformed
 
     private void consultaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaClienteActionPerformed
-        filtrar(consultaCliente);
+        filtrar(consultaCliente, sorterCliente);
     }//GEN-LAST:event_consultaClienteActionPerformed
 
     private void consultaProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaProductoActionPerformed
-        filtrar(consultaProducto);
+        filtrar(consultaProducto, sorterProducto);
     }//GEN-LAST:event_consultaProductoActionPerformed
 
     private void consultaVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaVendedorActionPerformed
-        filtrar(consultaVendedor);
+        filtrar(consultaVendedor, sorterVendedor);
     }//GEN-LAST:event_consultaVendedorActionPerformed
 
     private void consultaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaVentaActionPerformed
-        filtrar(consultaVenta);
+        filtrar(consultaVenta, sorterVenta);
     }//GEN-LAST:event_consultaVentaActionPerformed
 
     private void agregarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarProveedorActionPerformed
-        ModificarProveedor prov = new ModificarProveedor(conexion,true,()->{cargar(tablaProveedor, "PROVEEDOR");}, tuplaProveedor);
+        ModificarProveedor prov = new ModificarProveedor(conexion,true,()->{cargar(tablaProveedor, "PROVEEDOR",sorterProveedor);}, tuplaProveedor);
         prov.setVisible(true);
     }//GEN-LAST:event_agregarProveedorActionPerformed
 
     private void actualizarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarProveedorActionPerformed
-        ModificarProveedor prov = new ModificarProveedor(conexion,false,()->{cargar(tablaProveedor, "PROVEEDOR");}, tuplaProveedor);
+        ModificarProveedor prov = new ModificarProveedor(conexion,false,()->{cargar(tablaProveedor, "PROVEEDOR",sorterProveedor);}, tuplaProveedor);
         prov.setVisible(true);
     }//GEN-LAST:event_actualizarProveedorActionPerformed
 
@@ -750,37 +758,37 @@ public class Administrador extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaClienteMouseReleased
 
     private void agregarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarVendedorActionPerformed
-        ModificarVendedor vende = new ModificarVendedor(conexion,true,()->{cargar(tablaVendedor, "VENDEDOR");}, tuplaProveedor);
+        ModificarVendedor vende = new ModificarVendedor(conexion,true,()->{cargar(tablaVendedor, "VENDEDOR",sorterVendedor);}, tuplaProveedor);
         vende.setVisible(true);
     }//GEN-LAST:event_agregarVendedorActionPerformed
 
     private void actualizarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarVendedorActionPerformed
-        ModificarVendedor vende = new ModificarVendedor(conexion,false,()->{cargar(tablaProveedor, "PROVEEDOR");}, tuplaProveedor);
+        ModificarVendedor vende = new ModificarVendedor(conexion,false,()->{cargar(tablaVendedor, "VENDEDOR",sorterVendedor);}, tuplaProveedor);
         vende.setVisible(true);
     }//GEN-LAST:event_actualizarVendedorActionPerformed
 
     private void agregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarProductoActionPerformed
-        ModificarProducto prod = new ModificarProducto(conexion,true,()->{cargar(tablaProducto, "PRODUCTO");}, tuplaProducto);
+        ModificarProducto prod = new ModificarProducto(conexion,true,()->{cargar(tablaProducto, "PRODUCTO",sorterProducto);}, tuplaProducto);
         prod.setVisible(true);
     }//GEN-LAST:event_agregarProductoActionPerformed
 
     private void agregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarClienteActionPerformed
-        ModificarClienteAdmin client = new ModificarClienteAdmin(conexion,true,()->{cargar(tablaCliente, "ClIENTE");}, tuplaProducto);
+        ModificarClienteAdmin client = new ModificarClienteAdmin(conexion,true,()->{cargar(tablaCliente,"CLIENTE",sorterCliente);}, tuplaProducto);
         client.setVisible(true);
     }//GEN-LAST:event_agregarClienteActionPerformed
 
     private void actualizarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarProductoActionPerformed
-        ModificarProducto prod = new ModificarProducto(conexion,false,()->{cargar(tablaProducto, "PRODUCTO");}, tuplaProducto);
+        ModificarProducto prod = new ModificarProducto(conexion,false,()->{cargar(tablaProducto, "PRODUCTO",sorterProducto);}, tuplaProducto);
         prod.setVisible(true);
     }//GEN-LAST:event_actualizarProductoActionPerformed
 
     private void actualizarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarClienteActionPerformed
-        ModificarClienteAdmin client = new ModificarClienteAdmin(conexion,false,()->{cargar(tablaCliente, "ClIENTE");}, tuplaProducto);
+        ModificarClienteAdmin client = new ModificarClienteAdmin(conexion,false,()->{cargar(tablaCliente,"CLIENTE",sorterCliente);}, tuplaProducto);
         client.setVisible(true);
     }//GEN-LAST:event_actualizarClienteActionPerformed
 
     private void actualizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarVentaActionPerformed
-        ModificarVenta venta = new ModificarVenta(conexion,()->{cargar(tablaVenta, "VENTA");}, tuplaVenta);
+        ModificarVenta venta = new ModificarVenta(conexion,()->{cargar(tablaVenta, "VENTA",sorterVenta);}, tuplaVenta);
         venta.setVisible(true);
     }//GEN-LAST:event_actualizarVentaActionPerformed
 
@@ -789,7 +797,7 @@ public class Administrador extends javax.swing.JFrame {
         empleados.setVisible(true);
     }//GEN-LAST:event_empleadoActionPerformed
 
-    private void cargar(JTable tipo, String tabla) {
+    private void cargar(JTable tipo, String tabla, TableRowSorter<TableModel> sorter) {
         String consulta = "SELECT * FROM DBO." + tabla; 
         ResultSet rs = TablaDatos.executeQuery(conexion, consulta, new Object[0]);
         try{
@@ -803,7 +811,7 @@ public class Administrador extends javax.swing.JFrame {
         //boton.setEnabled(tipo.getSelectedRowCount() != 0);
     }
     
-    private void filtrar(JTextField filterText){
+    private void filtrar(JTextField filterText, TableRowSorter<TableModel> sorter){
         String text = filterText.getText();
         if (text.length() == 0) {
           sorter.setRowFilter(null);
