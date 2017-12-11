@@ -27,10 +27,11 @@ public class VerVentas extends javax.swing.JFrame {
         this.idCliente = idCliente;
         initComponents();
         loadTablaVentas();
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void loadTablaVentas() {
-        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.Venta, DBO.Cliente, DBO.Vendedor where venta.idcliente=cliente.idcliente and venta.idvendedor = vendedor.idvendedor", new Object[0]);
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT nombreVendedor,idvendedor,numerodeventa,fechadeventa,pagatotal FROM DBO.Venta, DBO.Cliente, DBO.Vendedor where venta.idcliente=cliente.idcliente and venta.idvendedor = vendedor.idvendedor", new Object[0]);
         try {
             DefaultTableModel tb = TablaDatos.buildTableModel(rs);
             tablaVentas.setModel(tb);
@@ -122,7 +123,14 @@ public class VerVentas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void verDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verDetalleActionPerformed
-        VerDetalleVenta verDetalleVenta = new VerDetalleVenta(con, "Vendedor", 8);
+        VerDetalleVenta verDetalleVenta = new VerDetalleVenta(con,
+                tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 0).toString(),
+                (Integer) tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 2));
+        verDetalleVenta.setVisible(true);
+        verDetalleVenta.setTitle("Venta "
+                + tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 2).toString()
+                + "de "
+                + tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 1).toString());
     }//GEN-LAST:event_verDetalleActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
