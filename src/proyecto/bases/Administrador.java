@@ -8,6 +8,8 @@ package proyecto.bases;
 import java.sql.*;
 import javax.swing.*;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableRowSorter;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -25,6 +27,7 @@ public class Administrador extends javax.swing.JFrame {
     private int filasVendedor;
     private int filasVenta;
     private int filasProveedor;
+    private TableRowSorter<TableModel> sorter;
 
     /**
      * Creates new form NewJFrame
@@ -62,7 +65,6 @@ public class Administrador extends javax.swing.JFrame {
         agregarCliente = new javax.swing.JButton();
         actualizarCliente = new javax.swing.JButton();
         eliminarCliente = new javax.swing.JButton();
-        buscarCliente = new javax.swing.JButton();
         consultaCliente = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         empleado = new javax.swing.JButton();
@@ -72,7 +74,6 @@ public class Administrador extends javax.swing.JFrame {
         agregarProducto = new javax.swing.JButton();
         actualizarProducto = new javax.swing.JButton();
         eliminarProducto = new javax.swing.JButton();
-        buscarProducto = new javax.swing.JButton();
         consultaProducto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
@@ -80,7 +81,6 @@ public class Administrador extends javax.swing.JFrame {
         tablaVendedor = new javax.swing.JTable();
         agregarVendedor = new javax.swing.JButton();
         actualizarVendedor = new javax.swing.JButton();
-        buscarVendedor = new javax.swing.JButton();
         consultaVendedor = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -88,7 +88,6 @@ public class Administrador extends javax.swing.JFrame {
         tablaVenta = new javax.swing.JTable();
         actualizarVenta = new javax.swing.JButton();
         eliminarVenta = new javax.swing.JButton();
-        buscarVenta = new javax.swing.JButton();
         consultaVenta = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
@@ -97,7 +96,6 @@ public class Administrador extends javax.swing.JFrame {
         agregarProveedor = new javax.swing.JButton();
         actualizarProveedor = new javax.swing.JButton();
         eliminarProveedor = new javax.swing.JButton();
-        buscarProveedor = new javax.swing.JButton();
         consultaProveedor = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
@@ -218,8 +216,6 @@ public class Administrador extends javax.swing.JFrame {
             }
         });
 
-        buscarCliente.setText("Buscar");
-
         consultaCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 consultaClienteActionPerformed(evt);
@@ -255,9 +251,7 @@ public class Administrador extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(consultaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buscarCliente)))
+                        .addComponent(consultaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -265,9 +259,8 @@ public class Administrador extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(consultaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(buscarCliente))
-                .addGap(14, 14, 14)
+                    .addComponent(jLabel2))
+                .addGap(16, 16, 16)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -275,7 +268,7 @@ public class Administrador extends javax.swing.JFrame {
                     .addComponent(actualizarCliente)
                     .addComponent(eliminarCliente)
                     .addComponent(empleado))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Clientes", jPanel3);
@@ -319,8 +312,6 @@ public class Administrador extends javax.swing.JFrame {
             }
         });
 
-        buscarProducto.setText("Buscar");
-
         consultaProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 consultaProductoActionPerformed(evt);
@@ -347,9 +338,7 @@ public class Administrador extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(consultaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buscarProducto)))
+                        .addComponent(consultaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -357,16 +346,15 @@ public class Administrador extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(consultaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(buscarProducto))
-                .addGap(14, 14, 14)
+                    .addComponent(jLabel3))
+                .addGap(16, 16, 16)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregarProducto)
                     .addComponent(actualizarProducto)
                     .addComponent(eliminarProducto))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Productos", jPanel4);
@@ -403,8 +391,6 @@ public class Administrador extends javax.swing.JFrame {
             }
         });
 
-        buscarVendedor.setText("Buscar");
-
         consultaVendedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 consultaVendedorActionPerformed(evt);
@@ -429,9 +415,7 @@ public class Administrador extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(consultaVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buscarVendedor)))
+                        .addComponent(consultaVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -439,15 +423,14 @@ public class Administrador extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(consultaVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(buscarVendedor))
-                .addGap(14, 14, 14)
+                    .addComponent(jLabel4))
+                .addGap(16, 16, 16)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregarVendedor)
                     .addComponent(actualizarVendedor))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Vendedor", jPanel6);
@@ -484,8 +467,6 @@ public class Administrador extends javax.swing.JFrame {
             }
         });
 
-        buscarVenta.setText("Buscar");
-
         consultaVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 consultaVentaActionPerformed(evt);
@@ -510,9 +491,7 @@ public class Administrador extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(consultaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buscarVenta)))
+                        .addComponent(consultaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -520,15 +499,14 @@ public class Administrador extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(consultaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(buscarVenta))
-                .addGap(14, 14, 14)
+                    .addComponent(jLabel5))
+                .addGap(16, 16, 16)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(actualizarVenta)
                     .addComponent(eliminarVenta))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Venta", jPanel7);
@@ -572,8 +550,6 @@ public class Administrador extends javax.swing.JFrame {
             }
         });
 
-        buscarProveedor.setText("Buscar");
-
         consultaProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 consultaProveedorActionPerformed(evt);
@@ -600,9 +576,7 @@ public class Administrador extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(consultaProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buscarProveedor)))
+                        .addComponent(consultaProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
@@ -610,16 +584,15 @@ public class Administrador extends javax.swing.JFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(consultaProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(buscarProveedor))
-                .addGap(14, 14, 14)
+                    .addComponent(jLabel1))
+                .addGap(16, 16, 16)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregarProveedor)
                     .addComponent(actualizarProveedor)
                     .addComponent(eliminarProveedor))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Proveedores", jPanel8);
@@ -692,23 +665,23 @@ public class Administrador extends javax.swing.JFrame {
     }//GEN-LAST:event_eliminarProveedorActionPerformed
 
     private void consultaProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaProveedorActionPerformed
-        // TODO add your handling code here:
+        filtrar(consultaProveedor);
     }//GEN-LAST:event_consultaProveedorActionPerformed
 
     private void consultaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaClienteActionPerformed
-        // TODO add your handling code here:
+        filtrar(consultaCliente);
     }//GEN-LAST:event_consultaClienteActionPerformed
 
     private void consultaProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaProductoActionPerformed
-        // TODO add your handling code here:
+        filtrar(consultaProducto);
     }//GEN-LAST:event_consultaProductoActionPerformed
 
     private void consultaVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaVendedorActionPerformed
-        // TODO add your handling code here:
+        filtrar(consultaVendedor);
     }//GEN-LAST:event_consultaVendedorActionPerformed
 
     private void consultaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultaVentaActionPerformed
-        // TODO add your handling code here:
+        filtrar(consultaVenta);
     }//GEN-LAST:event_consultaVentaActionPerformed
 
     private void agregarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarProveedorActionPerformed
@@ -821,11 +794,22 @@ public class Administrador extends javax.swing.JFrame {
         ResultSet rs = TablaDatos.executeQuery(conexion, consulta, new Object[0]);
         try{
         tipo.setModel(TablaDatos.buildTableModel(rs));
+        sorter = new TableRowSorter<>(TablaDatos.buildTableModel(rs));
+        tipo.setRowSorter(sorter);
         }catch(Exception e){
             System.err.println("No se encontro tabla");
         }
         tipo.setEnabled(tipo.getSelectedRowCount() == 0);
         //boton.setEnabled(tipo.getSelectedRowCount() != 0);
+    }
+    
+    private void filtrar(JTextField filterText){
+        String text = filterText.getText();
+        if (text.length() == 0) {
+          sorter.setRowFilter(null);
+        } else {
+          sorter.setRowFilter(RowFilter.regexFilter(text));
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -838,11 +822,6 @@ public class Administrador extends javax.swing.JFrame {
     private javax.swing.JButton agregarProducto;
     private javax.swing.JButton agregarProveedor;
     private javax.swing.JButton agregarVendedor;
-    private javax.swing.JButton buscarCliente;
-    private javax.swing.JButton buscarProducto;
-    private javax.swing.JButton buscarProveedor;
-    private javax.swing.JButton buscarVendedor;
-    private javax.swing.JButton buscarVenta;
     private javax.swing.JTextField consultaCliente;
     private javax.swing.JTextField consultaProducto;
     private javax.swing.JTextField consultaProveedor;
