@@ -29,8 +29,9 @@ public class Vendedor extends javax.swing.JFrame {
     private ArrayList<String> listaProductos;
     private int pTotal;
     private int cTotal;
-     private Object[][] tuplaProducto = new Object[0][0];
-     private int filasProducto;
+    private Object[][] tuplaProducto = new Object[0][0];
+    private int filasProducto;
+    private int numeroVenta;
 
     /**
      * Creates new form VendedorVenta
@@ -657,9 +658,10 @@ public class Vendedor extends javax.swing.JFrame {
 
         int m = Integer.parseInt(monto);
         CallableStatement cs = null;
-        String proceso = "EXEC CREARVENTA ?,?,?,?,?,?";
-
+        String proceso = "EXEC CREARVENTA ?,?,?,?,?,?,?";
+        int numero = 0;
         try {
+            ResultSet rs = null;
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection conn = DriverManager.getConnection(this.con);
             PreparedStatement ps = conn.prepareStatement(proceso);
@@ -670,12 +672,33 @@ public class Vendedor extends javax.swing.JFrame {
             ps.setFloat(4, pTotal);
             ps.setFloat(5, cTotal);
             ps.setFloat(6, m);
-
+            ps.setInt(7, numero);
             ps.executeQuery();
             ps.close();
             conn.close();
 
         } catch (SQLException e) {
+            String sql = "SELECT MAX(NUMERODEVENTA) FROM VENTA WHERE IDVENDEDOR = ?";
+            Object[] id = new Object[1];
+            id[0] = "33445566";
+            
+             ResultSet rs = null;
+            try {
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Connection conn;
+            try {
+                conn = DriverManager.getConnection(this.con);
+                PreparedStatement ps = conn.prepareStatement(sql);
+                rs = TablaDatos.executeQuery(this.con, sql, id);
+                while(rs.next()){
+                    numeroVenta = rs.getInt(1);
+                }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
+                }
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
@@ -688,9 +711,6 @@ public class Vendedor extends javax.swing.JFrame {
         String producto = "";
         String marca = "";
         String proveedor = "";
-        for (int i = 0; i < listaProductos.size(); i++) {
-
-        }
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection conn = DriverManager.getConnection(this.con);
@@ -700,7 +720,7 @@ public class Vendedor extends javax.swing.JFrame {
             System.err.println(query);
             for (int i = 0; i < listaProductos.size(); i = i+6) {
                 datos = listaProductos.get(i);
-                String[] dat = datos.split("\\s*,\\s*");
+                String[] dat = datos.split(",");
                 producto = dat[0];
                 marca = dat[1];
                 proveedor = dat[2];
@@ -708,13 +728,12 @@ public class Vendedor extends javax.swing.JFrame {
                 stmt.setString(i + 1, proveedor);
                 stmt.setString(i + 2, marca);
                 stmt.setString(i + 3, producto);
-                stmt.setInt(i + 4, 222);                       //Cambiar por numero de venta
-                stmt.setString(i + 5, idVend);
+                stmt.setInt(i + 4, numeroVenta);                       //Cambiar por numero de venta
+                stmt.setString(i + 5, "33445566");
                 stmt.setInt(i + 6, cant);
             }
             stmt.executeUpdate();
             stmt.close();
-            rs.close();
             conn.close();
         } catch (ClassNotFoundException e) {
             System.err.println("No se encontro el driver jdbc");
