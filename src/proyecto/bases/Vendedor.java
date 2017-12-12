@@ -549,30 +549,30 @@ public class Vendedor extends javax.swing.JFrame {
         ResultSet rs = null;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection con = DriverManager.getConnection(this.con);
-            stmt = con.prepareStatement("SELECT IDCLIENTE FROM DBO.CLIENTE WHERE IDCLIENTE = ?;");
+            Connection conn = DriverManager.getConnection(this.con);
+            stmt = conn.prepareStatement("SELECT IDCLIENTE FROM DBO.CLIENTE WHERE IDCLIENTE = ?;");
             stmt.setString(1, identificacion);
             rs = stmt.executeQuery();
             stmt.close();
             rs.close();
-            con.close();
+            conn.close();
         } catch (ClassNotFoundException e) {
             System.err.println("No se encontro el driver jdbc");
             e.printStackTrace();
         } catch (SQLException e) {
             stmt = null;
-            rs = null;
+            //rs = null;
             try {
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                Connection con = DriverManager.getConnection(this.con);
-                stmt = con.prepareStatement("INSERT INTO DBO.CLIENTE VALUES(?,?,?);");
+                Connection conn = DriverManager.getConnection(this.con);
+                stmt = conn.prepareStatement("INSERT INTO DBO.CLIENTE VALUES(?,?,?);");
                 stmt.setString(1, tipo);
                 stmt.setInt(2, 3);
                 stmt.setString(3, nombre);
-                rs = stmt.executeQuery();
+                stmt.executeUpdate();
                 stmt.close();
-                rs.close();
-                con.close();
+               // rs.close();
+                conn.close();
             } catch (ClassNotFoundException er) {
                 System.err.println("No se encontro el driver jdbc");
                 er.printStackTrace();
@@ -581,19 +581,21 @@ public class Vendedor extends javax.swing.JFrame {
                 er.printStackTrace();
             }
             if (tipo.toUpperCase().equals("empleado".toUpperCase())) {
+                stmt = null;
+               // rs = null;
                 try {
                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                    Connection con = DriverManager.getConnection(this.con);
-                    stmt = con.prepareStatement("INSERT INTO DBO.EMPLEADO VALUES(?,?,?,?,?);");
+                    Connection conn = DriverManager.getConnection(this.con);
+                    stmt = conn.prepareStatement("INSERT INTO DBO.EMPLEADO VALUES(?,?,?,?,?);");
                     stmt.setString(1, identificacion);
                     stmt.setString(2, correo);
                     stmt.setString(3, empleado);
                     stmt.setString(4, funcion);
                     stmt.setString(5, telefono);
-                    rs = stmt.executeQuery();
+                    stmt.executeUpdate();
                     stmt.close();
-                    rs.close();
-                    con.close();
+                   // rs.close();
+                    conn.close();
                 } catch (ClassNotFoundException er) {
                     System.err.println("No se encontro el driver jdbc");
                     er.printStackTrace();
@@ -602,17 +604,19 @@ public class Vendedor extends javax.swing.JFrame {
                     error.printStackTrace();
                 }
             } else if (tipo.toUpperCase().equals("particular".toUpperCase())) {
+                stmt = null;
+                //rs = null;
                 try {
                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                    Connection con = DriverManager.getConnection(this.con);
-                    stmt = con.prepareStatement("INSERT INTO DBO.PARTICULR VALUES(?,?,?,?,?,?,?);");
+                    Connection conn = DriverManager.getConnection(this.con);
+                    stmt = conn.prepareStatement("INSERT INTO DBO.PARTICULR VALUES(?,?,?,?,?,?,?);");
                     stmt.setString(1, identificacion);
                     stmt.setString(2, correo);
                     stmt.setString(3, telefono);
-                    rs = stmt.executeQuery();
+                    stmt.executeUpdate();
                     stmt.close();
-                    rs.close();
-                    con.close();
+                    //rs.close();
+                    conn.close();
                 } catch (ClassNotFoundException er) {
                     System.err.println("No se encontro el driver jdbc");
                     er.printStackTrace();
@@ -634,8 +638,8 @@ public class Vendedor extends javax.swing.JFrame {
 
 	try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection con = DriverManager.getConnection(this.con);
-            cs = con.prepareCall(proceso);
+            Connection conn = DriverManager.getConnection(this.con);
+            cs = conn.prepareCall(proceso);
             cs.setString(1, "33445566");
             cs.setString(2, idCliente);
             cs.setString(3, formaPago);
@@ -643,9 +647,9 @@ public class Vendedor extends javax.swing.JFrame {
             cs.setFloat(5, cTotal);
             cs.setFloat(6, m);
 
-            cs.execute();
+            cs.executeUpdate();
             cs.close();
-            con.close();
+            conn.close();
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -665,10 +669,10 @@ public class Vendedor extends javax.swing.JFrame {
         }
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection con = DriverManager.getConnection(this.con);
+            Connection conn = DriverManager.getConnection(this.con);
             String query = "INSERT INTO DBO.SEVENDE VALUES "
                     + String.join(",", Collections.nCopies(listaProductos.size(), "(?,?,?,?,?,?)"));
-            stmt = con.prepareStatement(query);
+            stmt = conn.prepareStatement(query);
             System.err.println(query);
             for (int i = 0; i < listaProductos.size(); i++) {
                 datos = listaProductos.get(i);
@@ -684,10 +688,10 @@ public class Vendedor extends javax.swing.JFrame {
                 stmt.setString(i + 5, idVend);
                 stmt.setInt(i + 6, cant);
             }
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
             stmt.close();
             rs.close();
-            con.close();
+            conn.close();
         } catch (ClassNotFoundException e) {
             System.err.println("No se encontro el driver jdbc");
             e.printStackTrace();
