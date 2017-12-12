@@ -82,20 +82,28 @@ public class Telemercadeo extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel3 = new javax.swing.JPanel();
+        agregar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaClientes = new javax.swing.JTable();
-        agregar = new javax.swing.JButton();
+        fieldBuscar = new javax.swing.JTextField();
         actualizar = new javax.swing.JButton();
         eliminar = new javax.swing.JButton();
         verVentas = new javax.swing.JButton();
         verContacto = new javax.swing.JButton();
-        fieldBuscar = new javax.swing.JTextField();
-        labelBuscar = new javax.swing.JLabel();
         hacerVenta = new javax.swing.JButton();
+        labelBuscar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
+        agregar.setText("Agregar");
+        agregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                agregarMouseClicked(evt);
+            }
+        });
+
+        tablaClientes.setRowHeight(25);
         tablaClientes.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tablaClientes.setShowHorizontalLines(false);
         tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -105,10 +113,14 @@ public class Telemercadeo extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaClientes);
 
-        agregar.setText("Agregar");
-        agregar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                agregarMouseClicked(evt);
+        fieldBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldBuscarActionPerformed(evt);
+            }
+        });
+        fieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                fieldBuscarKeyTyped(evt);
             }
         });
 
@@ -144,19 +156,6 @@ public class Telemercadeo extends javax.swing.JFrame {
             }
         });
 
-        fieldBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldBuscarActionPerformed(evt);
-            }
-        });
-        fieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                fieldBuscarKeyTyped(evt);
-            }
-        });
-
-        labelBuscar.setText("Buscar:");
-
         hacerVenta.setText("Hacer Venta");
         hacerVenta.setEnabled(false);
         hacerVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -165,84 +164,106 @@ public class Telemercadeo extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(verVentas)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(verContacto)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(actualizar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(hacerVenta)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(eliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(agregar))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(labelBuscar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fieldBuscar)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(agregar)
-                    .addComponent(actualizar)
-                    .addComponent(eliminar)
-                    .addComponent(verVentas)
-                    .addComponent(verContacto)
-                    .addComponent(hacerVenta))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        labelBuscar.setText("Buscar:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(verVentas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(verContacto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(actualizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(hacerVenta)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(eliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(agregar))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 860, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(labelBuscar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelBuscar)
+                    .addComponent(fieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(actualizar)
+                    .addComponent(eliminar)
+                    .addComponent(verVentas)
+                    .addComponent(verContacto)
+                    .addComponent(hacerVenta)
+                    .addComponent(agregar))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void hacerVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hacerVentaActionPerformed
+        Vendedor vendedor = new Vendedor(con, idVendedor, tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
+        vendedor.setVisible(true);
+    }//GEN-LAST:event_hacerVentaActionPerformed
+
+    private void fieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldBuscarKeyTyped
+        updateFilter();
+    }//GEN-LAST:event_fieldBuscarKeyTyped
+
+    private void fieldBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldBuscarActionPerformed
+        updateFilter();
+    }//GEN-LAST:event_fieldBuscarActionPerformed
+
+    private void verContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verContactoActionPerformed
+        Object[] parameters = {tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString()};
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * "
+            + "FROM DBO.Particular "
+            + "where idCliente = ?",
+            parameters);
+        try {
+            if (rs.next()) {
+                VerContactoParticular verContacto = new VerContactoParticular(con,
+                    (String) rs.getObject(1),
+                    (String) rs.getObject(2),
+                    (String) rs.getObject(3)
+                );
+                verContacto.setTitle(tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2).toString());
+                verContacto.setVisible(true);
+            } else {
+                VerContactoEmpleado verContactoEmpleado = new VerContactoEmpleado(con,
+                    tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
+                verContactoEmpleado.setTitle(tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2).toString());
+                verContactoEmpleado.setVisible(true);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Telemercadeo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_verContactoActionPerformed
+
+    private void verVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verVentasActionPerformed
+        VerVentas verVentas = new VerVentas(con, tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
+        verVentas.setVisible(true);
+    }//GEN-LAST:event_verVentasActionPerformed
+
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
         deleteClientsFromDatabase();
         loadClientList();
     }//GEN-LAST:event_eliminarActionPerformed
-
-    private void agregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregarMouseClicked
-        ModificarCliente nuevoCliente = new ModificarCliente(() -> {
-            loadClientList();
-        }, true, con);
-        nuevoCliente.setVisible(true);
-    }//GEN-LAST:event_agregarMouseClicked
 
     private void actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarActionPerformed
         String[] clientData = {tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString(),
@@ -254,52 +275,17 @@ public class Telemercadeo extends javax.swing.JFrame {
         nuevoCliente.setVisible(true);
     }//GEN-LAST:event_actualizarActionPerformed
 
+    private void agregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregarMouseClicked
+        ModificarCliente nuevoCliente = new ModificarCliente(() -> {
+            loadClientList();
+        }, true, con);
+        nuevoCliente.setVisible(true);
+    }//GEN-LAST:event_agregarMouseClicked
 
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
         updateButtons();
     }//GEN-LAST:event_tablaClientesMouseClicked
 
-    private void verVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verVentasActionPerformed
-        VerVentas verVentas = new VerVentas(con, tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
-        verVentas.setVisible(true);
-    }//GEN-LAST:event_verVentasActionPerformed
-
-    private void fieldBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldBuscarActionPerformed
-        updateFilter();
-    }//GEN-LAST:event_fieldBuscarActionPerformed
-
-    private void fieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldBuscarKeyTyped
-        updateFilter();
-    }//GEN-LAST:event_fieldBuscarKeyTyped
-
-    private void verContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verContactoActionPerformed
-                Object[] parameters = {tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString()};
-        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * "
-                + "FROM DBO.Particular "
-                + "where idCliente = ?",
-                parameters);
-        try {
-            if (rs.next()) {
-                VerContactoParticular verContacto = new VerContactoParticular(con,
-                        (String) rs.getObject(1),
-                        (String) rs.getObject(2),
-                        (String) rs.getObject(3)
-                );
-                verContacto.setTitle(tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2).toString());
-                verContacto.setVisible(true);
-            } else {
-                VerContactoEmpleado verContactoEmpleado = new VerContactoEmpleado(con,
-                        tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
-                verContactoEmpleado.setTitle(tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2).toString());
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Telemercadeo.class.getName()).log(Level.SEVERE, null, ex);
-        }//GEN-LAST:event_verContactoActionPerformed
-
-    private void hacerVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hacerVentaActionPerformed
-        Vendedor vendedor = new Vendedor(con, idVendedor, tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
-        vendedor.setVisible(true);
-    }//GEN-LAST:event_hacerVentaActionPerformed
 
     private void updateFilter() {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaClientes.getRowSorter();
@@ -319,7 +305,7 @@ public class Telemercadeo extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
@@ -358,7 +344,6 @@ public class Telemercadeo extends javax.swing.JFrame {
     private javax.swing.JButton eliminar;
     private javax.swing.JTextField fieldBuscar;
     private javax.swing.JButton hacerVenta;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelBuscar;
     private javax.swing.JTable tablaClientes;

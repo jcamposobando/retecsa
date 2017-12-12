@@ -80,6 +80,10 @@ public class VerVentas extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaVentas.setGridColor(new java.awt.Color(255, 255, 255));
+        tablaVentas.setMaximumSize(new java.awt.Dimension(0, 0));
+        tablaVentas.setRowHeight(25);
+        tablaVentas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaVentas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaVentasMouseClicked(evt);
@@ -110,7 +114,7 @@ public class VerVentas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(verDetalle)
                         .addGap(0, 0, Short.MAX_VALUE))

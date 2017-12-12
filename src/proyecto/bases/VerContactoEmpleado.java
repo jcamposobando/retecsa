@@ -32,8 +32,8 @@ public class VerContactoEmpleado extends javax.swing.JFrame {
 
     private void loadTablaContactos() {
         Object[] parameters = {idCliente};
-        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * FROM DBO.empleado "
-                + "where cliente.idecliente = empleado.idcliente",
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT nombreempleado,funcion,correoempleado,telefonoempleado FROM DBO.empleado "
+                + "where empleado.idcliente = ?",
                 parameters);
         try {
             DefaultTableModel tb = TablaDatos.buildTableModel(rs);
@@ -100,6 +100,7 @@ public class VerContactoEmpleado extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaContacto.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tablaContacto);
 
         agregar.setText("Agregar");
