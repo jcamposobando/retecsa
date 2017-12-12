@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -20,12 +22,14 @@ import javax.swing.table.TableRowSorter;
  */
 public class Telemercadeo extends javax.swing.JFrame {
 
-    final String con;
+    private final String con;
+    private final String idVendedor;
 
     /**
      * Creates new form Telemercadeo
      */
-    public Telemercadeo(String con) {
+    public Telemercadeo(String con, String idVendedor) {
+        this.idVendedor = idVendedor;
         this.con = con;
         initComponents();
         loadClientList();
@@ -65,6 +69,7 @@ public class Telemercadeo extends javax.swing.JFrame {
         actualizar.setEnabled(tablaClientes.getSelectedRowCount() == 1);
         verVentas.setEnabled(tablaClientes.getSelectedRowCount() == 1);
         verContacto.setEnabled(tablaClientes.getSelectedRowCount() == 1);
+        hacerVenta.setEnabled(tablaClientes.getSelectedRowCount() == 1);
         eliminar.setEnabled(tablaClientes.getSelectedRowCount() != 0);
     }
 
@@ -87,20 +92,13 @@ public class Telemercadeo extends javax.swing.JFrame {
         verContacto = new javax.swing.JButton();
         fieldBuscar = new javax.swing.JTextField();
         labelBuscar = new javax.swing.JLabel();
+        hacerVenta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        tablaClientes.setModel(null);
+        tablaClientes.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tablaClientes.setShowHorizontalLines(false);
         tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaClientesMouseClicked(evt);
@@ -132,6 +130,7 @@ public class Telemercadeo extends javax.swing.JFrame {
         });
 
         verVentas.setText("Ver Ventas");
+        verVentas.setEnabled(false);
         verVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 verVentasActionPerformed(evt);
@@ -139,6 +138,7 @@ public class Telemercadeo extends javax.swing.JFrame {
         });
 
         verContacto.setText("Ver Contacto");
+        verContacto.setEnabled(false);
         verContacto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 verContactoActionPerformed(evt);
@@ -158,13 +158,21 @@ public class Telemercadeo extends javax.swing.JFrame {
 
         labelBuscar.setText("Buscar:");
 
+        hacerVenta.setText("Hacer Venta");
+        hacerVenta.setEnabled(false);
+        hacerVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hacerVentaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(verVentas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -172,18 +180,17 @@ public class Telemercadeo extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(actualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(hacerVenta)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(eliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(agregar)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(agregar))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(labelBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fieldBuscar)))
-                .addContainerGap())
+                        .addComponent(fieldBuscar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,15 +199,16 @@ public class Telemercadeo extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelBuscar))
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(25, 25, 25)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregar)
                     .addComponent(actualizar)
                     .addComponent(eliminar)
                     .addComponent(verVentas)
-                    .addComponent(verContacto))
+                    .addComponent(verContacto)
+                    .addComponent(hacerVenta))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -263,9 +271,30 @@ public class Telemercadeo extends javax.swing.JFrame {
     }//GEN-LAST:event_fieldBuscarKeyTyped
 
     private void verContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verContactoActionPerformed
-        VerContacto verContacto = new VerContacto(con, tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
-        verContacto.setVisible(true);
+        Object[] parameters = {tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString()};
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * "
+                + "FROM DBO.Particular "
+                + "where cliente.idCliente = cantidadventas.idcliente",
+                parameters);
+        try {
+            if (rs.first()) {
+                VerContactoParticular verContacto = new VerContactoParticular(con,
+                        (String) rs.getObject(1),
+                        (String) rs.getObject(2),
+                        (String) rs.getObject(3)
+                );
+                verContacto.setVisible(true);
+            } else {
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Telemercadeo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_verContactoActionPerformed
+
+    private void hacerVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hacerVentaActionPerformed
+        Vendedor vendedor = new Vendedor(con, idVendedor, tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
+        vendedor.setVisible(true);
+    }//GEN-LAST:event_hacerVentaActionPerformed
 
     private void updateFilter() {
         TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaClientes.getRowSorter();
@@ -288,16 +317,24 @@ public class Telemercadeo extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Telemercadeo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Telemercadeo.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Telemercadeo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Telemercadeo.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Telemercadeo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Telemercadeo.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Telemercadeo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Telemercadeo.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -305,7 +342,7 @@ public class Telemercadeo extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Telemercadeo("jdbc:sqlserver://172.16.202.39:1433;"
-                        + "databaseName=Inventario;user=admin;password=123456").setVisible(true);
+                        + "databaseName=Inventario;user=admin;password=123456", "").setVisible(true);
             }
         });
     }
@@ -315,6 +352,7 @@ public class Telemercadeo extends javax.swing.JFrame {
     private javax.swing.JButton agregar;
     private javax.swing.JButton eliminar;
     private javax.swing.JTextField fieldBuscar;
+    private javax.swing.JButton hacerVenta;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelBuscar;
