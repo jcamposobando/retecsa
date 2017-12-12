@@ -32,7 +32,7 @@ public class ModificarVenta extends javax.swing.JFrame {
         llaveNumero = nuevos[0][1].toString();
         vendedor.setText(nuevos[0][0].toString());
         numero.setText(nuevos[0][1].toString());
-        fecha.setText(nuevos[0][2].toString());
+        fecha.setText(nuevos[0][4].toString());
         forma.setText(nuevos[0][3].toString());
     }
 
@@ -174,7 +174,7 @@ public class ModificarVenta extends javax.swing.JFrame {
         Object[] atributos = new Object[6];
         atributos[0] = vendedor.getText();
         atributos[1] = Integer.parseInt(numero.getText());
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date parsed = format.parse(fecha.getText());
         atributos[2] = forma.getText();
         java.sql.Date sql = new java.sql.Date(parsed.getTime());
@@ -182,7 +182,7 @@ public class ModificarVenta extends javax.swing.JFrame {
         atributos[4] = llaveVendedor;
         atributos[5] = Integer.parseInt(llaveNumero);
         String query = "UPDATE DBO.VENTA SET IDVENDEDOR = ?, NUMERODEVENTA = ?,"
-                    + " FORMADEPAGO = ?, FECHA = ? WHERE IDVENDEDOR = ? AND NUMERODEVENTA = ?";
+                    + " FORMADEPAGO = ?, FECHAVENTA = ? WHERE IDVENDEDOR = ? AND NUMERODEVENTA = ?";
         TablaDatos.executeUpdate(conexion, query, atributos);
         if(!abonado.getText().equals("") && !pendiente.getText().equals("")){
         atributos = new Object[7];
@@ -200,6 +200,7 @@ public class ModificarVenta extends javax.swing.JFrame {
        }catch(ParseException e){
            System.err.println("Error en fecha");
        }
+       actualizar();
     }//GEN-LAST:event_aceptarActionPerformed
 
      private void actualizar() {
