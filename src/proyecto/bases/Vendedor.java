@@ -39,6 +39,7 @@ public class Vendedor extends javax.swing.JFrame {
     public Vendedor(String con, String idVendedor, String idCliente) {
         this.con = con;
         this.idCliente = idCliente;
+        listaProductos = new ArrayList<String>();
         initComponents();
         getProductList();
         idVend = idVendedor;
