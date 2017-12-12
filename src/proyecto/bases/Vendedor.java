@@ -15,25 +15,30 @@ import java.util.logging.Logger;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author b22539
  */
 public class Vendedor extends javax.swing.JFrame {
-    
+
     final String con;
-   
+
     private String idCliente;
     private String idVend;
     private ArrayList<String> listaProductos;
     private int pTotal;
     private int cTotal;
+
     /**
      * Creates new form VendedorVenta
+     *
      * @param conexion
      */
-    public Vendedor(String con, String idVendedor){
+
+    public Vendedor(String con, String idVendedor, String idCliente) {
         this.con = con;
+        this.idCliente = idCliente;
         initComponents();
         getProductList();
         idVend = idVendedor;
@@ -41,13 +46,17 @@ public class Vendedor extends javax.swing.JFrame {
         pTotal = 0;
         String query = "SELECT * FROM PRODUCTO;";
         ResultSet rs = null;
-        
+
         rs = TablaDatos.executeQuery(con, query, new Object[0]);
-        try{
+        try {
             tablaProductos.setModel(TablaDatos.buildTableModel(rs));
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public Vendedor(String con, String idVendedor) {
+        this(con, idVendedor, "");
     }
 
     /**
@@ -155,9 +164,9 @@ public class Vendedor extends javax.swing.JFrame {
             }
         });
 
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField7KeyTyped(evt);
             }
         });
 
@@ -172,17 +181,14 @@ public class Vendedor extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)))
+                        .addComponent(jTextField7))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel6)
@@ -226,7 +232,7 @@ public class Vendedor extends javax.swing.JFrame {
                         .addGap(99, 99, 99)
                         .addComponent(bCancelarVenta))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(238, Short.MAX_VALUE))
+                .addContainerGap(246, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Productos", jPanel3);
@@ -444,10 +450,6 @@ public class Vendedor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        filtrar(jTextField7.getText());
-    }//GEN-LAST:event_jTextField7ActionPerformed
-
     private void fEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fEmpleadoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fEmpleadoActionPerformed
@@ -494,11 +496,16 @@ public class Vendedor extends javax.swing.JFrame {
         fFormaDePago.setText("");
     }//GEN-LAST:event_bVenderActionPerformed
 
-    public void buscar(String busqueda){
-            
+    private void jTextField7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyTyped
+        String text = jTextField7.getText(); 
+        filtrar(text.equals("") ? ".*" : "(?i)" + text);
+    }//GEN-LAST:event_jTextField7KeyTyped
+
+    public void buscar(String busqueda) {
+
     }
-    
-    public void cotizacion(String producto, String marca, String cantidad){
+
+    public void cotizacion(String producto, String marca, String cantidad) {
         //boolean exito = true;
         //Integer cant = Integer.valueOf(cantidad);
         //PreparedStatement stmt = null;
@@ -508,22 +515,22 @@ public class Vendedor extends javax.swing.JFrame {
         rs = TablaDatos.executeQuery(con, "SELECT PRECIODEVENTA, COSTOUNIDAD FROM DBO.PRODUCTO WHERE NOMBREPRODUCTO = ? AND MARCAPRODUCTO = ? AND EXISTENCIA > 0", precioCosto);
         int pProducto = 0;
         try {
-            while(rs.next()){
-            pProducto = rs.getInt(1);
-            cTotal += rs.getInt(2);
+            while (rs.next()) {
+                pProducto = rs.getInt(1);
+                cTotal += rs.getInt(2);
             }
-            int totalProducto =  pProducto * iCantidad;
+            int totalProducto = pProducto * iCantidad;
             pTotal += totalProducto;
-            AProductos.append("Producto: " + producto + "   Marca: " + marca + "   Cantidad: " + cantidad + "   Precio: "  + totalProducto + "\n");
+            AProductos.append("Producto: " + producto + "   Marca: " + marca + "   Cantidad: " + cantidad + "   Precio: " + totalProducto + "\n");
             //listaProductos.add(producto/* + "," + marca + "," + cantidad*/);  
             totalPagar.setText(String.valueOf(pTotal));
         } catch (SQLException ex) {
             Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
-       }
-        
+        }
+
     }
-        
-    public void cancelarVenta(){
+
+    public void cancelarVenta() {
         listaProductos.clear();
         AProductos.setText("");
         totalPagar.setText("");
@@ -531,71 +538,70 @@ public class Vendedor extends javax.swing.JFrame {
         pTotal = 0;
         cTotal = 0;
     }
-    
-    public void ingresarCliente(String tipo, String nombre, String identificacion, String correo, String telefono, String empleado, String funcion){
+
+    public void ingresarCliente(String tipo, String nombre, String identificacion, String correo, String telefono, String empleado, String funcion) {
         //boolean exito = true;
         idCliente = identificacion;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        try{
+        try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection con = DriverManager.getConnection(this.con);
             stmt = con.prepareStatement("SELECT IDCLIENTE FROM DBO.CLIENTE WHERE IDCLIENTE = ?;");
-            stmt.setString(1,identificacion);
+            stmt.setString(1, identificacion);
             rs = stmt.executeQuery();
         } catch (ClassNotFoundException e) {
-                System.err.println("No se encontro el driver jdbc");
-                e.printStackTrace();
-        }catch(SQLException e){
+            System.err.println("No se encontro el driver jdbc");
+            e.printStackTrace();
+        } catch (SQLException e) {
             stmt = null;
             rs = null;
-            try{
+            try {
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                 Connection con = DriverManager.getConnection(this.con);
                 stmt = con.prepareStatement("INSERT INTO DBO.CLIENTE VALUES(?,?,?);");
-                stmt.setString(1,tipo);
-                stmt.setInt(2,3);
-                stmt.setString(3,nombre);
+                stmt.setString(1, tipo);
+                stmt.setInt(2, 3);
+                stmt.setString(3, nombre);
                 rs = stmt.executeQuery();
             } catch (ClassNotFoundException er) {
                 System.err.println("No se encontro el driver jdbc");
                 er.printStackTrace();
-            }catch(SQLException er){
+            } catch (SQLException er) {
                 System.err.println("Error al insertar");
                 er.printStackTrace();
             }
-            if(tipo.toUpperCase().equals("empleado".toUpperCase())){
-                try{
+            if (tipo.toUpperCase().equals("empleado".toUpperCase())) {
+                try {
                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                     Connection con = DriverManager.getConnection(this.con);
                     stmt = con.prepareStatement("INSERT INTO DBO.EMPLEADO VALUES(?,?,?,?,?);");
-                    stmt.setString(1,identificacion);
-                    stmt.setString(2,correo);
-                    stmt.setString(3,empleado);
-                    stmt.setString(4,funcion);
-                    stmt.setString(5,telefono);
+                    stmt.setString(1, identificacion);
+                    stmt.setString(2, correo);
+                    stmt.setString(3, empleado);
+                    stmt.setString(4, funcion);
+                    stmt.setString(5, telefono);
                     rs = stmt.executeQuery();
                 } catch (ClassNotFoundException er) {
                     System.err.println("No se encontro el driver jdbc");
                     er.printStackTrace();
-                }catch(SQLException error){
+                } catch (SQLException error) {
                     System.err.println("Error al insertar");
                     error.printStackTrace();
                 }
-            }
-            else if(tipo.toUpperCase().equals("particular".toUpperCase())){
-                try{
+            } else if (tipo.toUpperCase().equals("particular".toUpperCase())) {
+                try {
                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                     Connection con = DriverManager.getConnection(this.con);
                     stmt = con.prepareStatement("INSERT INTO DBO.PARTICULR VALUES(?,?,?,?,?,?,?);");
-                    stmt.setString(1,identificacion);
-                    stmt.setString(2,correo);
-                    stmt.setString(3,telefono);
+                    stmt.setString(1, identificacion);
+                    stmt.setString(2, correo);
+                    stmt.setString(3, telefono);
                     rs = stmt.executeQuery();
                 } catch (ClassNotFoundException er) {
                     System.err.println("No se encontro el driver jdbc");
                     er.printStackTrace();
-                }catch(SQLException error){
+                } catch (SQLException error) {
                     System.err.println("Error al insertar");
                     error.printStackTrace();
                 }
@@ -603,10 +609,10 @@ public class Vendedor extends javax.swing.JFrame {
         }
         //return exito;
     }
-    
-    public void venta(String monto, String formaPago){
+
+    public void venta(String monto, String formaPago) {
         //boolean exito = true;
-        
+
         /*SimpleDateFormat formato=new SimpleDateFormat("yyyy/MM/dd");
         Date jFecha = null; 
         try {
@@ -638,12 +644,12 @@ public class Vendedor extends javax.swing.JFrame {
             System.err.println("Error al insertar");
             e.printStackTrace();
         }
-        */
+         */
         int m = Integer.parseInt(monto);
         //CallableStatement cstmt = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        try{
+        try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection con = DriverManager.getConnection(this.con);
             stmt = con.prepareStatement("exec DBO.CREARVENTA ?,?,?,?,?,?");
@@ -653,33 +659,31 @@ public class Vendedor extends javax.swing.JFrame {
             stmt.setString(2, idCliente);
             stmt.setString(3, formaPago);
             stmt.setFloat(4, pTotal);
-            stmt.setFloat(5,cTotal);
+            stmt.setFloat(5, cTotal);
             stmt.setFloat(6, m);
             rs = stmt.executeQuery();
         } catch (ClassNotFoundException e) {
             System.err.println("No se encontro el driver jdbc");
             e.printStackTrace();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error al insertar");
             e.printStackTrace();
         }
-        
-        
-        
+
         stmt = null;
         rs = null;
         String datos;
         Integer cant = 0;
         String producto = "";
         String marca = "";
-        for(int i = 0; i<listaProductos.size();i++){
-            
+        for (int i = 0; i < listaProductos.size(); i++) {
+
         }
-        try{
+        try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection con = DriverManager.getConnection(this.con);
             String query = "INSERT INTO DBO.SEVENDE VALUES "
-            + String.join(",", Collections.nCopies(listaProductos.size(), "(?,?,?,?,?)"));
+                    + String.join(",", Collections.nCopies(listaProductos.size(), "(?,?,?,?,?)"));
             stmt = con.prepareStatement(query);
             System.err.println(query);
             for (int i = 0; i < listaProductos.size(); i++) {
@@ -688,37 +692,37 @@ public class Vendedor extends javax.swing.JFrame {
                 producto = dat[0];
                 marca = dat[1];
                 cant = Integer.valueOf(dat[2]);
-                    
-                stmt.setString(i+1,producto);
-                stmt.setString(i+2,marca);
-                stmt.setInt(i+3,444444444);                       //Cambiar por numero de venta
-                stmt.setString(i+4,idVend);
-                stmt.setInt(i+5,cant);
-             }
-             rs = stmt.executeQuery();
+
+                stmt.setString(i + 1, producto);
+                stmt.setString(i + 2, marca);
+                stmt.setInt(i + 3, 444444444);                       //Cambiar por numero de venta
+                stmt.setString(i + 4, idVend);
+                stmt.setInt(i + 5, cant);
+            }
+            rs = stmt.executeQuery();
         } catch (ClassNotFoundException e) {
             System.err.println("No se encontro el driver jdbc");
             e.printStackTrace();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error al insertar");
             e.printStackTrace();
         }
         //return exito;
     }
-    
-    public void filtrar(String texto){
+
+    public void filtrar(String texto) {
         final TableRowSorter<TableModel> sorter = new TableRowSorter<>(tablaProductos.getModel());
         tablaProductos.setRowSorter(sorter);
-         if (texto.length() != 0) {
-                sorter.setRowFilter(RowFilter.regexFilter(texto));
+        if (texto.length() != 0) {
+            sorter.setRowFilter(RowFilter.regexFilter(texto));
 
-         } else {
-                sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(null);
 
-         }
+        }
     }
-    
-    private ArrayList<String> getProductList(){
+
+    private ArrayList<String> getProductList() {
         return listaProductos;
     }
 
