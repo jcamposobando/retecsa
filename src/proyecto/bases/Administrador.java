@@ -658,7 +658,7 @@ public class Administrador extends javax.swing.JFrame {
         if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar estas ventas?") == 0) {
             for(int i = 0; i < tuplaVenta.length; i++){
                 String query = "DELETE FROM VENTA WHERE IDVENDEDOR = ? AND NUMERODEVENTA = ? AND"
-                    + " IDCLIENTE = ? AND FORMADEPAGO = ? AND FECHAVENTA = ? AND COSTOTOTAL = ? AND PAGOTOTAL = ?";
+                    + " IDCLIENTE = ? AND FORMADEPAGO = ? AND FECHAVENTA = ? AND COSTOTOTAL = ? AND PAGATOTAL = ?";
                 TablaDatos.executeUpdate(conexion, query, tuplaVenta[i]);
             }
             cargar(tablaVenta, "VENTA",sorterVenta);
@@ -669,8 +669,8 @@ public class Administrador extends javax.swing.JFrame {
         if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar a estos productos?") == 0) {
             for(int i = 0; i < tuplaProducto.length; i++){
                 String query = "DELETE FROM PRODUCTO WHERE NOMBREPROVEEDOR = ? AND NOMBREPRODUCTO = ? AND"
-                    + " MARCAPRODUCTO = ? AND ESTANTE = ? AND CODIGODEFABRICA = ? AND EXISTENCIA = ? AND PRECIOVENTA = ? AND" 
-                    + "COSTOUNIDAD = ?";
+                    + " MARCAPRODUCTO = ? AND ESTANTE = ? AND CODIGODEFABRICA = ? AND EXISTENCIA = ? AND PRECIODEVENTA = ? AND" 
+                    + " COSTOUNIDAD = ?";
                 TablaDatos.executeUpdate(conexion, query, tuplaProducto[i]);
             }
             cargar(tablaProducto, "PRODUCTO",sorterProducto);
@@ -724,7 +724,11 @@ public class Administrador extends javax.swing.JFrame {
         tuplaVenta = new String[filasVenta][7];
         for(int i = 0; i < filasVenta; i++){
             for(int j = 0; j < 7; j++){
-                tuplaVenta[i][j] = tablaVenta.getValueAt(row[i], j);
+                 if(j == 1 || j == 4 || j == 5 || j == 6){
+                    tuplaVenta[i][j] = tablaVenta.getValueAt(row[i], j).toString();
+                }else{
+                    tuplaVenta[i][j] = tablaVenta.getValueAt(row[i], j);
+                }
             } 
         }
     }//GEN-LAST:event_tablaVentaMouseReleased
@@ -746,7 +750,11 @@ public class Administrador extends javax.swing.JFrame {
         tuplaProducto = new String[filasProducto][8];
         for(int i = 0; i < filasProducto; i++){
             for(int j = 0; j < 8; j++){
-                tuplaProducto[i][j] = tablaProducto.getValueAt(row[i], j);
+                if(j == 3 || j == 5 || j == 6 || j == 7){
+                    tuplaProducto[i][j] = tablaProducto.getValueAt(row[i], j).toString();
+                }else{
+                    tuplaProducto[i][j] = tablaProducto.getValueAt(row[i], j);
+                }
             } 
         }
     }//GEN-LAST:event_tablaProductoMouseReleased
@@ -757,18 +765,22 @@ public class Administrador extends javax.swing.JFrame {
         tuplaCliente = new String[filasCliente][3];
         for(int i = 0; i < filasCliente; i++){
             for(int j = 0; j < 3; j++){
-                tuplaCliente[i][j] = tablaCliente.getValueAt(row[i], j);
+                 if(j == 1){
+                    tuplaCliente[i][j] = tablaCliente.getValueAt(row[i], j).toString();
+                }else{
+                    tuplaCliente[i][j] = tablaCliente.getValueAt(row[i], j);
+                }
             } 
         }   
     }//GEN-LAST:event_tablaClienteMouseReleased
 
     private void agregarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarVendedorActionPerformed
-        ModificarVendedor vende = new ModificarVendedor(conexion,true,()->{cargar(tablaVendedor, "VENDEDOR",sorterVendedor);}, tuplaProveedor);
+        ModificarVendedor vende = new ModificarVendedor(conexion,true,()->{cargar(tablaVendedor, "VENDEDOR",sorterVendedor);}, tuplaVendedor);
         vende.setVisible(true);
     }//GEN-LAST:event_agregarVendedorActionPerformed
 
     private void actualizarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarVendedorActionPerformed
-        ModificarVendedor vende = new ModificarVendedor(conexion,false,()->{cargar(tablaVendedor, "VENDEDOR",sorterVendedor);}, tuplaProveedor);
+        ModificarVendedor vende = new ModificarVendedor(conexion,false,()->{cargar(tablaVendedor, "VENDEDOR",sorterVendedor);}, tuplaVendedor);
         vende.setVisible(true);
     }//GEN-LAST:event_actualizarVendedorActionPerformed
 
@@ -778,7 +790,7 @@ public class Administrador extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarProductoActionPerformed
 
     private void agregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarClienteActionPerformed
-        ModificarClienteAdmin client = new ModificarClienteAdmin(conexion,true,()->{cargar(tablaCliente,"CLIENTE",sorterCliente);}, tuplaProducto);
+        ModificarClienteAdmin client = new ModificarClienteAdmin(conexion,true,()->{cargar(tablaCliente,"CLIENTE",sorterCliente);}, tuplaCliente);
         client.setVisible(true);
     }//GEN-LAST:event_agregarClienteActionPerformed
 
@@ -788,7 +800,7 @@ public class Administrador extends javax.swing.JFrame {
     }//GEN-LAST:event_actualizarProductoActionPerformed
 
     private void actualizarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarClienteActionPerformed
-        ModificarClienteAdmin client = new ModificarClienteAdmin(conexion,false,()->{cargar(tablaCliente,"CLIENTE",sorterCliente);}, tuplaProducto);
+        ModificarClienteAdmin client = new ModificarClienteAdmin(conexion,false,()->{cargar(tablaCliente,"CLIENTE",sorterCliente);}, tuplaCliente);
         client.setVisible(true);
     }//GEN-LAST:event_actualizarClienteActionPerformed
 
