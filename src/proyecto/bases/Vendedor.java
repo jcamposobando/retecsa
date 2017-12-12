@@ -520,7 +520,7 @@ public class Vendedor extends javax.swing.JFrame {
             while (rs.next()) {
                 pProducto = rs.getInt(1);
                 cTotal += rs.getInt(2);
-                
+                prov = rs.getString(3);
             }
             int totalProducto = pProducto * iCantidad;
             pTotal += totalProducto;
