@@ -13,18 +13,21 @@ import javax.swing.JOptionPane;
  */
 public class ModificarContactoEmpleadoCliente extends javax.swing.JFrame {
 
+    private final Runnable r;
     private final String con;
     private final boolean tipo;
     private final String idCliente;
     private final String correoEmpleado;
+
     /**
      * Creates new form modificarContactoEmpleado
      */
-    public ModificarContactoEmpleadoCliente(String con, String idCliente, String[] fieldValues, boolean tipo) {
+    public ModificarContactoEmpleadoCliente(String con, String idCliente, String[] fieldValues, boolean tipo, Runnable r) {
+        this.r = r;
         this.con = con;
         this.tipo = tipo;
         this.idCliente = idCliente;
-        this.correoEmpleado = fieldValues[0];
+        this.correoEmpleado = fieldValues[2];
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         if (tipo) {
@@ -32,9 +35,9 @@ public class ModificarContactoEmpleadoCliente extends javax.swing.JFrame {
         } else {
             modificar.setText("Modificar");
             fieldNombre.setText(fieldValues[0]);
-            fieldTelefono.setText(fieldValues[0]);
-            fieldEmail.setText(fieldValues[0]);
-            fieldFuncion.setText(fieldValues[0]);
+            fieldTelefono.setText(fieldValues[1]);
+            fieldEmail.setText(fieldValues[2]);
+            fieldFuncion.setText(fieldValues[3]);
         }
     }
 
@@ -140,13 +143,12 @@ public class ModificarContactoEmpleadoCliente extends javax.swing.JFrame {
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
         if (tipo) {
-            Object[] parameters = {idCliente, fieldEmail.getText(), fieldNombre.getText(), fieldTelefono.getText(), fieldFuncion.getText()};
+            Object[] parameters = {idCliente, fieldEmail.getText(), fieldNombre.getText(), fieldFuncion.getText(), fieldTelefono.getText()};
             int n = TablaDatos.executeUpdate(con, "Insert into empleado values (?,?,?,?,?)", parameters);
             if (n == 1) {
-                JOptionPane.showMessageDialog(this, "Se modificó el contacto correctamente");
-                this.dispose();
+                JOptionPane.showMessageDialog(this, "Se agreagó el contacto correctamente");
             } else {
-                JOptionPane.showMessageDialog(this, "Error al modificar el contacto");
+                JOptionPane.showMessageDialog(this, "Error al agregar el contacto");
             }
         } else {
             Object[] parameters = {fieldEmail.getText(), fieldTelefono.getText(), fieldNombre.getText(), fieldFuncion.getText(), idCliente, correoEmpleado};
@@ -154,11 +156,12 @@ public class ModificarContactoEmpleadoCliente extends javax.swing.JFrame {
                     + "set correoempleado = ?, telefonoempleado = ?, nombreempleado = ?, funcion= ? where idcliente = ? and correoempleado = ? ", parameters);
             if (n == 1) {
                 JOptionPane.showMessageDialog(this, "Se modificó el contacto correctamente");
-                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Error al modificar el contacto");
             }
         }
+        r.run();
+        this.dispose();
     }//GEN-LAST:event_modificarActionPerformed
 
 
