@@ -172,7 +172,10 @@ public class VerContactoEmpleado extends javax.swing.JFrame {
                 con,
                 idCliente,
                 parameters,
-                false
+                false,
+                () -> {
+                    loadTablaContactos();
+                }
         );
         mcce.setVisible(true);
     }//GEN-LAST:event_modificarActionPerformed
@@ -197,12 +200,15 @@ public class VerContactoEmpleado extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
-        String[] parameters = {"","","",""};
+        String[] parameters = {"", "", "", ""};
         ModificarContactoEmpleadoCliente mcce = new ModificarContactoEmpleadoCliente(
                 con,
                 idCliente,
                 parameters,
-                true
+                true,
+                () -> {
+                    loadTablaContactos();
+                }
         );
         mcce.setVisible(true);
     }//GEN-LAST:event_agregarActionPerformed
