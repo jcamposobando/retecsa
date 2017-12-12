@@ -545,6 +545,53 @@ public class Vendedor extends javax.swing.JFrame {
             stmt = conn.prepareStatement("SELECT IDCLIENTE FROM DBO.CLIENTE WHERE IDCLIENTE = ?;");
             stmt.setString(1, identificacion);
             rs = stmt.executeQuery();
+            boolean hasRows = false;
+            while(rs.next()){
+                hasRows = true;
+            }
+            if(!hasRows){
+                stmt = null;
+                //rs = null;
+                try {
+                    stmt = conn.prepareStatement("INSERT INTO DBO.CLIENTE VALUES(?,?,?);");
+                    stmt.setString(1, identificacion);
+                    stmt.setInt(2, 3);
+                    stmt.setString(3, nombre);
+                    stmt.executeUpdate();
+                 }catch (SQLException er) {
+                    System.err.println("Error al insertar");
+                    er.printStackTrace();
+                }
+                if (tipo.toUpperCase().equals("empleado".toUpperCase())) {
+                    stmt = null;
+                    // rs = null;
+                    try {
+                        stmt = conn.prepareStatement("INSERT INTO DBO.EMPLEADO VALUES(?,?,?,?,?);");
+                        stmt.setString(1, identificacion);
+                        stmt.setString(2, correo);
+                        stmt.setString(3, empleado);
+                        stmt.setString(4, funcion);
+                        stmt.setString(5, telefono);
+                        stmt.executeUpdate();;
+                    }catch (SQLException error) {
+                        System.err.println("Error al insertar");
+                        error.printStackTrace();
+                    }
+                } else if (tipo.toUpperCase().equals("particular".toUpperCase())) {
+                    stmt = null;
+                    //rs = null;
+                    try {
+                        stmt = conn.prepareStatement("INSERT INTO DBO.PARTICULAR VALUES(?,?,?);");
+                        stmt.setString(1, identificacion);
+                        stmt.setString(2, correo);
+                        stmt.setString(3, telefono);
+                        stmt.executeUpdate();
+                    } catch (SQLException error) {
+                        System.err.println("Error al insertar");
+                        error.printStackTrace();
+                    }
+                }
+            }
             stmt.close();
             rs.close();
             conn.close();
@@ -552,71 +599,7 @@ public class Vendedor extends javax.swing.JFrame {
             System.err.println("No se encontro el driver jdbc");
             e.printStackTrace();
         } catch (SQLException e) {
-            stmt = null;
-            //rs = null;
-            try {
-                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                Connection conn = DriverManager.getConnection(this.con);
-                stmt = conn.prepareStatement("INSERT INTO DBO.CLIENTE VALUES(?,?,?);");
-                stmt.setString(1, tipo);
-                stmt.setInt(2, 3);
-                stmt.setString(3, nombre);
-                stmt.executeUpdate();
-                stmt.close();
-               // rs.close();
-                conn.close();
-            } catch (ClassNotFoundException er) {
-                System.err.println("No se encontro el driver jdbc");
-                er.printStackTrace();
-            } catch (SQLException er) {
-                System.err.println("Error al insertar");
-                er.printStackTrace();
-            }
-            if (tipo.toUpperCase().equals("empleado".toUpperCase())) {
-                stmt = null;
-               // rs = null;
-                try {
-                    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                    Connection conn = DriverManager.getConnection(this.con);
-                    stmt = conn.prepareStatement("INSERT INTO DBO.EMPLEADO VALUES(?,?,?,?,?);");
-                    stmt.setString(1, identificacion);
-                    stmt.setString(2, correo);
-                    stmt.setString(3, empleado);
-                    stmt.setString(4, funcion);
-                    stmt.setString(5, telefono);
-                    stmt.executeUpdate();
-                    stmt.close();
-                   // rs.close();
-                    conn.close();
-                } catch (ClassNotFoundException er) {
-                    System.err.println("No se encontro el driver jdbc");
-                    er.printStackTrace();
-                } catch (SQLException error) {
-                    System.err.println("Error al insertar");
-                    error.printStackTrace();
-                }
-            } else if (tipo.toUpperCase().equals("particular".toUpperCase())) {
-                stmt = null;
-                //rs = null;
-                try {
-                    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                    Connection conn = DriverManager.getConnection(this.con);
-                    stmt = conn.prepareStatement("INSERT INTO DBO.PARTICULR VALUES(?,?,?,?,?,?,?);");
-                    stmt.setString(1, identificacion);
-                    stmt.setString(2, correo);
-                    stmt.setString(3, telefono);
-                    stmt.executeUpdate();
-                    stmt.close();
-                    //rs.close();
-                    conn.close();
-                } catch (ClassNotFoundException er) {
-                    System.err.println("No se encontro el driver jdbc");
-                    er.printStackTrace();
-                } catch (SQLException error) {
-                    System.err.println("Error al insertar");
-                    error.printStackTrace();
-                }
-            }
+            
         }
         //return exito;
     }
