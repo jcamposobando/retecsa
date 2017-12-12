@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -94,18 +96,9 @@ public class Telemercadeo extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tablaClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tablaClientes.setModel(null);
+        tablaClientes.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tablaClientes.setShowHorizontalLines(false);
         tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaClientesMouseClicked(evt);
@@ -278,8 +271,24 @@ public class Telemercadeo extends javax.swing.JFrame {
     }//GEN-LAST:event_fieldBuscarKeyTyped
 
     private void verContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verContactoActionPerformed
-        VerContacto verContacto = new VerContacto(con, tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
-        verContacto.setVisible(true);
+        Object[] parameters = {tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString()};
+        ResultSet rs = TablaDatos.executeQuery(con, "SELECT * "
+                + "FROM DBO.Particular "
+                + "where cliente.idCliente = cantidadventas.idcliente",
+                parameters);
+        try {
+            if (rs.first()) {
+                VerContactoParticular verContacto = new VerContactoParticular(con,
+                        (String) rs.getObject(1),
+                        (String) rs.getObject(2),
+                        (String) rs.getObject(3)
+                );
+                verContacto.setVisible(true);
+            } else {
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Telemercadeo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_verContactoActionPerformed
 
     private void hacerVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hacerVentaActionPerformed
@@ -308,16 +317,24 @@ public class Telemercadeo extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Telemercadeo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Telemercadeo.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Telemercadeo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Telemercadeo.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Telemercadeo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Telemercadeo.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Telemercadeo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Telemercadeo.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -325,7 +342,7 @@ public class Telemercadeo extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Telemercadeo("jdbc:sqlserver://172.16.202.39:1433;"
-                        + "databaseName=Inventario;user=admin;password=123456").setVisible(true);
+                        + "databaseName=Inventario;user=admin;password=123456", "").setVisible(true);
             }
         });
     }
