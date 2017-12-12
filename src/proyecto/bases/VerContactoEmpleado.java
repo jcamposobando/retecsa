@@ -168,7 +168,7 @@ public class VerContactoEmpleado extends javax.swing.JFrame {
             tablaContacto.getValueAt(tablaContacto.getSelectedRow(), 3).toString(),
             tablaContacto.getValueAt(tablaContacto.getSelectedRow(), 2).toString(),
             tablaContacto.getValueAt(tablaContacto.getSelectedRow(), 1).toString()};
-        ModificarContactoEmpleadoCliente mcce = ModificarContactoEmpleadoCliente(
+        ModificarContactoEmpleadoCliente mcce = new ModificarContactoEmpleadoCliente(
                 con,
                 idCliente,
                 parameters,
@@ -198,7 +198,7 @@ public class VerContactoEmpleado extends javax.swing.JFrame {
 
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
         String[] parameters = {"","","",""};
-        ModificarContactoEmpleadoCliente mcce = ModificarContactoEmpleadoCliente(
+        ModificarContactoEmpleadoCliente mcce = new ModificarContactoEmpleadoCliente(
                 con,
                 idCliente,
                 parameters,
