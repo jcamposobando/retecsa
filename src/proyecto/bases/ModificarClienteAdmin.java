@@ -167,10 +167,11 @@ public class ModificarClienteAdmin extends javax.swing.JFrame {
 
     private void aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarActionPerformed
         if(type){
-            Object[] atributos = new Object[2];
+            Object[] atributos = new Object[3];
             atributos[0] = id.getText();
-            atributos[1] = nombre.getText();
-            String query = "INSERT INTO DBO.CLIENTE VALUES(?,?)";
+            atributos[1] = "3";
+            atributos[2] = nombre.getText();
+            String query = "INSERT INTO DBO.CLIENTE VALUES(?,?,?)";
             TablaDatos.executeUpdate(conexion, query, atributos);
             if(tipo.getText().toUpperCase().equals("PARTICULAR")){
                 atributos = new Object[3];
