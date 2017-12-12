@@ -55,6 +55,7 @@ public class Vendedor extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
         }
+        fIdentificacion.setText(idCliente);
     }
 
     public Vendedor(String con, String idVendedor) {
@@ -485,7 +486,7 @@ public class Vendedor extends javax.swing.JFrame {
 
     private void bCotizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCotizacionActionPerformed
         // TODO add your handling code here:
-        cotizacion(jProveedor.getText(),fProducto.getText(), fMarca.getText(), fCantidad.getText());
+        cotizacion(jProveedor.getText(), fProducto.getText(), fMarca.getText(), fCantidad.getText());
         jProveedor.setText("");
         fProducto.setText("");
         fMarca.setText("");
@@ -520,6 +521,7 @@ public class Vendedor extends javax.swing.JFrame {
         fFecha.setText("");
         fMonto.setText("");
         fFormaDePago.setText("");
+        AProductos.setText("");
     }//GEN-LAST:event_bVenderActionPerformed
 
     private void jTextField7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyTyped
@@ -535,14 +537,14 @@ public class Vendedor extends javax.swing.JFrame {
         int[] row = tablaProductos.getSelectedRows();
         filasProducto = row.length;
         tuplaProducto = new String[filasProducto][8];
-        for(int i = 0; i < filasProducto; i++){
-            for(int j = 0; j < 8; j++){
-                if(j == 3 || j == 5 || j == 6 || j == 7){
+        for (int i = 0; i < filasProducto; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (j == 3 || j == 5 || j == 6 || j == 7) {
                     tuplaProducto[i][j] = tablaProductos.getValueAt(row[i], j).toString();
-                }else{
+                } else {
                     tuplaProducto[i][j] = tablaProductos.getValueAt(row[i], j);
                 }
-            } 
+            }
         }
         jProveedor.setText(tuplaProducto[0][0].toString());
         fProducto.setText(tuplaProducto[0][1].toString());
@@ -550,13 +552,13 @@ public class Vendedor extends javax.swing.JFrame {
         fCantidad.setText(tuplaProducto[0][5].toString());
     }//GEN-LAST:event_tablaProductosMouseReleased
 
-    public void cotizacion(String proveedor,String producto, String marca, String cantidad) {
+    public void cotizacion(String proveedor, String producto, String marca, String cantidad) {
         //boolean exito = true;
         //Integer cant = Integer.valueOf(cantidad);
         //PreparedStatement stmt = null;
         ResultSet rs = null;
         int iCantidad = Integer.parseInt(cantidad);
-        Object[] precioCosto = {proveedor,producto, marca};
+        Object[] precioCosto = {proveedor, producto, marca};
         rs = TablaDatos.executeQuery(con, "SELECT PRECIODEVENTA, COSTOUNIDAD FROM DBO.PRODUCTO WHERE NOMBREPROVEEDOR = ? AND NOMBREPRODUCTO = ? AND MARCAPRODUCTO = ? AND EXISTENCIA > 0", precioCosto);
         int pProducto = 0;
         try {
@@ -596,10 +598,10 @@ public class Vendedor extends javax.swing.JFrame {
             stmt.setString(1, identificacion);
             rs = stmt.executeQuery();
             boolean hasRows = false;
-            while(rs.next()){
+            while (rs.next()) {
                 hasRows = true;
             }
-            if(!hasRows){
+            if (!hasRows) {
                 stmt = null;
                 //rs = null;
                 try {
@@ -608,7 +610,7 @@ public class Vendedor extends javax.swing.JFrame {
                     stmt.setInt(2, 3);
                     stmt.setString(3, nombre);
                     stmt.executeUpdate();
-                 }catch (SQLException er) {
+                } catch (SQLException er) {
                     System.err.println("Error al insertar");
                     er.printStackTrace();
                 }
@@ -623,7 +625,7 @@ public class Vendedor extends javax.swing.JFrame {
                         stmt.setString(4, funcion);
                         stmt.setString(5, telefono);
                         stmt.executeUpdate();
-                    }catch (SQLException error) {
+                    } catch (SQLException error) {
                         System.err.println("Error al insertar");
                         error.printStackTrace();
                     }
@@ -649,7 +651,7 @@ public class Vendedor extends javax.swing.JFrame {
             System.err.println("No se encontro el driver jdbc");
             e.printStackTrace();
         } catch (SQLException e) {
-            
+
         }
         //return exito;
     }
@@ -681,8 +683,8 @@ public class Vendedor extends javax.swing.JFrame {
             String sql = "SELECT MAX(NUMERODEVENTA) FROM VENTA WHERE IDVENDEDOR = ?";
             Object[] id = new Object[1];
             id[0] = "33445566";
-            
-             ResultSet rs = null;
+
+            ResultSet rs = null;
             try {
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             } catch (ClassNotFoundException ex) {
@@ -693,12 +695,12 @@ public class Vendedor extends javax.swing.JFrame {
                 conn = DriverManager.getConnection(this.con);
                 PreparedStatement ps = conn.prepareStatement(sql);
                 rs = TablaDatos.executeQuery(this.con, sql, id);
-                while(rs.next()){
+                while (rs.next()) {
                     numeroVenta = rs.getInt(1);
                 }
-                } catch (SQLException ex) {
-                    Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
@@ -718,7 +720,7 @@ public class Vendedor extends javax.swing.JFrame {
                     + String.join(",", Collections.nCopies(listaProductos.size(), "(?,?,?,?,?,?)"));
             stmt = conn.prepareStatement(query);
             System.err.println(query);
-            for (int i = 0; i < listaProductos.size(); i = i+6) {
+            for (int i = 0; i < listaProductos.size(); i = i + 6) {
                 datos = listaProductos.get(i);
                 String[] dat = datos.split(",");
                 producto = dat[0];

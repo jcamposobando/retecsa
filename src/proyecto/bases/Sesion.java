@@ -5,9 +5,12 @@
  */
 package proyecto.bases;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -118,7 +121,13 @@ public class Sesion extends javax.swing.JFrame {
                 + "databaseName=Inventario;user=" + user + ";password=" + contra;
         try {
             Connection con = DriverManager.getConnection(conexion);
-            TablaDatos.executeQuery(conexion, "is_member( ? )", new String[]{comboRol.getSelectedItem().toString()});
+            
+//            CallableStatement proc = con.prepareCall("is_member( ? )");
+//            proc.setString(1, comboRol.getSelectedItem().toString());
+//            proc.registerOutParameter(1, Types.INTEGER);
+//            int returnValue = proc.getInt(1);
+
+            ResultSet rs = TablaDatos.executeQuery(conexion, "is_member( ? )", new String[]{comboRol.getSelectedItem().toString()});
             switch (comboRol.getSelectedItem().toString()) {
                 case "Administrador":
                     Administrador a = new Administrador(conexion);
