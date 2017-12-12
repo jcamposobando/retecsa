@@ -5,7 +5,13 @@
  */
 package proyecto.bases;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,7 +28,7 @@ public class Sesion extends javax.swing.JFrame {
      */
     public Sesion() {
         initComponents();
-        comboRol.setModel(new DefaultComboBoxModel( new String[] {"Administrador","Ventas","Telemercadeo"} ) );
+        comboRol.setModel(new DefaultComboBoxModel(new String[]{"Administrador", "Vendedor", "Telemercadeo"}));
     }
 
     /**
@@ -110,11 +116,28 @@ public class Sesion extends javax.swing.JFrame {
         String contra = String.valueOf(password);
         conexion = "jdbc:sqlserver://172.16.202.39:1433;"
                 + "databaseName=Inventario;user=" + user + ";password=" + contra;
-        Administrador a = new Administrador(conexion);
-        Vendedor v = new Vendedor(conexion, user);
-        this.setVisible(false);
-        //a.setVisible(true);
-        v.setVisible(true);
+        try {
+            Connection con = DriverManager.getConnection(conexion);
+            TablaDatos.executeQuery(conexion, "is_member( ? )", new String[]{comboRol.getSelectedItem().toString()});
+            switch (comboRol.getSelectedItem().toString()) {
+                case "Administrador":
+                    Administrador a = new Administrador(conexion);
+                    a.setVisible(true);
+                    break;
+                case "Vendedor":
+                    Vendedor v = new Vendedor(conexion, user);
+                    v.setVisible(true);
+                    break;
+                case "Telemercadeo":
+                    Telemercadeo tele = new Telemercadeo(conexion, "");
+                    tele.setVisible(true);
+            }
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "No fue posible establecer la conexión");
+        }
+        //
+
         //this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_iniciarActionPerformed
 

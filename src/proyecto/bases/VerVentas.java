@@ -143,7 +143,7 @@ public class VerVentas extends javax.swing.JFrame {
 
     private void verDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verDetalleActionPerformed
         VerDetalleVenta verDetalleVenta = new VerDetalleVenta(con,
-                tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 0).toString(),
+                tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 1).toString(),
                 (Integer) tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 2));
         verDetalleVenta.setVisible(true);
         verDetalleVenta.setTitle("Venta "
