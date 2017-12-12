@@ -44,8 +44,8 @@
                       <Component id="jScrollPane1" alignment="1" min="-2" pref="860" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="labelBuscar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="fieldBuscar" min="-2" pref="802" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="fieldBuscar" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
