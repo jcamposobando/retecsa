@@ -815,23 +815,23 @@ public class Administrador extends javax.swing.JFrame {
     }//GEN-LAST:event_empleadoActionPerformed
 
     private void buscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarClienteActionPerformed
-        filtrar(consultaCliente, sorterCliente);
+        filtrar(consultaCliente, sorterCliente, tablaCliente);
     }//GEN-LAST:event_buscarClienteActionPerformed
 
     private void buscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarProductoActionPerformed
-        filtrar(consultaProducto, sorterProducto);
+        filtrar(consultaProducto, sorterProducto, tablaProducto);
     }//GEN-LAST:event_buscarProductoActionPerformed
 
     private void buscarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarVendedorActionPerformed
-        filtrar(consultaVendedor, sorterVendedor);
+        filtrar(consultaVendedor, sorterVendedor, tablaVendedor);
     }//GEN-LAST:event_buscarVendedorActionPerformed
 
     private void buscarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarVentaActionPerformed
-        filtrar(consultaVenta, sorterVenta);
+        filtrar(consultaVenta, sorterVenta, tablaVenta);
     }//GEN-LAST:event_buscarVentaActionPerformed
 
     private void buscarProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarProveedoresActionPerformed
-        filtrar(consultaProveedor, sorterProveedor);
+        filtrar(consultaProveedor, sorterProveedor, tablaProveedor);
     }//GEN-LAST:event_buscarProveedoresActionPerformed
 
     private void cargar(JTable tipo, String tabla, TableRowSorter<TableModel> sorter) {
@@ -848,7 +848,9 @@ public class Administrador extends javax.swing.JFrame {
         //boton.setEnabled(tipo.getSelectedRowCount() != 0);
     }
     
-    private void filtrar(JTextField filterText, TableRowSorter<TableModel> sorter){
+    private void filtrar(JTextField filterText, TableRowSorter<TableModel> sorter, JTable tipo){
+        sorter = new TableRowSorter<>(tipo.getModel());
+        tipo.setRowSorter(sorter);
         String text = filterText.getText();
         if (text.length() == 0) {
           sorter.setRowFilter(null);
