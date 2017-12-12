@@ -18,6 +18,7 @@ public class BorrarEmpleados extends javax.swing.JFrame {
     private String cliente;
     private Object[][] tuplaEmpleado = new Object[0][0];
     private int filasEmpleado;
+    private Object[] atributos;
     /**
      * Creates new form BorrarEmpleados
      */
@@ -26,7 +27,7 @@ public class BorrarEmpleados extends javax.swing.JFrame {
         this.cliente = cliente[0][0].toString();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
-        Object[] atributos = new Object[1];
+        atributos = new Object[1];
         atributos[0] = this.cliente;
         String consulta = "SELECT * FROM DBO.EMPLEADO WHERE IDCLIENTE = ?"; 
         ResultSet rs = TablaDatos.executeQuery(conexion, consulta, atributos);
@@ -134,23 +135,22 @@ public class BorrarEmpleados extends javax.swing.JFrame {
         if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que quiere eliminar a estos empleados?") == 0) {
             for(int i = 0; i < tuplaEmpleado.length; i++){
                 String query = "DELETE FROM EMPLEADO WHERE IDCLIENTE = ? AND CORREOEMPLEADO = ? AND NOMBREEMPLEADO = ?"
-                        + "AND FUNCION = ? AND TELEFONOEMPLEADO = ?";
+                        + " AND FUNCION = ? AND TELEFONOEMPLEADO = ?";
                 TablaDatos.executeUpdate(conexion, query, tuplaEmpleado[i]);
             }
-            cargar(empleados, "EMPLEADO");
+            cargar();
         }
     }//GEN-LAST:event_eliminarActionPerformed
 
-    private void cargar(JTable tipo, String tabla) {
-        String consulta = "SELECT * FROM DBO." + tabla; 
-        ResultSet rs = TablaDatos.executeQuery(conexion, consulta, new Object[0]);
+    private void cargar() {
+        String consulta = "SELECT * FROM DBO.EMPLEADO WHERE IDCLIENTE = ?"; 
+        ResultSet rs = TablaDatos.executeQuery(conexion, consulta, atributos);
         try{
-        tipo.setModel(TablaDatos.buildTableModel(rs));
+        empleados.setModel(TablaDatos.buildTableModel(rs));
         }catch(Exception e){
             System.err.println("No se encontro tabla");
         }
-        tipo.setEnabled(tipo.getSelectedRowCount() == 0);
-        //boton.setEnabled(tipo.getSelectedRowCount() != 0);
+        empleados.setEnabled(empleados.getSelectedRowCount() == 0);
     }
     /**
      * @param args the command line arguments
