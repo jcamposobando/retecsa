@@ -273,26 +273,28 @@ public class Telemercadeo extends javax.swing.JFrame {
     }//GEN-LAST:event_fieldBuscarKeyTyped
 
     private void verContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verContactoActionPerformed
-        Object[] parameters = {tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString()};
+                Object[] parameters = {tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString()};
         ResultSet rs = TablaDatos.executeQuery(con, "SELECT * "
                 + "FROM DBO.Particular "
                 + "where idCliente = ?",
                 parameters);
         try {
-            if (rs.first()) {
-                rs.beforeFirst();
+            if (rs.next()) {
                 VerContactoParticular verContacto = new VerContactoParticular(con,
                         (String) rs.getObject(1),
                         (String) rs.getObject(2),
                         (String) rs.getObject(3)
                 );
+                verContacto.setTitle(tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2).toString());
                 verContacto.setVisible(true);
             } else {
+                VerContactoEmpleado verContactoEmpleado = new VerContactoEmpleado(con,
+                        tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
+                verContactoEmpleado.setTitle(tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 2).toString());
             }
         } catch (SQLException ex) {
             Logger.getLogger(Telemercadeo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_verContactoActionPerformed
+        }//GEN-LAST:event_verContactoActionPerformed
 
     private void hacerVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hacerVentaActionPerformed
         Vendedor vendedor = new Vendedor(con, idVendedor, tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
