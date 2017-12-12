@@ -5,6 +5,8 @@
  */
 package proyecto.bases;
 
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author b32973
@@ -20,6 +22,7 @@ public class Sesion extends javax.swing.JFrame {
      */
     public Sesion() {
         initComponents();
+        comboRol.setModel(new DefaultComboBoxModel( new String[] {"Administrador","Ventas","Telemercadeo"} ) );
     }
 
     /**
@@ -36,6 +39,7 @@ public class Sesion extends javax.swing.JFrame {
         iniciar = new javax.swing.JButton();
         contrasena = new javax.swing.JPasswordField();
         usuario = new javax.swing.JTextField();
+        comboRol = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("     Inventario Reresentaciones técnicas internacionales S.A");
@@ -58,24 +62,25 @@ public class Sesion extends javax.swing.JFrame {
             }
         });
 
+        comboRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
+                        .addComponent(comboRol, 0, 130, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(contrasena)
-                            .addComponent(usuario)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 200, Short.MAX_VALUE)
-                        .addComponent(iniciar)))
+                        .addComponent(iniciar))
+                    .addComponent(contrasena)
+                    .addComponent(usuario))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -90,7 +95,9 @@ public class Sesion extends javax.swing.JFrame {
                     .addComponent(contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(iniciar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(iniciar)
+                    .addComponent(comboRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -147,6 +154,7 @@ public class Sesion extends javax.swing.JFrame {
     }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> comboRol;
     private javax.swing.JPasswordField contrasena;
     private javax.swing.JButton iniciar;
     private javax.swing.JLabel jLabel2;
