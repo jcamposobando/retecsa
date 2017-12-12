@@ -521,8 +521,8 @@ public class Vendedor extends javax.swing.JFrame {
             }
             int totalProducto = pProducto * iCantidad;
             pTotal += totalProducto;
-            AProductos.append("Producto: " + producto + "   Marca: " + marca + "   Cantidad: " + cantidad + "   Precio: " + totalProducto + "\n");
             listaProductos.add(producto + "," + marca + "," + cantidad);  
+            AProductos.append("Producto: " + producto + "   Marca: " + marca + "   Cantidad: " + cantidad + "   Precio: " + totalProducto + "\n");
             totalPagar.setText(String.valueOf(pTotal));
         } catch (SQLException ex) {
             Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
@@ -642,7 +642,7 @@ public class Vendedor extends javax.swing.JFrame {
             cs.setFloat(5, cTotal);
             cs.setFloat(6, m);
 
-            cs.executeUpdate();
+            cs.execute();
             cs.close();
             con.close();
 
