@@ -38,8 +38,13 @@ public class TablaDatos {
             }
             data.add(vector);
         }
-        return new DefaultTableModel(data, columnNames);
-    }
+        return new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            } //cierra isCellEditable
+        };//cierra return DefaultTableModel
+    }//cierra buildTableModel
 
     public static int executeUpdate(String conection, String query, Object[] parameters) {
         int numberOfModifiedRows = 0;
