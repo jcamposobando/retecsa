@@ -107,7 +107,7 @@ public class Sesion extends javax.swing.JFrame {
         Vendedor v = new Vendedor(conexion, user);
         this.setVisible(false);
         //a.setVisible(true);
-        a.setVisible(true);
+        v.setVisible(true);
         //this.dispatchEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_iniciarActionPerformed
 
