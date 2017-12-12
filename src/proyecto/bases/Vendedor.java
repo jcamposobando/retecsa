@@ -513,16 +513,18 @@ public class Vendedor extends javax.swing.JFrame {
         ResultSet rs = null;
         int iCantidad = Integer.parseInt(cantidad);
         Object[] precioCosto = {producto, marca};
-        rs = TablaDatos.executeQuery(con, "SELECT PRECIODEVENTA, COSTOUNIDAD FROM DBO.PRODUCTO WHERE NOMBREPRODUCTO = ? AND MARCAPRODUCTO = ? AND EXISTENCIA > 0", precioCosto);
+        rs = TablaDatos.executeQuery(con, "SELECT PRECIODEVENTA, COSTOUNIDAD, PROVEEDOR FROM DBO.PRODUCTO WHERE NOMBREPRODUCTO = ? AND MARCAPRODUCTO = ? AND EXISTENCIA > 0", precioCosto);
         int pProducto = 0;
+        String prov = "";
         try {
             while (rs.next()) {
                 pProducto = rs.getInt(1);
                 cTotal += rs.getInt(2);
+                
             }
             int totalProducto = pProducto * iCantidad;
             pTotal += totalProducto;
-            listaProductos.add(producto + "," + marca + "," + cantidad);  
+            listaProductos.add(producto + "," + marca +","+ prov + "," + cantidad);  
             AProductos.append("Producto: " + producto + "   Marca: " + marca + "   Cantidad: " + cantidad + "   Precio: " + totalProducto + "\n");
             totalPagar.setText(String.valueOf(pTotal));
         } catch (SQLException ex) {
@@ -625,9 +627,7 @@ public class Vendedor extends javax.swing.JFrame {
 
     public void venta(String monto, String formaPago) {
         
-        int m = Integer.parseInt(monto);
-        //CallableStatement cstmt = null;
-        
+        int m = Integer.parseInt(monto);   
         CallableStatement cs = null;
 
         String proceso = "{call CREARVENTA (?,?,?,?,?,?)}";
@@ -652,33 +652,14 @@ public class Vendedor extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Vendedor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        /*try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection con = DriverManager.getConnection(this.con);
-            stmt = con.prepareStatement("exec DBO.CREARVENTA ?,?,?,?,?,?");
-            stmt.setEscapeProcessing(true);
-            stmt.setQueryTimeout(20);
-            stmt.setString(1, "33445566");
-            stmt.setString(2, idCliente);
-            stmt.setString(3, formaPago);
-            stmt.setFloat(4, pTotal);
-            stmt.setFloat(5, cTotal);
-            stmt.setFloat(6, m);
-            rs = stmt.executeQuery();
-        } catch (ClassNotFoundException e) {
-            System.err.println("No se encontro el driver jdbc");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("Error al insertar");
-            e.printStackTrace();
-        }
-*/
+
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String datos;
         Integer cant = 0;
         String producto = "";
         String marca = "";
+        String proveedor = "";
         for (int i = 0; i < listaProductos.size(); i++) {
 
         }
@@ -686,7 +667,7 @@ public class Vendedor extends javax.swing.JFrame {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection con = DriverManager.getConnection(this.con);
             String query = "INSERT INTO DBO.SEVENDE VALUES "
-                    + String.join(",", Collections.nCopies(listaProductos.size(), "(?,?,?,?,?)"));
+                    + String.join(",", Collections.nCopies(listaProductos.size(), "(?,?,?,?,?,?)"));
             stmt = con.prepareStatement(query);
             System.err.println(query);
             for (int i = 0; i < listaProductos.size(); i++) {
@@ -694,13 +675,14 @@ public class Vendedor extends javax.swing.JFrame {
                 String[] dat = datos.split("\\s*,\\s*");
                 producto = dat[0];
                 marca = dat[1];
-                cant = Integer.valueOf(dat[2]);
-
-                stmt.setString(i + 1, producto);
-                stmt.setString(i + 2, marca);
-                stmt.setInt(i + 3, 444444444);                       //Cambiar por numero de venta
-                stmt.setString(i + 4, idVend);
-                stmt.setInt(i + 5, cant);
+                proveedor = dat[2];
+                cant = Integer.valueOf(dat[3]);
+                stmt.setString(i + 1, proveedor);
+                stmt.setString(i + 2, producto);
+                stmt.setString(i + 3, marca);
+                stmt.setInt(i + 4, 444);                       //Cambiar por numero de venta
+                stmt.setString(i + 5, idVend);
+                stmt.setInt(i + 6, cant);
             }
             rs = stmt.executeQuery();
             stmt.close();
