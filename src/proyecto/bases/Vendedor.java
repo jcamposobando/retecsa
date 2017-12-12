@@ -513,7 +513,7 @@ public class Vendedor extends javax.swing.JFrame {
         ResultSet rs = null;
         int iCantidad = Integer.parseInt(cantidad);
         Object[] precioCosto = {producto, marca};
-        rs = TablaDatos.executeQuery(con, "SELECT PRECIODEVENTA, COSTOUNIDAD, PROVEEDOR FROM DBO.PRODUCTO WHERE NOMBREPRODUCTO = ? AND MARCAPRODUCTO = ? AND EXISTENCIA > 0", precioCosto);
+        rs = TablaDatos.executeQuery(con, "SELECT PRECIODEVENTA, COSTOUNIDAD, NOMBREPROVEEDOR FROM DBO.PRODUCTO WHERE NOMBREPRODUCTO = ? AND MARCAPRODUCTO = ? AND EXISTENCIA > 0", precioCosto);
         int pProducto = 0;
         String prov = "";
         try {
