@@ -215,7 +215,7 @@ public class ModificarProducto extends javax.swing.JFrame {
             atributos[9] = llaveNombre;
             atributos[10] = llaveMarca;
             String query = "UPDATE DBO.PRODUCTO SET NOMBREPROVEEDOR = ?, NOMBREPRODUCTO = ?,"
-                    + " MARCAPRODUCTO = ?, ESTANTE = ?, CODIGODEFABRICA = ?, EXISTENCIA = ?, PRECIOVENTA = ?," 
+                    + " MARCAPRODUCTO = ?, ESTANTE = ?, CODIGODEFABRICA = ?, EXISTENCIA = ?, PRECIODEVENTA = ?," 
                     + "COSTOUNIDAD = ? WHERE NOMBREPROVEEDOR = ? AND NOMBREPRODUCTO = ? AND MARCAPRODUCTO = ?";
             TablaDatos.executeUpdate(conexion, query, atributos);
         }
